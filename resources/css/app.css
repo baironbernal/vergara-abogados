@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@fontsource/montserrat/400.css"; /* Regular */
+@import "@fontsource/montserrat/700.css"; /* Bold */
+@import "@fontsource/raleway/400.css";    /* Regular */
+@import "@fontsource/raleway/600.css";    /* SemiBold */
+
+:root {
+    --fc-border-color: #e5e7eb;   /* Tailwind gray-200 */
+    --fc-event-bg-color: #1E2B37; /* Tailwind blue-700 */
+    --fc-event-border-color: #1d4ed8;
+    --fc-event-text-color: #fff;
+    --fc-today-bg-color: #dbeafe; /* Tailwind blue-100 */
+  }
+
+h1, h2, h3, h4, h5, h6, .gdlr-title-font {
+    font-family: "Open Sans";
+}
+
+body, input, textarea, select {
+    font-family: "Open Sans";
+}
+
+.fc .fc-toolbar-title {
+    font-family: 'Raleway', sans-serif !important; /* 👈 or Montserrat */
+    font-size: 1.5rem; /* optional: adjust size */
+  }

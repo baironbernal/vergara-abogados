@@ -1,0 +1,137 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\CitationResource\Pages;
+use App\Filament\Resources\CitationResource\RelationManagers;
+use App\Models\Citation;
+use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class CitationResource extends Resource
+{
+    protected static ?string $model = Citation::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+
+    protected static ?string $label = 'Citas';
+
+    protected static ?string $navigationGroup = 'Firma';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+        ->schema([
+            Forms\Components\Section::make('Details')
+                ->columns(2)
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Name')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('phone')
+                        ->label('Phone')
+                        ->tel()
+                        ->maxLength(50),
+                    TextInput::make('email')
+                        ->label('Email')
+                        ->email()
+                        ->maxLength(255),
+                    Select::make('lawyer_id')
+                        ->label('Lawyer')
+                        ->relationship('lawyer', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    DateTimePicker::make('starts_at')
+                        ->label('Starts At')
+                        ->required()
+                        ->seconds(false),
+                    DateTimePicker::make('ends_at')
+                        ->label('Ends At')
+                        ->seconds(false)
+                        ->after('starts_at'),
+                    Textarea::make('observations')
+                        ->label('Observations')
+                        ->columnSpanFull()
+                        ->rows(4),
+                ]),
+        ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('phone')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('email')->searchable()->toggleable(),
+                TextColumn::make('lawyer.name')->label('Lawyer')->sortable()->searchable(),
+                TextColumn::make('starts_at')
+                    ->dateTime('Y-m-d H:i')
+                    ->sortable(),
+                TextColumn::make('ends_at')
+                    ->dateTime('Y-m-d H:i')
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('observations')
+                    ->limit(40)
+                    ->toggleable(),
+                TextColumn::make('created_at')
+                    ->dateTime('Y-m-d H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->defaultSort('starts_at', 'desc')
+            ->filters([
+                Filter::make('starts_between')
+                    ->form([
+                        Forms\Components\DatePicker::make('from')->label('From'),
+                        Forms\Components\DatePicker::make('until')->label('Until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'] ?? null, fn (Builder $q, $date) => $q->whereDate('starts_at', '>=', $date))
+                            ->when($data['until'] ?? null, fn (Builder $q, $date) => $q->whereDate('starts_at', '<=', $date));
+                    }),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListCitations::route('/'),
+            'create' => Pages\CreateCitation::route('/create'),
+            'view' => Pages\ViewCitation::route('/{record}'),
+            'edit' => Pages\EditCitation::route('/{record}/edit'),
+        ];
+    }
+}
