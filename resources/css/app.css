@@ -1,29 +1,38 @@
+
+@import "@fontsource/prata/400.css"; /* Regular */
+@import "@fontsource/dm-sans/400.css";  /* Regular */
+@import "@fontsource/dm-sans/500.css";  /* Medium */
+@import "@fontsource/dm-sans/700.css";  /* Bold */
+
+
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "@fontsource/montserrat/400.css"; /* Regular */
-@import "@fontsource/montserrat/700.css"; /* Bold */
-@import "@fontsource/raleway/400.css";    /* Regular */
-@import "@fontsource/raleway/600.css";    /* SemiBold */
-
 :root {
     --fc-border-color: #e5e7eb;   /* Tailwind gray-200 */
     --fc-event-bg-color: #1E2B37; /* Tailwind blue-700 */
-    --fc-event-border-color: #1d4ed8;
+    --fc-event-border-color: #24354F;
     --fc-event-text-color: #fff;
     --fc-today-bg-color: #dbeafe; /* Tailwind blue-100 */
-  }
+
+    /* Heights of my Mains header *(Menu */
+    --info-top-height: 56px;   /* Info bar */
+    --menu-height: 96px;  /* Menu */
+    --header-total-height: calc(var(--info-top-height) + var(--menu-height));
+    line-height: 20rem;
+}
+
+body {
+    font-size: 16px;
+    color: #374151; /* Tailwind gray-700 */
+    line-height: 1.5;
+}
 
 h1, h2, h3, h4, h5, h6, .gdlr-title-font {
-    font-family: "Open Sans";
+    font-family: "DM Sans", sans-serif;
 }
 
-body, input, textarea, select {
-    font-family: "Open Sans";
-}
-
-.fc .fc-toolbar-title {
-    font-family: 'Raleway', sans-serif !important; /* 👈 or Montserrat */
-    font-size: 1.5rem; /* optional: adjust size */
-  }

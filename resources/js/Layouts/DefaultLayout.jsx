@@ -1,12 +1,15 @@
 
-import { Menu, Info} from "@/Components";
+import { MainHeader, Footer } from "@/Components";
 
 export default function DefaultLayout({ children }) {
   return (
-    <main>
-      <Info/>
-      <Menu/>
-      <article>{children}</article>
-    </main>
+    <div className="font-sans text-sm md:text-base ">
+      <MainHeader/>
+      
+      <main style={{ 
+        marginTop: "var(--header-total-height)"
+       }}>{children}</main>
+      <Footer/>
+    </div>
   )
 }

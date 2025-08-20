@@ -12,9 +12,11 @@ class ContactController extends Controller
     {
         
         $citations = Citation::with('lawyer')->get(['id', 'lawyer_id', 'starts_at', 'ends_at']);
+        $lawyers = Lawyer::all(['id', 'name']);
         
         return Inertia::render('Contact', [
             'citations' => $citations,
+            'lawyers' => $lawyers,
         ]);
     }
 }

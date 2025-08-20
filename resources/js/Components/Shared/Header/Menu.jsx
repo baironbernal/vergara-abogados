@@ -1,10 +1,11 @@
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
+import MainButton from '../Buttons/MainButton';
 
 const MenuIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="w-6 h-6"
+    className="w-10 h-10"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -47,41 +48,46 @@ export const Menu = () => {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Services' },
-    { href: '/properties', label: 'Properties' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/acerca', label: 'Nosotros' },
+    { href: '/servicios', label: 'Servicios' },
+    { href: '/inmobiliaria', label: 'Inmobiliaria' },
+    { href: '/contacto', label: 'Contacto' },
   ];
 
   return (
-    <header className="w-full shadow-md font-raleway">
+    <div className="fixed z-10 w-full font-bold shadow-md bg-darki">
       <div className="container px-4 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo or Site Title */}
           <div className="flex-shrink-0">
             <Link href="/">
-              <img src="/logo.webp" alt="Logo" className="w-auto h-16 md:h-28" />
+              <img src="/logo.webp" alt="Brand Vergara y Asociados" className="w-auto h-20 md:h-24" />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="items-center hidden space-x-8 md:flex">
+          <nav className="items-center hidden gap-8 font-semibold md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-medium text-gray-600 transition-colors duration-300 hover:text-indigo-600"
+                className="font-medium transition-colors duration-300 text-softGrey hover:text-golden"
               >
                 {link.label}
               </Link>
             ))}
           </nav>
+          {/* Button to Reserve */}
+          
+          <MainButton as={Link} className={'py-3'} href="/contacto">
+                Reserva tu consulta
+            </MainButton>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-800 hover:text-indigo-600 focus:outline-none"
+              className="text-greyki hover:text-golden focus:outline-none"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
@@ -95,19 +101,18 @@ export const Menu = () => {
         <div className="bg-white border-t border-gray-200 md:hidden">
           <nav className="flex flex-col items-center py-4 space-y-4">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="text-lg font-medium text-gray-600 transition-colors duration-300 hover:text-indigo-600"
-                onClick={() => setIsMenuOpen(false)} // Close menu on link click
-              >
+                onClick={() => setIsMenuOpen(false)}>
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
       )}
-    </header>
+    </div>
   );
 };
 

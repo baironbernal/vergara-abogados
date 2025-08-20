@@ -8,15 +8,19 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        montserrat: ['Montserrat', 'sans-serif'],
-        raleway: ['Raleway', 'sans-serif'],
+        dmsans: ["DM Sans", "sans-serif"],
+        opensans: ['"Arial, Helvetica"', 'sans-serif'],
+        prata: ['Prata', 'sans-serif'],
       },
       colors: {
         golden: '#C59B40',
         greyki: '#555555',
-        darki:'#161616',
+        darki:'#242323',
+        softGrey:'#e1e1e1',
         whiteki: '#FCFBF6',
-      }
+        graykiSecondary:'#CBCFD5',
+        blueki: '#24354F'
+      },
     },
   },
   plugins: [],

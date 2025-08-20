@@ -1,3 +1,4 @@
+import { Mail, Phone,Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
 
 export const Info = () => {
@@ -28,31 +29,34 @@ export const Info = () => {
       url: "https://www.linkedin.com/",
     }
   ]
+  
   return (
-    <div className="container flex flex-col items-center justify-end gap-2 py-4 mx-auto text-xs text-greyki font-raleway md:flex-row text-dark">
-        <p className="px-3 border-r border-greyki"><i className="px-1 fa fa-envelope"></i> admin@abogadosvergara.com</p>
-        
-        <p className="px-3 border-r border-greyki"><i className="px-1 fa fa-phone"></i> +57 323-3344-34</p>
-        <section className="flex items-center gap-2 px-3" >
-        {
-          icons.map((item, index) => (
-            <a
-              key={index}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-shrink-0"
-            >
-              <img
-                src={item.src}
-                alt={item.alt}
-                width={'20px'}
-                height={'20px'}
-              />
-            </a>
-          ))
-        }
-        </section>
-    </div>
+   <header className="bg-zinc-800" style={{ height: "var(--info-top-height)" }}>
+      <div className="container flex-col items-center justify-end hidden gap-4 py-4 mx-auto text-xs text-grayki md:flex  md:flex-row ">
+          <p className="flex gap-2 px-3 text-gray-300 border-r border-greyki">
+            <Mail className="w-4 h-full" />admin@abogadosvergara.com</p>
+          
+          <p className="flex gap-2 px-3 text-gray-300 border-r border-greyki">
+            <Phone className="w-4 h-full" /> +57 323-3344-34</p>
+            <div className="flex space-x-3">
+            <Facebook
+              strokeWidth={0.6} // default is 2
+              className="w-5 h-5 transition-colors cursor-pointer text-graykiSecondary hover:text-white"
+            />
+            <Twitter
+              strokeWidth={0.6}
+              className="w-5 h-5 transition-colors cursor-pointer text-graykiSecondary hover:text-white"
+            />
+            <Instagram
+              strokeWidth={0.6}
+              className="w-5 h-5 transition-colors cursor-pointer text-graykiSecondary hover:text-white"
+            />
+            <Linkedin
+              strokeWidth={0.6}
+              className="w-5 h-5 transition-colors cursor-pointer text-graykiSecondary hover:text-white"
+            />
+            </div>
+      </div>
+   </header>
   )
 }

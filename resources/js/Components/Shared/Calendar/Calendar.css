@@ -1,0 +1,17 @@
+.fc .fc-toolbar-title {
+    font-family: 'Open Sans', sans-serif !important; /* 👈 or Montserrat */
+    font-size: 1.5rem; /* optional: adjust size */
+  }
+
+.fc-event.custom-hover {
+  transition: all 0.3s ease;
+}
+
+.fc-event.custom-hover:hover {
+  filter: blur(2px) !important;
+  cursor: pointer !important;
+}
+
+.fc .fc-timegrid-slot:hover  .fc-timegrid-slot-lane:hover  .fc-timegrid-slot-minor:hover {
+  background-color: red !important;
+}
