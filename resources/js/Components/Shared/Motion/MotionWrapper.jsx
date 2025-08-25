@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 
-const MotionWrapper = ({ children, delay = 0 }) => {
+export const MotionWrapper = ({ children, delay = 0 }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -12,5 +12,3 @@ const MotionWrapper = ({ children, delay = 0 }) => {
     </motion.div>
   )
 }
-
-export default MotionWrapper

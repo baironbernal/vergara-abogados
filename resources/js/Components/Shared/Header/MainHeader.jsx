@@ -4,7 +4,7 @@ import { Info } from "./Info"
 import { Menu } from "./Menu"
 
 
-export const MainHeader = () => {
+export const MainHeader = ({ styles }) => {
   const [hideTopBar, setHideTopBar] = useState(false)
   const [lastScroll, setLastScroll] = useState(0)
 
@@ -33,9 +33,9 @@ export const MainHeader = () => {
         transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         {/* MainHeader 1 (top bar) */}
-        <Info/>
+        <Info styles={styles}/>
         {/* MainHeader 2 (main menu) */}
-        <Menu/>
+        <Menu styles={styles}/>
       </motion.div>
     </header>
   )

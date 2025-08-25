@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { ArrowRight, Scale } from "lucide-react"
-import MainButton from "../Shared/Buttons/MainButton"
+import { MainButton } from "@/Components";
 import { Link } from "@inertiajs/react"
 
 const carouselImages = [
@@ -65,14 +65,14 @@ export const MainBanner = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mb-8"
           >
-            <h1 className="text-4xl font-bold leading-tight text-white md:text-6xl lg:text-7xl font-prata">
+            <h1 className="text-4xl font-light leading-relaxed tracking-tight text-white md:text-6xl lg:text-7xl font-prata">
               <span className="inline-block mr-4 text-transparent bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text">
                 Somos 
               </span>
 
               <span className="inline-flex items-center px-4 py-2 mx-4 border rounded-lg bg-amber-600/20 backdrop-blur-sm border-amber-400/30">
                 <Scale className="w-8 h-8 mr-2 md:w-12 md:h-12 text-amber-400" />
-                <span className="text-2xl font-bold text-amber-200 md:text-4xl lg:text-5xl"> Compromiso</span>
+                <span className="text-2xl font-bold text-amber-200 md:text-4xl lg:text-5xl"> nosotros </span>
               </span>
               <br />
               <span className="text-white">Profesional respaldo Juridico</span>

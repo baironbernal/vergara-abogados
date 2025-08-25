@@ -18,9 +18,11 @@ return new class extends Migration
             $table->string('thumbnail')->nullable(); 
             $table->json('gallery')->nullable(); 
             $table->string('price'); 
-            $table->string('size', 8, 2)->nullable(); 
+            $table->decimal('size', 8, 2)->nullable();
+            $table->string('ubication')->nullable(); 
             $table->text('description')->nullable(); 
-            $table->string('certification')->nullable(); 
+            $table->foreignId('state_id')->constrained('states');
+            $table->foreignId('municipality_id')->constrained('municipalities');
             $table->timestamps();
         });
     }

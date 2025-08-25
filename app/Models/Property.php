@@ -13,12 +13,24 @@ class Property extends Model
         'gallery',
         'price',
         'size',
+        'municipality_id',
+        'state_id',
         'description',
-        'certification',
     ];
 
     protected $casts = [
         'gallery' => 'json', 
     ];
+
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 
 }

@@ -1,31 +1,101 @@
-import { useSteps } from "../../../hooks/useStep"
-import { ContactForm } from "@/Components/Shared/Form/ContactForm"
-import { Calendar } from "@/Components/Shared/Calendar/Calendar"
+import { useState } from "react"
+import { useSteps } from "@/hooks/useStep"
+import { ContactForm, Calendar } from "@/Components"
+
 
 export const MultiStep = ({ citations , lawyers}) => {
 
-    const { isFirstStep, isLastStep, next, back } = useSteps(2)
+    const { currentStep, isFirstStep, isLastStep, next, back } = useSteps(3)
+    const [citationId, setCitationId] = useState(null)
+    const [formData, setFormData] = useState(null)
+
+    const handleFormSuccess = (values, savedCitationId) => {
+      setFormData(values)
+      setCitationId(savedCitationId)
+      next()
+    }
+
+    const handleCalendarSuccess = () => {
+      next() // Go to confirmation step
+    }
 
   return (
     <section className="w-full h-full max-w-3xl ">
         <div className="flex flex-col items-start justify-end w-full mx-auto">
-          <h1 className="text-2xl tracking-normal ">
+          <h1 className="text-2xl font-bold tracking-normal font-prata ">
             Reserva tu cita
           </h1>
-          <p className="mt-2 mb-10 text-sm text-gray-600">
-          Miventore veritatis et quasi architecto beatae vitae dicta sunt nemo enim consequuntur magni dolores eos.
+          <p className="mt-2 mb-10 text-gray-600">
+            {currentStep === 0 && "Complete el formulario para continuar con la reserva de su cita."}
+            {currentStep === 1 && "Seleccione una fecha y hora disponible en el calendario."}
+            {currentStep === 2 && "Su reserva ha sido confirmada exitosamente."}
           </p>
         </div>
+        
         {/* Step Content */}
-          {isFirstStep  && (
-            <ContactForm lawyers={lawyers} onSuccess={() => next()}/>
-          )}
+        {currentStep === 0 && (
+          <ContactForm lawyers={lawyers} onSuccess={handleFormSuccess}/>
+        )}
 
-          {isLastStep && (
-            <Calendar citations={citations} back={back}  />
-          )}
+        {currentStep === 1 && (
+          <Calendar 
+            citations={citations} 
+            back={back} 
+            citationId={citationId}
+            onSuccess={handleCalendarSuccess}
+          />
+        )}
+
+        {currentStep === 2 && (
+          <ConfirmationStep formData={formData} />
+        )}
       
     </section>
+  )
+}
+
+// Confirmation Step Component
+const ConfirmationStep = ({ formData }) => {
+  return (
+    <div className="py-12 text-center">
+      <div className="max-w-md mx-auto">
+        {/* Success Icon */}
+        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 bg-green-100">
+          <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+
+        {/* Thank You Message */}
+        <h2 className="mb-4 text-2xl font-medium text-darki font-prata">
+          ¡Gracias por tu reserva!
+        </h2>
+        
+        <p className="mb-6 text-lg text-greyki font-dmsans">
+          Estaremos contactando contigo
+        </p>
+
+        {formData && (
+          <div className="p-6 text-left border bg-whiteki border-softGrey">
+            <h3 className="mb-3 font-medium text-darki font-dmsans">Datos de tu reserva:</h3>
+            <div className="space-y-2 text-sm text-greyki font-dmsans">
+              <p><strong>Nombre:</strong> {formData.name}</p>
+              <p><strong>Email:</strong> {formData.email}</p>
+              <p><strong>Teléfono:</strong> {formData.phone}</p>
+            </div>
+          </div>
+        )}
+        
+        <div className="mt-8">
+          <button 
+            onClick={() => window.location.href = '/'}
+            className="px-8 py-3 font-medium transition-colors duration-300 bg-golden text-whiteki hover:bg-darki font-dmsans"
+          >
+            Volver al Inicio
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
 

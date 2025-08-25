@@ -1,6 +1,4 @@
-import BannerInformative from "@/Components/Shared/BannerInformative";
-import MotionWrapper from "@/Components/Shared/Motion/MotionWrapper";
-import { MultiStep } from "@/Components/Shared/Form/MultiStep";
+import {MotionWrapper, BannerInformative, MultiStep} from "@/Components"
 
 const Contact = ({ citations , lawyers}) => {
 
@@ -22,33 +20,33 @@ const Contact = ({ citations , lawyers}) => {
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}>
-         <div className="flex items-center justify-center max-w-4xl mx-auto gap-14 ">
+         <div className="items-center justify-center max-w-4xl mx-auto md:flex gap-14 ">
            {/* MultiStep Form */}
            <MultiStep citations={citations} lawyers={lawyers} />
 
           {/* Information */}
           <section className="flex flex-col justify-start h-full gap-10 items-left">
             <article>
-              <h2 className="text-2xl">Ubicacion</h2>
-              <p>Miventore veritatis et quasi architecto beatae vitae dicta sunt
+              <h2 className="mb-2 text-xl font-bold tracking-tighter font-prata">Ubicacion</h2>
+              <p className="text-sm">Miventore veritatis et quasi architecto beatae vitae dicta sunt
               nemo enim consequuntur magni dolores eos.</p>
             </article>
 
             <article>
-              <h3>Direccion</h3>
-              <p>15 Pills Avenue, Southern Street, Camron,
-              Florida 33069 - USA</p>
+              <h3 className="mb-2 text-xl font-bold tracking-tighter font-prata">Direccion</h3>
+              <p className="text-sm">Cl. 12 #8 05, <br />
+              Soacha Cundinamarca</p>
             </article>
 
             <article>
-              <h3>Telefonos</h3>
-              <p>Appointments 1-258-987-000</p>
-              <p>Appointments 1-258-987-000</p>
+            <h2 className="mb-2 text-xl font-bold tracking-tighter font-prata">Telefonos</h2>
+              <p className="text-sm">Oficina:  <b>1-258-987-000</b></p>
+              <p className="text-sm">Personal:  <b>1-258-987-000</b></p>
             </article>
 
             <article>
-              <h3>Horarios </h3>
-              <p>Mon to Fri : 09:00 am - 18:00 pm</p>
+            <h2 className="mb-2 text-xl font-bold tracking-tighter font-prata">Horarios</h2>
+              <p className="text-sm">Mon to Fri : 09:00 am - 18:00 pm</p>
             </article>
           </section>
          </div>

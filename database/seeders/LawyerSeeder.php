@@ -29,7 +29,7 @@ class LawyerSeeder extends Seeder
                 'image'      => 'lawyers/jane_smith.jpg',
             ],
             [
-                'name'       => 'Dayana Vergara',
+                'name'       => 'Ivon Vergara',
                 'profession' => 'Family Lawyer',
                 'phone'      => '+57 300-555-9988',
                 'email'      => 'carlos.gomez@example.com',

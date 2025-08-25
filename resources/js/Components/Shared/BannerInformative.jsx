@@ -1,5 +1,5 @@
 
-const BannerInformative = ({ picture, title, description }) => {
+export const BannerInformative = ({ picture, title, description }) => {
   return (
     <section className='relative w-full h-auto ' style={{ 
         backgroundImage: `url(${picture})`,
@@ -18,4 +18,4 @@ const BannerInformative = ({ picture, title, description }) => {
   )
 }
 
-export default BannerInformative
+

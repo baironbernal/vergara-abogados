@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema } from "../Components/Shared/Form/schema";
+import axios from 'axios';
 
 export const useContactForm = (onSuccess) => {
   const {
@@ -12,10 +13,10 @@ export const useContactForm = (onSuccess) => {
   } = useForm({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      name: "Bairon",
-      email: "bbernal@gmail.com",
-      phone: "828282222",
-      observations: "JAJAJJAJAJAJJAJAJAJAJA",
+      name: "",
+      email: "",
+      phone: "",
+      observations: "",
       lawyer_id: "",
       agree: true,
     },
@@ -23,14 +24,27 @@ export const useContactForm = (onSuccess) => {
   });
 
   const onSubmit = async (values) => {
-    await new Promise((r) => setTimeout(r, 600)); // fake API
-    console.log("Form submitted:", values);
+    try {
+      // Save partial data to database
+      const response = await axios.post('/contacto/save-partial', {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        lawyer_id: values.lawyer_id,
+        observations: values.observations,
+      });
 
-    if (onSuccess) {
-      onSuccess(values); 
+      if (response.data.success) {
+        console.log("Form data saved:", response.data);
+        
+        if (onSuccess) {
+          onSuccess(values, response.data.citation_id); 
+        }
+      }
+    } catch (error) {
+      console.error("Error saving form data:", error);
+      // You might want to show an error message to the user here
     }
-
-    reset();
   };
 
   return {

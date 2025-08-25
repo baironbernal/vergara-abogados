@@ -1,5 +1,6 @@
 
-import { useContactForm } from "../../../hooks/useContactForm"
+import { useContactForm } from "@/hooks/useContactForm"
+import { MainButton } from "@/Components";
 
 export const ContactForm = ({ lawyers = null, onSuccess }) => {
   const { register, handleSubmit, errors, isSubmitting, isSubmitSuccessful } = useContactForm(onSuccess)
@@ -8,7 +9,7 @@ export const ContactForm = ({ lawyers = null, onSuccess }) => {
     <div className="mx-auto ">
       
       <form onSubmit={handleSubmit} className="space-y-6">
-        <section className="flex gap-6">
+        <section className="flex justify-between">
         <div>
           <input
             {...register("name")}
@@ -41,9 +42,9 @@ export const ContactForm = ({ lawyers = null, onSuccess }) => {
           <div>
             <select
               {...register("lawyer_id")}
-              className="w-full px-4 text-gray-700 transition-colors bg-transparent border-2 h-14 border-golden focus:outline-none focus:border-blueki"
+              className="w-full px-4 text-gray-500 transition-colors bg-transparent border-2 h-14 border-golden focus:outline-none focus:border-blueki"
             >
-              <option value="">Selecciona un abogado</option>
+              <option value="" className="text-gray-500">Selecciona un abogado</option>
               {lawyers.map((lawyer) => (
                 <option key={lawyer.id} value={lawyer.id}>
                   {lawyer.name}
@@ -57,7 +58,7 @@ export const ContactForm = ({ lawyers = null, onSuccess }) => {
         <div>
           <textarea
             {...register("observations")}
-            placeholder="Observaciones adicionales"
+            placeholder="Cuentanos tu historia"
             rows={5}
             className="w-full px-4 py-4 transition-colors bg-transparent border-2 resize-none border-golden focus:outline-none focus:border-blueki placeholder:text-gray-500"
           />
@@ -74,13 +75,13 @@ export const ContactForm = ({ lawyers = null, onSuccess }) => {
         </label>
         {errors.agree && <p className="mt-2 text-red-600">{errors.agree.message}</p>}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full h-14 bg-golden hover:bg-[#B8893A] text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? "Enviando..." : "Enviar"}
-        </button>
+
+       
+        <MainButton type="submit" 
+            disabled={isSubmitting}
+            className={'mx-auto w-full py-4'}>
+                Enviar
+          </MainButton>
 
         {isSubmitSuccessful && <p className="font-semibold text-center text-green-600">¡Gracias por contactarnos!</p>}
       </form>

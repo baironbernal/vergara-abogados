@@ -1,6 +1,6 @@
 import clsx from "clsx"
 
-const MainButton = ({ 
+export const MainButton = ({ 
   as: Component = "button", 
   href, 
   className, 

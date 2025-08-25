@@ -1,7 +1,8 @@
+import { clsx } from "clsx";
 import { Mail, Phone,Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
 
-export const Info = () => {
+export const Info = ({ styles=null }) => {
   const icons = [
     {
       src: "images/icons/flickr.webp",
@@ -31,8 +32,8 @@ export const Info = () => {
   ]
   
   return (
-   <header className="bg-zinc-800" style={{ height: "var(--info-top-height)" }}>
-      <div className="container flex-col items-center justify-end hidden gap-4 py-4 mx-auto text-xs text-grayki md:flex  md:flex-row ">
+   <header className={clsx(styles)} style={{ height: "var(--info-top-height)" }}>
+      <div className="container flex-col items-center justify-end hidden gap-4 py-4 mx-auto text-xs text-grayki md:flex md:flex-row ">
           <p className="flex gap-2 px-3 text-gray-300 border-r border-greyki">
             <Mail className="w-4 h-full" />admin@abogadosvergara.com</p>
           

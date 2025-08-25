@@ -1,6 +1,5 @@
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
-import MotionWrapper from "@/Components/Shared/Motion/MotionWrapper";
-import { ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, ArrowRight } from "lucide-react";
+import {MotionWrapper} from "@/Components";
 
 export const Footer = () => {
   return (

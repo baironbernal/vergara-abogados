@@ -1,5 +1,5 @@
-import BannerInformative from "@/Components/Shared/BannerInformative"
-import MotionWrapper from "@/Components/Shared/Motion/MotionWrapper"
+import {MotionWrapper, BannerInformative, MainButton} from "@/Components"
+import { Link } from "@inertiajs/react"
 
 const About = () => {
   return (
@@ -141,18 +141,18 @@ const About = () => {
           </div>
         </section>
         </MotionWrapper>
+      </main>
 
-        {/* CTA Section */}
-        <section className="w-full p-12 text-center text-white bg-blueki">
+      {/* CTA Section */}
+      <section className="w-full p-12 text-center text-white bg-blueki">
           <h2 className="mb-4 font-serif text-3xl font-bold">¿Listo para comenzar su próximo proyecto inmobiliario?</h2>
           <p className="text-xl text-[#CBCFD5] mb-8 max-w-2xl mx-auto">
             Contáctenos hoy y descubra cómo podemos ser su aliado estratégico en el mundo inmobiliario.
           </p>
-          <button className="bg-[#C59B40] hover:bg-[#B8893A] text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-            Contactar Ahora
-          </button>
+          <MainButton as={Link} className={'mx-auto max-w-[12rem] py-4'} href="/contacto">
+                Contactanos
+          </MainButton>
         </section>
-      </main>
     </div>
     </>
   )

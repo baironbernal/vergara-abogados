@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
-import MainButton from '../Buttons/MainButton';
+import { MainButton } from "@/Components";
+import clsx from 'clsx';
 
 const MenuIcon = () => (
   <svg
@@ -38,7 +39,7 @@ const CloseIcon = () => (
 );
 
 
-export const Menu = () => {
+export const Menu = ({ styles }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Function to toggle the menu state
@@ -55,7 +56,7 @@ export const Menu = () => {
   ];
 
   return (
-    <div className="fixed z-10 w-full font-bold shadow-md bg-darki">
+    <div className={clsx("fixed z-10 w-full font-bold shadow-md", styles)}>
       <div className="container px-4 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo or Site Title */}
@@ -71,7 +72,7 @@ export const Menu = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-medium transition-colors duration-300 text-softGrey hover:text-golden"
+                className="font-medium transition-colors duration-300 hover:text-golden"
               >
                 {link.label}
               </Link>
@@ -79,7 +80,7 @@ export const Menu = () => {
           </nav>
           {/* Button to Reserve */}
           
-          <MainButton as={Link} className={'py-3'} href="/contacto">
+          <MainButton as={Link} className={'py-3 hidden md:block'} href="/contacto">
                 Reserva tu consulta
             </MainButton>
 

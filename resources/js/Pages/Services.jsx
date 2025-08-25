@@ -1,6 +1,4 @@
-import BannerInformative from "@/Components/Shared/BannerInformative"
-import CardService from "@/Components/Services/CardService"
-import MotionWrapper from "@/Components/Shared/Motion/MotionWrapper";
+import {MotionWrapper, BannerInformative, CardService} from "@/Components"
 
 const Services = ({ services }) => {
   return (
