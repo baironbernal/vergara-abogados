@@ -11,6 +11,7 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
       const [events, setEvents] = useState([]);
       const [selectedSlot, setSelectedSlot] = useState(null);
       const [isConfirming, setIsConfirming] = useState(false);
+      const [tempSelectedSlot, setTempSelectedSlot] = useState(null);
       
       const handleDateSelect = (selectInfo) => {
         const start = selectInfo.start;
@@ -28,7 +29,7 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
           return;
         }
 
-        setSelectedSlot({
+        const newSelectedSlot = {
           start: start,
           end: end,
           startString: start.toLocaleString('es-CO', {
@@ -43,7 +44,35 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
             hour: '2-digit',
             minute: '2-digit'
           })
-        });
+        };
+
+        setSelectedSlot(newSelectedSlot);
+
+        // Add golden highlighting event
+        const highlightEvent = {
+          id: 'temp-selection',
+          title: 'Horario Seleccionado',
+          start: start.toISOString(),
+          end: end.toISOString(),
+          backgroundColor: '#d4af37', // Golden color
+          borderColor: '#b8941f',
+          textColor: '#ffffff',
+          classNames: ['selected-slot'],
+        };
+
+        setTempSelectedSlot(highlightEvent);
+        setEvents(prev => [...prev.filter(e => e.id !== 'temp-selection'), highlightEvent]);
+
+        // Scroll to confirmation section
+        setTimeout(() => {
+          const confirmationElement = document.getElementById('confirmation-section');
+          if (confirmationElement) {
+            confirmationElement.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start' 
+            });
+          }
+        }, 100);
       };
 
       const confirmReservation = async () => {
@@ -74,6 +103,9 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
 
       const cancelSelection = () => {
         setSelectedSlot(null);
+        setTempSelectedSlot(null);
+        // Remove the golden highlighting
+        setEvents(prev => prev.filter(e => e.id !== 'temp-selection'));
       };
     
       useEffect(() => {
@@ -83,17 +115,18 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
           
           const mapped = validCitations.map((c) => ({
             id: c.id,
-            title: `${c.lawyer.name} - Ocupado`,
+            title: `${c.lawyer ? c.lawyer.name : 'Cualquiera'} - Ocupado`,
             start: c.starts_at.replace(" ", "T"),
             end: c.ends_at.replace(" ", "T"),
-            backgroundColor: '#dc2626',
-            borderColor: '#dc2626',
+            backgroundColor: '#000000',
+            borderColor: '#000000',
             classNames: ['occupied-slot'],
+            textColor: '#ffffff',
             extendedProps: {
-              lawyerId: c.lawyer.id,
-              phone: c.lawyer.phone,
-              email: c.lawyer.email,
-              image: c.lawyer.image,
+              lawyerId: c.lawyer ? c.lawyer.id : null,
+              phone: c.lawyer ? c.lawyer.phone : null,
+              email: c.lawyer ? c.lawyer.email : null,
+              image: c.lawyer ? c.lawyer.image : null,
             },
           }));
           setEvents(mapped);
@@ -105,10 +138,10 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
   return (
     <>
       {citations ? (
-        <div className="px-4 py-8 mx-auto font-bold tracking-normal text-[13px]">
+        <div className="mx-auto font-bold tracking-normal text-[13px]">
           {/* Instructions */}
-          <div className="mb-6 p-4 bg-golden/10 border border-golden">
-            <h3 className="font-medium text-darki font-dmsans mb-2">Instrucciones:</h3>
+          <div className="p-4 mb-6 border bg-golden/10 border-golden">
+            <h3 className="mb-2 font-medium text-darki font-dmsans">Instrucciones:</h3>
             <p className="text-sm text-greyki font-dmsans">
               Haga clic y arrastre en el calendario para seleccionar su horario preferido. 
               Los espacios en rojo están ocupados.
@@ -132,8 +165,8 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
             selectable={true}
             selectMirror={true}
             select={handleDateSelect}
-            slotDuration="01:00:00"
-            slotLabelInterval="01:00:00"
+            slotDuration="00:30:00"
+            slotLabelInterval="00:30:00"
             allDaySlot={false}
             slotLabelFormat={{
                 hour: "numeric",
@@ -155,15 +188,15 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
 
           {/* Selected Slot Confirmation */}
           {selectedSlot && (
-            <div className="mt-6 p-6 bg-white border border-softGrey shadow-lg">
-              <h3 className="text-lg font-medium text-darki font-dmsans mb-4">
+            <div  className="p-6 mt-6 bg-white border shadow-lg border-softGrey">
+              <h3 id="confirmation-section" className="mb-4 text-lg font-medium text-darki font-dmsans">
                 Confirmar Reserva
               </h3>
               <div className="mb-4">
                 <p className="text-greyki font-dmsans">
                   <strong>Fecha y hora seleccionada:</strong>
                 </p>
-                <p className="text-darki font-dmsans text-lg">
+                <p className="text-lg text-darki font-dmsans">
                   {selectedSlot.startString}
                 </p>
                 <p className="text-greyki font-dmsans">
@@ -175,14 +208,14 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
                 <button
                   onClick={confirmReservation}
                   disabled={isConfirming}
-                  className="px-6 py-3 bg-golden text-whiteki hover:bg-darki disabled:bg-graykiSecondary transition-colors duration-300 font-medium font-dmsans"
+                  className="px-6 py-3 font-medium transition-colors duration-300 bg-golden text-whiteki hover:bg-darki disabled:bg-graykiSecondary font-dmsans"
                 >
                   {isConfirming ? 'Confirmando...' : 'Confirmar Reserva'}
                 </button>
                 <button
                   onClick={cancelSelection}
                   disabled={isConfirming}
-                  className="px-6 py-3 border border-graykiSecondary text-darki hover:bg-softGrey transition-colors duration-300 font-medium font-dmsans"
+                  className="px-6 py-3 font-medium transition-colors duration-300 border border-graykiSecondary text-darki hover:bg-softGrey font-dmsans"
                 >
                   Cancelar
                 </button>
@@ -195,7 +228,7 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
             <div className="mt-6">
               <button 
                 onClick={back} 
-                className="px-6 py-3 border border-graykiSecondary text-darki hover:bg-softGrey transition-colors duration-300 font-medium font-dmsans"
+                className="px-6 py-3 font-medium transition-colors duration-300 border border-graykiSecondary text-darki hover:bg-softGrey font-dmsans"
               >
                 Volver
               </button>
@@ -203,7 +236,7 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
           )}
         </div>
       ) : (
-        <p className="text-center py-8 text-greyki font-dmsans">No hay citas disponibles</p> 
+        <p className="py-8 text-center text-greyki font-dmsans">No hay citas disponibles</p> 
       )}
     </>
   );

@@ -1,11 +1,12 @@
-import {MotionWrapper, BannerInformative, MainButton} from "@/Components"
+import {MotionWrapper, BannerInformative, MainButton, SEOHead} from "@/Components"
 import { Link } from "@inertiajs/react"
 
-const About = () => {
+const About = ({ seo }) => {
   return (
     <>
+      <SEOHead seo={seo} />
       <MotionWrapper>
-        <BannerInformative 
+        <BannerInformative
           picture="/images/shared/background-title.webp"
           title="Nosotros"
           description="Conoce más sobre nuestra historia, misión y visión"
@@ -13,21 +14,21 @@ const About = () => {
       </MotionWrapper>
 
 
-      <div className="min-h-screen ">
+      <div className="min-h-screen">
       {/* Header Section */}
 
       {/* Main Content */}
-      <main className="max-w-6xl px-6 py-16 mx-auto">
+      <main className="max-w-6xl px-4 py-12 mx-auto lg:px-6 lg:py-16">
         {/* Mission Section */}
         <MotionWrapper>
-        <section className="mb-16">
+        <section className="mb-12 lg:mb-16">
           <div className="bg-white border-0 shadow-lg">
-            <div className="p-8 md:p-12">
-              <div className="flex items-center mb-8">
-                <div className="w-1 h-12 bg-[#C59B40] mr-6"></div>
-                <h2 className="text-3xl font-bold font-prata md:text-4xl">Misión</h2>
+            <div className="p-6 md:p-8 lg:p-12">
+              <div className="flex items-center mb-6 lg:mb-8">
+                <div className="w-1 h-8 bg-[#C59B40] mr-4 lg:h-12 lg:mr-6"></div>
+                <h2 className="text-2xl font-bold font-prata md:text-3xl lg:text-4xl">Misión</h2>
               </div>
-              <div className="space-y-6 leading-relaxed prose prose-lg max-w-none">
+              <div className="space-y-4 leading-relaxed prose prose-lg max-w-none lg:space-y-6">
                 <p>
                   En Inmobiliaria Vergara y Abogados, nos enorgullece ser el aliado estratégico de nuestros clientes en
                   la compra y venta de inmuebles, brindando asesoría legal especializada, garantizando transacciones
@@ -49,14 +50,14 @@ const About = () => {
 
         {/* Vision Section */}
         <MotionWrapper>
-        <section className="mb-16">
+        <section className="mb-12 lg:mb-16">
           <div className="bg-white border-0 shadow-lg">
-            <div className="p-8 md:p-12">
-              <div className="flex items-center mb-8">
-                <div className="w-1 h-12 bg-[#C59B40] mr-6"></div>
-                <h2 className="text-3xl font-bold font-prata md:text-4xl">Vision</h2>
+            <div className="p-6 md:p-8 lg:p-12">
+              <div className="flex items-center mb-6 lg:mb-8">
+                <div className="w-1 h-8 bg-[#C59B40] mr-4 lg:h-12 lg:mr-6"></div>
+                <h2 className="text-2xl font-bold font-prata md:text-3xl lg:text-4xl">Vision</h2>
               </div>
-              <div className="space-y-6 leading-relaxed prose prose-lg max-w-none">
+              <div className="space-y-4 leading-relaxed prose prose-lg max-w-none lg:space-y-6">
                 <p>
                   Ser una empresa líder y referente en el sector inmobiliario y jurídico, destacada por la calidad de
                   nuestros servicios, la transparencia en nuestras operaciones y el firme compromiso con nuestros
@@ -78,17 +79,17 @@ const About = () => {
 
         {/* Values Section */}
         <MotionWrapper>
-        <section className="mb-16">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold font-prata md:text-4xl">Nuestros Valores</h2>
-            <div className="w-24 h-1 bg-[#C59B40] mx-auto"></div>
+        <section className="mb-12 lg:mb-16">
+          <div className="mb-8 text-center lg:mb-12">
+            <h2 className="mb-4 text-2xl font-bold font-prata md:text-3xl lg:text-4xl">Nuestros Valores</h2>
+            <div className="w-16 h-1 bg-[#C59B40] mx-auto lg:w-24"></div>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             <div className="transition-shadow bg-white border-0 shadow-lg hover:shadow-xl">
-              <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-[#C59B40] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <div className="p-6 text-center lg:p-8">
+                <div className="w-12 h-12 bg-[#C59B40] rounded-full flex items-center justify-center mx-auto mb-4 lg:w-16 lg:h-16 lg:mb-6">
+                  <svg className="w-6 h-6 text-white lg:w-8 lg:h-8" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
                       d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -96,35 +97,35 @@ const About = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-4 text-xl font-bold">Confianza</h3>
-                <p className="leading-relaxed">
-                  Construimos relaciones sólidas basadas en la transparencia y la honestidad en cada transacción.
+                <h3 className="mb-3 text-lg font-bold lg:text-xl">Confianza</h3>
+                <p className="text-sm text-gray-600 lg:text-base">
+                  Construimos relaciones duraderas basadas en la confianza mutua, la transparencia y el compromiso con nuestros clientes.
                 </p>
               </div>
             </div>
 
             <div className="transition-shadow bg-white border-0 shadow-lg hover:shadow-xl">
-              <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-[#C59B40] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <div className="p-6 text-center lg:p-8">
+                <div className="w-12 h-12 bg-[#C59B40] rounded-full flex items-center justify-center mx-auto mb-4 lg:w-16 lg:h-16 lg:mb-6">
+                  <svg className="w-6 h-6 text-white lg:w-8 lg:h-8" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
                       clipRule="evenodd"
                     />
                   </svg>
                 </div>
-                <h3 className="mb-4 text-xl font-bold">Excelencia</h3>
-                <p className="leading-relaxed">
-                  Nos comprometemos con la calidad superior en todos nuestros servicios y procesos.
+                <h3 className="mb-3 text-lg font-bold lg:text-xl">Excelencia</h3>
+                <p className="text-sm text-gray-600 lg:text-base">
+                  Buscamos la excelencia en cada servicio que ofrecemos, manteniendo los más altos estándares de calidad y profesionalismo.
                 </p>
               </div>
             </div>
 
-            <div className="transition-shadow bg-white border-0 shadow-lg hover:shadow-xl">
-              <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-[#C59B40] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <div className="transition-shadow bg-white border-0 shadow-lg hover:shadow-xl md:col-span-2 lg:col-span-1">
+              <div className="p-6 text-center lg:p-8">
+                <div className="w-12 h-12 bg-[#C59B40] rounded-full flex items-center justify-center mx-auto mb-4 lg:w-16 lg:h-16 lg:mb-6">
+                  <svg className="w-6 h-6 text-white lg:w-8 lg:h-8" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
                       d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
@@ -132,28 +133,64 @@ const About = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-4 text-xl font-bold">Compromiso</h3>
-                <p className="leading-relaxed">
-                  Dedicación total hacia el éxito de nuestros clientes y el crecimiento mutuo.
+                <h3 className="mb-3 text-lg font-bold lg:text-xl">Integridad</h3>
+                <p className="text-sm text-gray-600 lg:text-base">
+                  Actuamos con honestidad, ética y responsabilidad en todas nuestras operaciones y relaciones comerciales.
                 </p>
               </div>
             </div>
           </div>
         </section>
         </MotionWrapper>
-      </main>
 
-      {/* CTA Section */}
-      <section className="w-full p-12 text-center text-white bg-blueki">
-          <h2 className="mb-4 font-serif text-3xl font-bold">¿Listo para comenzar su próximo proyecto inmobiliario?</h2>
-          <p className="text-xl text-[#CBCFD5] mb-8 max-w-2xl mx-auto">
-            Contáctenos hoy y descubra cómo podemos ser su aliado estratégico en el mundo inmobiliario.
-          </p>
-          <MainButton as={Link} className={'mx-auto max-w-[12rem] py-4'} href="/contacto">
-                Contactanos
-          </MainButton>
+        {/* Team Section */}
+        <MotionWrapper>
+        <section className="mb-12 lg:mb-16">
+          <div className="mb-8 text-center lg:mb-12">
+            <h2 className="mb-4 text-2xl font-bold font-prata md:text-3xl lg:text-4xl">Nuestro Equipo</h2>
+            <div className="w-16 h-1 bg-[#C59B40] mx-auto lg:w-24"></div>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            <div className="text-center">
+              <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+              <h3 className="mb-2 text-lg font-bold lg:text-xl">Juan Vergara</h3>
+              <p className="text-sm text-gray-600 lg:text-base">Director General</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+              <h3 className="mb-2 text-lg font-bold lg:text-xl">María González</h3>
+              <p className="text-sm text-gray-600 lg:text-base">Asesora Legal</p>
+            </div>
+
+            <div className="text-center md:col-span-2 lg:col-span-1">
+              <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+              <h3 className="mb-2 text-lg font-bold lg:text-xl">Carlos Rodríguez</h3>
+              <p className="text-sm text-gray-600 lg:text-base">Asesor Inmobiliario</p>
+            </div>
+          </div>
         </section>
-    </div>
+        </MotionWrapper>
+
+        {/* CTA Section */}
+        <MotionWrapper>
+        <section className="text-center">
+          <div className="p-8 bg-[#C59B40] rounded-lg lg:p-12">
+            <h2 className="mb-4 text-2xl font-bold text-white font-prata md:text-3xl lg:text-4xl">
+              ¿Listo para trabajar con nosotros?
+            </h2>
+            <p className="mb-6 text-white lg:mb-8 lg:text-lg">
+              Contáctanos hoy mismo para recibir la mejor asesoría inmobiliaria y legal.
+            </p>
+            <MainButton as={Link} href="/contacto" className="bg-white text-[#C59B40] hover:bg-gray-100">
+              Contactar Ahora
+            </MainButton>
+          </div>
+        </section>
+        </MotionWrapper>
+      </main>
+      </div>
     </>
   )
 }

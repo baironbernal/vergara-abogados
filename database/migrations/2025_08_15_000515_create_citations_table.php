@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('phone'); 
             $table->string('email')->nullable();
             $table->timestamp('scheduled_at')->nullable();
-            $table->dateTime('starts_at');
-            $table->dateTime('ends_at');
+            $table->dateTime('starts_at')->nullable();
+            $table->dateTime('ends_at')->nullable();
             $table->foreignId('lawyer_id')
                   ->nullable()
                   ->constrained()

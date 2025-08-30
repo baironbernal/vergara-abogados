@@ -1,59 +1,131 @@
-import {MotionWrapper, BannerInformative, MultiStep} from "@/Components"
+import { useEffect } from "react"
+import {MotionWrapper, MultiStep, SEOHead} from "@/Components"
+import { Phone, MapPin, Mail, Clock } from "lucide-react"
 
-const Contact = ({ citations , lawyers}) => {
+const Contact = ({ citations , lawyers, seo}) => {
+
+  // Hide info bar when entering contact page
+  useEffect(() => {
+    // Scroll to top to hide info bar
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, []);
 
   return (
     <>
-      {/* BannerInformative component to display the title and description */}
-      <MotionWrapper>
-        <BannerInformative
-        picture="/images/shared/background-title.webp"
-        title="Contactanos"
-        description="Agenda con nosotros una cita para recibir asesoría legal personalizada"
-        /> 
-      </MotionWrapper>
+      <SEOHead seo={seo} />
 
-      {/* Contact Form */}
-      <section className="flex w-full my-auto py-28 "  style={{ 
+      {/* Contact Section - Two Columns Layout */}
+      <section className="w-full py-8 lg:py-12" style={{
             backgroundImage: "url('/images/shared/service-background.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}>
-         <div className="items-center justify-center max-w-4xl mx-auto md:flex gap-14 ">
-           {/* MultiStep Form */}
-           <MultiStep citations={citations} lawyers={lawyers} />
+        <div className="px-4 mx-auto max-w-7xl lg:px-8">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8">
 
-          {/* Information */}
-          <section className="flex flex-col justify-start h-full gap-10 items-left">
-            <article>
-              <h2 className="mb-2 text-xl font-bold tracking-tighter font-prata">Ubicacion</h2>
-              <p className="text-sm">Miventore veritatis et quasi architecto beatae vitae dicta sunt
-              nemo enim consequuntur magni dolores eos.</p>
-            </article>
+            {/* Left Column - Contact Form (2/3 of space) */}
+            <div className="w-full lg:col-span-2">
+              <div className="mb-8 text-center">
+                <h1 className="mb-4 text-3xl font-bold text-darki font-prata lg:text-4xl">
+                  Write Your Message
+                </h1>
+                <div className="flex items-center justify-center mb-6">
+                  <div className="w-8 h-px bg-golden"></div>
+                  <div className="mx-4 text-golden">//</div>
+                  <div className="w-8 h-px bg-golden"></div>
+                </div>
+              </div>
 
-            <article>
-              <h3 className="mb-2 text-xl font-bold tracking-tighter font-prata">Direccion</h3>
-              <p className="text-sm">Cl. 12 #8 05, <br />
-              Soacha Cundinamarca</p>
-            </article>
+              {/* Contact Form */}
+              <div id="contact-form">
+                <MultiStep citations={citations} lawyers={lawyers} />
+              </div>
+            </div>
 
-            <article>
-            <h2 className="mb-2 text-xl font-bold tracking-tighter font-prata">Telefonos</h2>
-              <p className="text-sm">Oficina:  <b>1-258-987-000</b></p>
-              <p className="text-sm">Personal:  <b>1-258-987-000</b></p>
-            </article>
+            {/* Right Column - Contact Information (1/3 of space) */}
+            <div className="w-full lg:col-span-1">
+              <div className="mb-8 text-center">
+                <h2 className="mb-4 text-3xl font-bold text-darki font-prata lg:text-4xl">
+                  Get Touch With Us
+                </h2>
+                <div className="flex items-center justify-center mb-6">
+                  <div className="w-8 h-px bg-golden"></div>
+                  <div className="mx-4 text-golden">//</div>
+                  <div className="w-8 h-px bg-golden"></div>
+                </div>
+              </div>
 
-            <article>
-            <h2 className="mb-2 text-xl font-bold tracking-tighter font-prata">Horarios</h2>
-              <p className="text-sm">Mon to Fri : 09:00 am - 18:00 pm</p>
-            </article>
-          </section>
-         </div>
+              {/* Contact Info Cards */}
+              <div className="space-y-6">
+                {/* Address */}
+                <div className="flex items-start p-4 space-x-3 bg-white border border-softGrey">
+                  <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-full bg-golden">
+                    <MapPin className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="mb-1 text-lg font-bold text-darki font-prata">Address</h3>
+                    <p className="text-sm text-greyki font-dmsans">
+                      Cl. 12 #8 05,<br />
+                      Soacha Cundinamarca,<br />
+                      Colombia
+                    </p>
+                  </div>
+                </div>
+
+                {/* Phone & Email */}
+                <div className="flex items-start p-4 space-x-3 bg-white border border-softGrey">
+                  <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-full bg-golden">
+                    <Phone className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="mb-1 text-lg font-bold text-darki font-prata">Phone</h3>
+                    <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-000</p>
+                    <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-001</p>
+                    <p className="text-sm text-greyki font-dmsans">admin@abogadosvergara.com</p>
+                  </div>
+                </div>
+
+                {/* Office Hours */}
+                <div className="flex items-start p-4 space-x-3 bg-white border border-softGrey">
+                  <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-full bg-golden">
+                    <Clock className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="mb-1 text-lg font-bold text-darki font-prata">Office Hours</h3>
+                    <div className="space-y-0.5 text-xs text-greyki font-dmsans">
+                      <p><strong>Monday:</strong> 09:00-17:00</p>
+                      <p><strong>Tuesday:</strong> 09:00-17:00</p>
+                      <p><strong>Wednesday:</strong> 09:00-17:00</p>
+                      <p><strong>Thursday:</strong> 09:00-17:00</p>
+                      <p><strong>Friday:</strong> 09:00-17:00</p>
+                      <p><strong>Saturday:</strong> 10:00-13:00</p>
+                      <p><strong>Sunday:</strong> Close</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Info Box */}
+              <div className="p-4 mt-6 border bg-softGrey/30 border-softGrey">
+                <h3 className="mb-3 text-lg font-bold text-center text-darki font-prata">
+                  ¿Necesitas ayuda inmediata?
+                </h3>
+                <p className="mb-3 text-sm text-center text-greyki font-dmsans">
+                  Nuestro equipo está disponible para responder tus consultas y brindarte la mejor asesoría legal.
+                </p>
+                <p className="text-xs text-center text-greyki font-dmsans">
+                  <strong>Respuesta garantizada en menos de 24 horas</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-        
     </>
-    
   )
 }
 

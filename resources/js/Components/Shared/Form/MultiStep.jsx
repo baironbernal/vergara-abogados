@@ -2,65 +2,60 @@ import { useState } from "react"
 import { useSteps } from "@/hooks/useStep"
 import { ContactForm, Calendar } from "@/Components"
 
+export const MultiStep = ({ citations, lawyers }) => {
+  const { currentStep, isFirstStep, isLastStep, next, back } = useSteps(3)
+  const [citationId, setCitationId] = useState(null)
+  const [formData, setFormData] = useState(null)
 
-export const MultiStep = ({ citations , lawyers}) => {
+  const handleFormSuccess = (values, savedCitationId) => {
+    setFormData(values)
+    setCitationId(savedCitationId)
+    next()
+  }
 
-    const { currentStep, isFirstStep, isLastStep, next, back } = useSteps(3)
-    const [citationId, setCitationId] = useState(null)
-    const [formData, setFormData] = useState(null)
+  // Get selected lawyer info
+  const getSelectedLawyer = () => {
+    if (!formData || !formData.lawyer_id) return null;
+    if (formData.lawyer_id === 'cualquiera') return { name: 'Cualquiera' };
+    return lawyers.find(lawyer => lawyer.id == formData.lawyer_id);
+  }
 
-    const handleFormSuccess = (values, savedCitationId) => {
-      setFormData(values)
-      setCitationId(savedCitationId)
-      next()
-    }
-
-    const handleCalendarSuccess = () => {
-      next() // Go to confirmation step
-    }
+  const handleCalendarSuccess = () => {
+    next() // Go to confirmation step
+  }
 
   return (
-    <section className="w-full h-full max-w-3xl ">
-        <div className="flex flex-col items-start justify-end w-full mx-auto">
-          <h1 className="text-2xl font-bold tracking-normal font-prata ">
-            Reserva tu cita
-          </h1>
-          <p className="mt-2 mb-10 text-gray-600">
-            {currentStep === 0 && "Complete el formulario para continuar con la reserva de su cita."}
-            {currentStep === 1 && "Seleccione una fecha y hora disponible en el calendario."}
-            {currentStep === 2 && "Su reserva ha sido confirmada exitosamente."}
-          </p>
-        </div>
-        
-        {/* Step Content */}
-        {currentStep === 0 && (
+    <section className="w-full h-full max-w-3xl">
+      {/* Step Content */}
+      {currentStep === 0 && (
+        <section>
           <ContactForm lawyers={lawyers} onSuccess={handleFormSuccess}/>
-        )}
+        </section>
+      )}
 
-        {currentStep === 1 && (
-          <Calendar 
-            citations={citations} 
-            back={back} 
-            citationId={citationId}
-            onSuccess={handleCalendarSuccess}
-          />
-        )}
+      {currentStep === 1 && (
+        <Calendar
+          citations={citations}
+          back={back}
+          citationId={citationId}
+          onSuccess={handleCalendarSuccess}
+        />
+      )}
 
-        {currentStep === 2 && (
-          <ConfirmationStep formData={formData} />
-        )}
-      
+      {currentStep === 2 && (
+        <ConfirmationStep formData={formData} selectedLawyer={getSelectedLawyer()} />
+      )}
     </section>
   )
 }
 
 // Confirmation Step Component
-const ConfirmationStep = ({ formData }) => {
+const ConfirmationStep = ({ formData, selectedLawyer }) => {
   return (
-    <div className="py-12 text-center">
+    <div className="text-center">
       <div className="max-w-md mx-auto">
         {/* Success Icon */}
-        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 bg-green-100">
+        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 bg-green-100 rounded-full">
           <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
@@ -70,9 +65,9 @@ const ConfirmationStep = ({ formData }) => {
         <h2 className="mb-4 text-2xl font-medium text-darki font-prata">
           ¡Gracias por tu reserva!
         </h2>
-        
+
         <p className="mb-6 text-lg text-greyki font-dmsans">
-          Estaremos contactando contigo
+          Estaremos contactando contigo pronto
         </p>
 
         {formData && (
@@ -82,12 +77,18 @@ const ConfirmationStep = ({ formData }) => {
               <p><strong>Nombre:</strong> {formData.name}</p>
               <p><strong>Email:</strong> {formData.email}</p>
               <p><strong>Teléfono:</strong> {formData.phone}</p>
+              {selectedLawyer && (
+                <p><strong>Abogado seleccionado:</strong> {selectedLawyer.name}</p>
+              )}
+              {formData.observations && (
+                <p><strong>Observaciones:</strong> {formData.observations}</p>
+              )}
             </div>
           </div>
         )}
-        
+
         <div className="mt-8">
-          <button 
+          <button
             onClick={() => window.location.href = '/'}
             className="px-8 py-3 font-medium transition-colors duration-300 bg-golden text-whiteki hover:bg-darki font-dmsans"
           >

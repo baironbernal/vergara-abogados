@@ -6,7 +6,7 @@ import clsx from 'clsx';
 const MenuIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="w-10 h-10"
+    className="w-8 h-8 lg:w-10 lg:h-10"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -20,7 +20,7 @@ const MenuIcon = () => (
   </svg>
 );
 
-// SVG Icon for the close button (X
+// SVG Icon for the close button (X)
 const CloseIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -47,11 +47,34 @@ export const Menu = ({ styles }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Function to handle contact button click
+  const handleContactClick = (e) => {
+    e.preventDefault();
+
+    // Hide the info bar by scrolling up slightly
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
+    // Wait a bit then scroll to contact form
+    setTimeout(() => {
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        contactForm.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 300);
+  };
+
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/acerca', label: 'Nosotros' },
     { href: '/servicios', label: 'Servicios' },
     { href: '/inmobiliaria', label: 'Inmobiliaria' },
+    { href: '/blog', label: 'Blog' },
     { href: '/contacto', label: 'Contacto' },
   ];
 
@@ -62,12 +85,12 @@ export const Menu = ({ styles }) => {
           {/* Logo or Site Title */}
           <div className="flex-shrink-0">
             <Link href="/">
-              <img src="/logo.webp" alt="Brand Vergara y Asociados" className="w-auto h-20 md:h-24" />
+              <img src="/logo.webp" alt="Brand Vergara y Asociados" className="w-auto h-16 md:h-20 lg:h-24" />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="items-center hidden gap-8 font-semibold md:flex">
+          <nav className="items-center hidden gap-6 font-semibold lg:flex xl:gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -79,13 +102,16 @@ export const Menu = ({ styles }) => {
             ))}
           </nav>
           {/* Button to Reserve */}
-          
-          <MainButton as={Link} className={'py-3 hidden md:block'} href="/contacto">
-                Reserva tu consulta
-            </MainButton>
+
+          <MainButton
+            onClick={handleContactClick}
+            className={'py-2 hidden lg:block lg:py-3'}
+          >
+            Reserva tu consulta
+          </MainButton>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center lg:hidden">
             <button
               onClick={toggleMenu}
               className="text-greyki hover:text-golden focus:outline-none"
@@ -99,17 +125,25 @@ export const Menu = ({ styles }) => {
 
       {/* Mobile Menu (conditionally rendered) */}
       {isMenuOpen && (
-        <div className="bg-white border-t border-gray-200 md:hidden">
-          <nav className="flex flex-col items-center py-4 space-y-4">
+        <div className="bg-white border-t border-gray-200 lg:hidden">
+          <nav className="flex flex-col items-center py-6 space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-lg font-medium text-gray-600 transition-colors duration-300 hover:text-indigo-600"
+                className="text-lg font-medium text-gray-600 transition-colors duration-300 hover:text-golden"
                 onClick={() => setIsMenuOpen(false)}>
                 {link.label}
               </Link>
             ))}
+            <div className="pt-4 mt-4 border-t border-gray-200">
+              <MainButton onClick={(e) => {
+                setIsMenuOpen(false);
+                handleContactClick(e);
+              }}>
+                Reserva tu consulta
+              </MainButton>
+            </div>
           </nav>
         </div>
       )}

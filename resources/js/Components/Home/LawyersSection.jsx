@@ -53,35 +53,46 @@ export const LawyersSection = ({ lawyers = [] }) => {
   }
 
   return (
-    <section className="py-16 bg-whiteki">
+    <section className="py-20 bg-whiteki">
       <div className="mx-auto max-w-7xl px-4">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-medium text-darki font-prata mb-4">
-            Nuestro Equipo Legal
-          </h2>
-          <p className="text-lg text-greyki font-dmsans max-w-3xl mx-auto">
-            Contamos con un equipo de abogados especializados en derecho inmobiliario, 
-            listos para brindarle la mejor asesoría legal en sus transacciones.
-          </p>
+        <div className="flex justify-between items-end mb-16">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-medium text-darki font-prata mb-4">
+              Meet Our Attorneys
+            </h2>
+            <p className="text-lg text-greyki font-dmsans max-w-3xl">
+              Contamos con amplia experiencia en todas las industrias. Brindamos a cada cliente 
+              una combinación de conocimiento profundo de la industria y perspectivas expertas 
+              para ofrecer ideas frescas y soluciones innovadoras.
+            </p>
+          </div>
+          <div className="hidden md:block">
+            <button className="text-golden hover:text-darki transition-colors duration-300 font-dmsans text-lg flex items-center gap-2">
+              View All
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Desktop Layout - Flex Grid */}
-        <div className="hidden lg:flex lg:gap-8 lg:justify-start lg:flex-wrap">
+        {/* Desktop Layout - Professional Grid */}
+        <div className="hidden lg:grid lg:grid-cols-3 lg:gap-0">
           {lawyers.slice(0, 3).map((lawyer, index) => (
             <LawyerCard key={lawyer.id || index} lawyer={lawyer} />
           ))}
         </div>
 
-        {/* Mobile Layout - Carousel */}
+        {/* Mobile Layout - Professional Carousel */}
         <div className="lg:hidden relative">
-          <div className="overflow-hidden">
+          <div className="overflow-hidden rounded-none">
             <div 
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {lawyers.map((lawyer, index) => (
-                <div key={lawyer.id || index} className="w-full flex-shrink-0 px-4">
+                <div key={lawyer.id || index} className="w-full flex-shrink-0">
                   <LawyerCard lawyer={lawyer} />
                 </div>
               ))}
@@ -94,27 +105,27 @@ export const LawyersSection = ({ lawyers = [] }) => {
               {/* Navigation Arrows */}
               <button
                 onClick={prevSlide}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-golden text-whiteki p-3 shadow-lg hover:bg-darki transition-all duration-300 z-10"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-darki text-whiteki p-3 hover:bg-golden transition-all duration-300 z-10 rounded-full shadow-lg"
                 aria-label="Anterior abogado"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               
               <button
                 onClick={nextSlide}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-golden text-whiteki p-3 shadow-lg hover:bg-darki transition-all duration-300 z-10"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-darki text-whiteki p-3 hover:bg-golden transition-all duration-300 z-10 rounded-full shadow-lg"
                 aria-label="Siguiente abogado"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5" />
               </button>
 
               {/* Dots Indicator */}
-              <div className="flex justify-center mt-6 space-x-2">
+              <div className="flex justify-center mt-8 space-x-3">
                 {lawyers.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
-                    className={`w-3 h-3 transition-all duration-300 ${
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
                       index === currentIndex
                         ? 'bg-golden transform scale-125'
                         : 'bg-graykiSecondary hover:bg-golden'

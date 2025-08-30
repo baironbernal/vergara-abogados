@@ -46,29 +46,33 @@ class PropertyResource extends Resource
                     ->required(),
 
                 Forms\Components\FileUpload::make('thumbnail')
-                    ->label('Foto')
-                    ->image(),
+                    ->label('Foto Principal')
+                    ->image()
+                    ->disk('public')
+                    ->directory('properties/thumbnails')
+                    ->visibility('public')
+                    ->maxSize(5120) // 5MB
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '16:9',
+                        '4:3',
+                        '1:1',
+                    ]),
 
-                    Section::make('Galeria')
-                    ->description('Agrega imagenes aqui')
-                    ->collapsible()
-                    ->collapsed()
-                    ->schema([
-                        Repeater::make('gallery')
-                            ->collapsible()
-                            ->collapsed()
-                            ->schema([
-                                Grid::make()
-                                    ->columns(2)
-                                    ->schema([
-                                        Forms\Components\FileUpload::make('image')
-                                            ->label('Foto')
-                                            ->image()
-                                            ->disk('public')
-                                            ->directory('properties'),
-                                    ]),
-                            ]),
-                        ]),
+                Forms\Components\FileUpload::make('gallery')
+                    ->label('Galería de Fotos')
+                    ->image()
+                    ->multiple()
+                    ->disk('public')
+                    ->directory('properties/gallery')
+                    ->visibility('public')
+                    ->maxFiles(10)
+                    ->maxSize(5120) // 5MB
+                    ->imageEditor()
+                    ->reorderable()
+                    ->panelLayout('grid')
+                    ->uploadingMessage('Subiendo fotos...')
+                    ->helperText('Máximo 10 imágenes, 5MB cada una'),
 
                 Forms\Components\TextInput::make('price')
                     ->label('Precio')

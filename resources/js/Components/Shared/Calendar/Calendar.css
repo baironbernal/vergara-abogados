@@ -12,6 +12,59 @@
   cursor: pointer !important;
 }
 
-.fc .fc-timegrid-slot:hover  .fc-timegrid-slot-lane:hover  .fc-timegrid-slot-minor:hover {
-  background-color: red !important;
+/* Hover effects for available time slots */
+.fc .fc-timegrid-slot {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.fc .fc-timegrid-slot:hover {
+  background-color: rgba(212, 175, 55, 0.1) !important; /* Light golden hover */
+}
+
+.fc .fc-timegrid-slot-lane {
+  cursor: pointer;
+}
+
+.fc .fc-timegrid-slot-lane:hover {
+  background-color: rgba(212, 175, 55, 0.15) !important; /* Golden hover */
+}
+
+/* Styling for occupied/unavailable slots */
+.fc-event.occupied-slot {
+  background-color: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+  text-decoration: line-through !important;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.fc-event.occupied-slot .fc-event-title {
+  text-decoration: line-through !important;
+  font-weight: bold;
+}
+
+/* Styling for selected/golden slots */
+.fc-event.selected-slot {
+  background-color: #d4af37 !important; /* Golden color */
+  border-color: #b8941f !important;
+  color: #ffffff !important;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+/* Better pointer cursor for selectable areas */
+.fc-timegrid-event-harness {
+  cursor: pointer;
+}
+
+/* Available slot highlighting */
+.fc .fc-timegrid-slot-minor {
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.fc .fc-timegrid-slot-minor:hover {
+  background-color: rgba(212, 175, 55, 0.1) !important;
+  cursor: pointer;
 }

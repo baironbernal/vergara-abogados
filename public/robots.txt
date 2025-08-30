@@ -1,2 +1,21 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemaps
+Sitemap: /sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /storage/
+Disallow: /build/
+
+# Allow important pages
+Allow: /
+Allow: /acerca
+Allow: /contacto  
+Allow: /servicios
+Allow: /inmobiliaria
+Allow: /inmobiliaria/*
+
+# SEO optimization
+Crawl-delay: 1

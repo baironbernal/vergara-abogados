@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Citation;
 use App\Models\Lawyer;
+use App\Services\SEOService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,6 +12,12 @@ class ContactController extends Controller
 {
     public function index()
     {
+        $seoData = SEOService::generateMetaTags([
+            'title' => 'Contacto - Agenda tu Cita Legal - Inmobiliaria Vergara',
+            'description' => 'Agenda tu cita con nuestros expertos en derecho inmobiliario. Consulta legal profesional, asesoría personalizada y soluciones a tus necesidades inmobiliarias.',
+            'keywords' => 'contacto, cita legal, asesoría inmobiliaria, consulta abogados, agenda cita, derecho inmobiliario',
+            'type' => 'website',
+        ]);
         
         $citations = Citation::with('lawyer')->get(['id', 'lawyer_id', 'starts_at', 'ends_at']);
         $lawyers = Lawyer::all(['id', 'name']);
@@ -18,6 +25,7 @@ class ContactController extends Controller
         return Inertia::render('Contact', [
             'citations' => $citations,
             'lawyers' => $lawyers,
+            'seo' => $seoData,
         ]);
     }
 
@@ -27,24 +35,38 @@ class ContactController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:50',
-            'lawyer_id' => 'required|exists:lawyers,id',
+            'lawyer_id' => 'required|string',
             'observations' => 'nullable|string',
         ]);
+
+        // Handle "cualquiera" option
+        $lawyerId = null;
+        if ($validatedData['lawyer_id'] !== 'cualquiera') {
+            // Validate that the lawyer exists if not "cualquiera"
+            $request->validate([
+                'lawyer_id' => 'exists:lawyers,id',
+            ]);
+            $lawyerId = $validatedData['lawyer_id'];
+        }
 
         // Create partial citation record
         $citation = Citation::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'phone' => $validatedData['phone'],
-            'lawyer_id' => $validatedData['lawyer_id'],
+            'lawyer_id' => $lawyerId,
             'observations' => $validatedData['observations'],
             'starts_at' => null, // Will be filled when calendar slot is selected
             'ends_at' => null,   // Will be filled when calendar slot is selected
         ]);
 
+        // Load the lawyer relationship for the response
+        $citation->load('lawyer');
+        
         return response()->json([
             'success' => true,
             'citation_id' => $citation->id,
+            'citation' => $citation,
             'message' => 'Información guardada exitosamente'
         ]);
     }
