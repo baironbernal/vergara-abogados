@@ -15,4 +15,11 @@ export default defineConfig({
           "@": "/resources/js"
         }
       },
+    build: {
+        manifest: true,
+        outDir: 'public/build', // 👈 this is critical
+        rollupOptions: {
+            input: '/resources/js/app.jsx',
+        },
+    },
 });
