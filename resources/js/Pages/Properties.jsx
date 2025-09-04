@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react"
 import { MapPin, Search, Filter, Eye, ChevronDown, ChevronUp } from "lucide-react"
-import { BannerInformative, MainButton, SEOHead } from "@/Components"
+import { BannerInformative, MainButton, SEOHead, MotionWrapper } from "@/Components"
 import PropertyModal from "@/Components/Properties/PropertyModal"
 import { Link } from '@inertiajs/react'
 
@@ -96,22 +96,25 @@ export default function Properties({ states, properties, municipalities, seo }) 
 
         <div className="px-4 py-8 mx-auto max-w-7xl lg:py-12">
           {/* Mobile Filters Toggle */}
-          <div className="mb-6 lg:hidden">
-            <button
-              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-              className="flex items-center justify-between w-full p-4 text-left bg-white border shadow-lg border-softGrey"
-            >
-              <div className="flex items-center gap-3">
-                <Filter className="w-5 h-5 text-golden" />
-                <span className="font-medium text-darki font-dmsans">Filtros de Búsqueda</span>
-              </div>
-              {isFiltersOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-            </button>
-          </div>
+          <MotionWrapper>
+            <div className="mb-6 lg:hidden">
+              <button
+                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                className="flex items-center justify-between w-full p-4 text-left bg-white border shadow-lg border-softGrey"
+              >
+                <div className="flex items-center gap-3">
+                  <Filter className="w-5 h-5 text-golden" />
+                  <span className="font-medium text-darki font-dmsans">Filtros de Búsqueda</span>
+                </div>
+                {isFiltersOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+              </button>
+            </div>
+          </MotionWrapper>
 
           <div className="flex flex-col gap-8 lg:flex-row">
             {/* Filters Sidebar */}
-            <aside className={`lg:flex-shrink-0 lg:w-80 ${isFiltersOpen ? 'block' : 'hidden lg:block'}`}>
+            <MotionWrapper delay={0.1}>
+              <aside className={`lg:flex-shrink-0 lg:w-80 ${isFiltersOpen ? 'block' : 'hidden lg:block'}`}>
               <div className="lg:sticky lg:top-4 p-6 bg-white border shadow-lg border-softGrey lg:p-8">
                 <h2 className="flex items-center gap-3 mb-6 text-lg font-medium text-darki font-dmsans lg:mb-8 lg:text-xl">
                   <Filter className="w-5 h-5 text-golden lg:w-6 lg:h-6" />
@@ -215,14 +218,17 @@ export default function Properties({ states, properties, municipalities, seo }) 
                   </MainButton>
                 </div>
               </div>
-            </aside>
+              </aside>
+            </MotionWrapper>
 
             {/* Main Content */}
-            <main className="flex-1">
-              {/* Property Grid */}
-              <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:gap-8 lg:mb-12 xl:grid-cols-3">
-                {paginatedProperties.map((property) => (
-                  <div key={property.id} className="bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+            <MotionWrapper delay={0.2}>
+              <main className="flex-1">
+                {/* Property Grid */}
+                <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:gap-8 lg:mb-12 xl:grid-cols-3">
+                  {paginatedProperties.map((property, index) => (
+                    <MotionWrapper key={property.id} delay={index * 0.1}>
+                      <div className="bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
                     <div className="relative">
                       <img
                         src={property.thumbnail_url || "/placeholder.svg"}
@@ -264,13 +270,15 @@ export default function Properties({ states, properties, municipalities, seo }) 
                         Ver Detalles
                       </MainButton>
                     </div>
-                  </div>
-                ))}
+                      </div>
+                    </MotionWrapper>
+                  ))}
               </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex flex-col items-center justify-center gap-4 lg:flex-row lg:gap-3">
+                {/* Pagination */}
+                <MotionWrapper delay={0.3}>
+                  {totalPages > 1 && (
+                    <div className="flex flex-col items-center justify-center gap-4 lg:flex-row lg:gap-3">
                   <MainButton
                     onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
@@ -302,34 +310,38 @@ export default function Properties({ states, properties, municipalities, seo }) 
                   >
                     Siguiente
                   </MainButton>
-                </div>
-              )}
+                    </div>
+                  )}
+                </MotionWrapper>
 
-              {/* No Results */}
-              {filteredProperties.length === 0 && (
-                <div className="py-12 text-center lg:py-16">
-                  <div className="max-w-md mx-auto">
-                    <h3 className="mb-4 text-xl font-medium text-darki font-prata lg:text-2xl">No se encontraron propiedades</h3>
-                    <p className="mb-6 text-base text-greyki font-dmsans lg:mb-8 lg:text-lg">No hay propiedades que coincidan con tus criterios de búsqueda</p>
-                    <MainButton
-                      onClick={() => {
-                        setFilters({
-                          municipality_id: "",
-                          state_id: "",
-                          minPrice: "",
-                          maxPrice: "",
-                          propertyType: "",
-                        })
-                        setCurrentPage(1)
-                      }}
-                      className="px-6 py-3 shadow-lg lg:px-8 lg:py-4"
-                    >
-                      Limpiar Todos los Filtros
-                    </MainButton>
-                  </div>
-                </div>
-              )}
-            </main>
+                {/* No Results */}
+                <MotionWrapper delay={0.4}>
+                  {filteredProperties.length === 0 && (
+                    <div className="py-12 text-center lg:py-16">
+                      <div className="max-w-md mx-auto">
+                        <h3 className="mb-4 text-xl font-medium text-darki font-prata lg:text-2xl">No se encontraron propiedades</h3>
+                        <p className="mb-6 text-base text-greyki font-dmsans lg:mb-8 lg:text-lg">No hay propiedades que coincidan con tus criterios de búsqueda</p>
+                        <MainButton
+                          onClick={() => {
+                            setFilters({
+                              municipality_id: "",
+                              state_id: "",
+                              minPrice: "",
+                              maxPrice: "",
+                              propertyType: "",
+                            })
+                            setCurrentPage(1)
+                          }}
+                          className="px-6 py-3 shadow-lg lg:px-8 lg:py-4"
+                        >
+                          Limpiar Todos los Filtros
+                        </MainButton>
+                      </div>
+                    </div>
+                  )}
+                </MotionWrapper>
+              </main>
+            </MotionWrapper>
           </div>
         </div>
       </div>

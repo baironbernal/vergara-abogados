@@ -1,7 +1,8 @@
 import { Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MainButton } from "@/Components";
 import clsx from 'clsx';
+import { motion, AnimatePresence } from 'motion/react';
 
 const MenuIcon = () => (
   <svg
@@ -42,6 +43,20 @@ const CloseIcon = () => (
 export const Menu = ({ styles }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
   // Function to toggle the menu state
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -70,7 +85,7 @@ export const Menu = ({ styles }) => {
   };
 
   const navLinks = [
-    { href: '/', label: 'Home' },
+    { href: '/', label: 'Inicio' },
     { href: '/acerca', label: 'Nosotros' },
     { href: '/servicios', label: 'Servicios' },
     { href: '/inmobiliaria', label: 'Inmobiliaria' },
@@ -123,30 +138,97 @@ export const Menu = ({ styles }) => {
         </div>
       </div>
 
-      {/* Mobile Menu (conditionally rendered) */}
-      {isMenuOpen && (
-        <div className="bg-white border-t border-gray-200 lg:hidden">
-          <nav className="flex flex-col items-center py-6 space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-lg font-medium text-gray-600 transition-colors duration-300 hover:text-golden"
-                onClick={() => setIsMenuOpen(false)}>
-                {link.label}
-              </Link>
-            ))}
-            <div className="pt-4 mt-4 border-t border-gray-200">
-              <MainButton onClick={(e) => {
-                setIsMenuOpen(false);
-                handleContactClick(e);
-              }}>
-                Reserva tu consulta
-              </MainButton>
-            </div>
-          </nav>
-        </div>
-      )}
+      {/* Mobile Menu with animations */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+              onClick={() => setIsMenuOpen(false)}
+            />
+
+            {/* Mobile Menu Panel */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{
+                type: 'spring',
+                damping: 25,
+                stiffness: 200,
+                duration: 0.4
+              }}
+              className="fixed top-0 right-0 z-50 w-full h-full max-w-sm bg-darki shadow-2xl lg:hidden"
+            >
+              {/* Menu Header */}
+              <div className="flex items-center justify-between p-6 border-b border-golden/20">
+                <div className="flex items-center space-x-3">
+                  <img src="/logo.webp" alt="Brand Vergara y Asociados" className="w-10 h-10" />
+                  <span className="text-lg font-bold text-white font-prata">Menú</span>
+                </div>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="p-2 text-white transition-colors duration-300 hover:text-golden focus:outline-none"
+                  aria-label="Close menu"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+
+              {/* Menu Content */}
+              <nav className="flex flex-col px-6 py-8 space-y-6">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: index * 0.1,
+                      duration: 0.4,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <Link
+                      href={link.href}
+                      className="block text-xl font-medium text-white transition-all duration-300 hover:text-golden hover:translate-x-2 font-prata"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+
+                {/* Contact Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: navLinks.length * 0.1 + 0.2,
+                    duration: 0.4,
+                    ease: "easeOut"
+                  }}
+                  className="pt-8 mt-8 border-t border-golden/20"
+                >
+                  <MainButton
+                    onClick={(e) => {
+                      setIsMenuOpen(false);
+                      handleContactClick(e);
+                    }}
+                    className="w-full justify-center"
+                  >
+                    Reserva tu consulta
+                  </MainButton>
+                </motion.div>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

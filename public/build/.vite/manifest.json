@@ -1,49 +1,63 @@
 {
-  "_BannerInformative-Dr6TLf7J.js": {
-    "file": "assets/BannerInformative-Dr6TLf7J.js",
+  "_BannerInformative-Be-1uroS.js": {
+    "file": "assets/BannerInformative-Be-1uroS.js",
     "name": "BannerInformative",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_LawyerCard-Bn8k2jzK.js": {
-    "file": "assets/LawyerCard-Bn8k2jzK.js",
+  "_LawyerCard-DsQoehFX.js": {
+    "file": "assets/LawyerCard-DsQoehFX.js",
     "name": "LawyerCard",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_SEOHead-Cr-TZVxm.js": {
-    "file": "assets/SEOHead-Cr-TZVxm.js",
+  "_SEOHead-BRbzMn-4.js": {
+    "file": "assets/SEOHead-BRbzMn-4.js",
     "name": "SEOHead",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_arrow-left-DKYoxF03.js": {
-    "file": "assets/arrow-left-DKYoxF03.js",
+  "_arrow-left-CQWiKsbU.js": {
+    "file": "assets/arrow-left-CQWiKsbU.js",
     "name": "arrow-left",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_chevron-right-DQu5QJ4e.js": {
-    "file": "assets/chevron-right-DQu5QJ4e.js",
+  "_chevron-right-BzlFCJ87.js": {
+    "file": "assets/chevron-right-BzlFCJ87.js",
     "name": "chevron-right",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_clock-ojWKlRN8.js": {
-    "file": "assets/clock-ojWKlRN8.js",
+  "_clock-BSVWdqSV.js": {
+    "file": "assets/clock-BSVWdqSV.js",
     "name": "clock",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_user-Ymqg5ZQt.js": {
-    "file": "assets/user-Ymqg5ZQt.js",
+  "_house-KGH_LPPc.js": {
+    "file": "assets/house-KGH_LPPc.js",
+    "name": "house",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_user-CaaZ4oIA.js": {
+    "file": "assets/user-CaaZ4oIA.js",
     "name": "user",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_zap-IYb8WA83.js": {
+    "file": "assets/zap-IYb8WA83.js",
+    "name": "zap",
     "imports": [
       "resources/js/app.jsx"
     ]
@@ -129,102 +143,121 @@
     "src": "node_modules/@fontsource/prata/files/prata-vietnamese-400-normal.woff2"
   },
   "resources/js/Pages/About.jsx": {
-    "file": "assets/About-DlLEEM_5.js",
+    "file": "assets/About-Cpv4q_Ld.js",
     "name": "About",
     "src": "resources/js/Pages/About.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_BannerInformative-Dr6TLf7J.js",
-      "_SEOHead-Cr-TZVxm.js"
+      "_BannerInformative-Be-1uroS.js",
+      "_SEOHead-BRbzMn-4.js"
     ]
   },
   "resources/js/Pages/Blog/Index.jsx": {
-    "file": "assets/Index-C7D00LTX.js",
+    "file": "assets/Index-3Vd-3RV8.js",
     "name": "Index",
     "src": "resources/js/Pages/Blog/Index.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_BannerInformative-Dr6TLf7J.js",
-      "_SEOHead-Cr-TZVxm.js",
-      "_user-Ymqg5ZQt.js",
-      "_clock-ojWKlRN8.js"
+      "_BannerInformative-Be-1uroS.js",
+      "_SEOHead-BRbzMn-4.js",
+      "_user-CaaZ4oIA.js",
+      "_clock-BSVWdqSV.js"
     ]
   },
   "resources/js/Pages/Blog/Show.jsx": {
-    "file": "assets/Show-DosyPjrj.js",
+    "file": "assets/Show-FhcEobAG.js",
     "name": "Show",
     "src": "resources/js/Pages/Blog/Show.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_SEOHead-Cr-TZVxm.js",
-      "_arrow-left-DKYoxF03.js",
-      "_user-Ymqg5ZQt.js",
-      "_clock-ojWKlRN8.js"
+      "_SEOHead-BRbzMn-4.js",
+      "_arrow-left-CQWiKsbU.js",
+      "_user-CaaZ4oIA.js",
+      "_clock-BSVWdqSV.js"
     ]
   },
   "resources/js/Pages/Contact.jsx": {
-    "file": "assets/Contact-B_jvP9Bz.js",
+    "file": "assets/Contact-DEWJyvxS.js",
     "name": "Contact",
     "src": "resources/js/Pages/Contact.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_SEOHead-Cr-TZVxm.js",
-      "_clock-ojWKlRN8.js"
+      "_SEOHead-BRbzMn-4.js",
+      "_clock-BSVWdqSV.js"
     ]
   },
   "resources/js/Pages/Home.jsx": {
-    "file": "assets/Home-hKJrRI3F.js",
+    "file": "assets/Home-CeWK86MU.js",
     "name": "Home",
     "src": "resources/js/Pages/Home.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_LawyerCard-Bn8k2jzK.js",
-      "_chevron-right-DQu5QJ4e.js",
-      "_SEOHead-Cr-TZVxm.js"
+      "_LawyerCard-DsQoehFX.js",
+      "_chevron-right-BzlFCJ87.js",
+      "_SEOHead-BRbzMn-4.js"
     ]
   },
   "resources/js/Pages/Properties.jsx": {
-    "file": "assets/Properties-0Cn3plRM.js",
+    "file": "assets/Properties-CQRmtmsm.js",
     "name": "Properties",
     "src": "resources/js/Pages/Properties.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_SEOHead-Cr-TZVxm.js"
+      "_SEOHead-BRbzMn-4.js"
     ]
   },
   "resources/js/Pages/PropertyDetail.jsx": {
-    "file": "assets/PropertyDetail-CuzoX0TK.js",
+    "file": "assets/PropertyDetail-BQ6Pn5uP.js",
     "name": "PropertyDetail",
     "src": "resources/js/Pages/PropertyDetail.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_SEOHead-Cr-TZVxm.js",
-      "_user-Ymqg5ZQt.js",
-      "_arrow-left-DKYoxF03.js",
-      "_chevron-right-DQu5QJ4e.js"
+      "_SEOHead-BRbzMn-4.js",
+      "_house-KGH_LPPc.js",
+      "_user-CaaZ4oIA.js",
+      "_arrow-left-CQWiKsbU.js",
+      "_chevron-right-BzlFCJ87.js"
+    ]
+  },
+  "resources/js/Pages/ServiceDetail.jsx": {
+    "file": "assets/ServiceDetail-BS10TiN7.js",
+    "name": "ServiceDetail",
+    "src": "resources/js/Pages/ServiceDetail.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_LawyerCard-DsQoehFX.js",
+      "_SEOHead-BRbzMn-4.js",
+      "_arrow-left-CQWiKsbU.js",
+      "_house-KGH_LPPc.js",
+      "_clock-BSVWdqSV.js",
+      "_zap-IYb8WA83.js"
     ]
   },
   "resources/js/Pages/Services.jsx": {
-    "file": "assets/Services-BomhOP-3.js",
+    "file": "assets/Services-D7fPUJ5w.js",
     "name": "Services",
     "src": "resources/js/Pages/Services.jsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_BannerInformative-Dr6TLf7J.js",
-      "_LawyerCard-Bn8k2jzK.js",
-      "_SEOHead-Cr-TZVxm.js"
+      "_BannerInformative-Be-1uroS.js",
+      "_LawyerCard-DsQoehFX.js",
+      "_house-KGH_LPPc.js",
+      "_zap-IYb8WA83.js",
+      "_clock-BSVWdqSV.js",
+      "_SEOHead-BRbzMn-4.js"
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-DerXJYF2.js",
+    "file": "assets/app-41ULo0zk.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
@@ -236,10 +269,11 @@
       "resources/js/Pages/Home.jsx",
       "resources/js/Pages/Properties.jsx",
       "resources/js/Pages/PropertyDetail.jsx",
+      "resources/js/Pages/ServiceDetail.jsx",
       "resources/js/Pages/Services.jsx"
     ],
     "css": [
-      "assets/app-DWtl9LN5.css"
+      "assets/app-32BdkV3B.css"
     ],
     "assets": [
       "assets/prata-cyrillic-ext-400-normal-Bx7zt7J5.woff2",

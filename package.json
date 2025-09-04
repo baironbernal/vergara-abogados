@@ -25,6 +25,7 @@
         "@fullcalendar/timegrid": "^6.1.19",
         "@hookform/resolvers": "^5.2.1",
         "@inertiajs/react": "^2.1.2",
+        "@tailwindcss/line-clamp": "^0.4.4",
         "clsx": "^2.1.1",
         "lucide-react": "^0.539.0",
         "motion": "^12.23.12",

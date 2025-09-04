@@ -25,6 +25,7 @@ class ServiceResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('slug')->required(),
                 Forms\Components\TextInput::make('category')->required(),
                 Forms\Components\TextInput::make('subcategory'),
                 Forms\Components\Textarea::make('description'),
@@ -37,6 +38,7 @@ class ServiceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('slug')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('category')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('subcategory')->sortable(),
                 Tables\Columns\TextColumn::make('type')->sortable(),
@@ -50,7 +52,7 @@ class ServiceResource extends Resource
                 ])
                 ->label('Categoría'),
 
-            
+
             Tables\Filters\SelectFilter::make('subcategory')
                 ->options([
                     'Derecho Civil' => 'Derecho Civil',

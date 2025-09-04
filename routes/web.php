@@ -19,7 +19,7 @@ Route::get('/acerca', function () {
         'keywords' => 'acerca de, inmobiliaria vergara, historia, misión, valores, experiencia, bienes raíces',
         'type' => 'website',
     ]);
-    
+
     return inertia('About', [
         'seo' => $seoData,
     ]);
@@ -29,6 +29,7 @@ Route::get('/contacto', [ContactController::class, 'index']);
 Route::post('/contacto/save-partial', [ContactController::class, 'savePartial'])->name('contact.save-partial');
 Route::post('/contacto/complete-reservation', [ContactController::class, 'completeReservation'])->name('contact.complete-reservation');
 Route::get('/servicios', [ServiceController::class, 'index']);
+Route::get('/servicios/{service}', [ServiceController::class, 'show'])->name('service.show');
 Route::get('/inmobiliaria', [PropertyController::class, 'index']);
 Route::get('/inmobiliaria/{property}', [PropertyController::class, 'show'])->name('property.show');
 

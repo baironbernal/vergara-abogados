@@ -9,12 +9,12 @@ export const Footer = ({ latestBlogs = [] }) => {
       <div className="px-4 mx-auto max-w-7xl lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* About Column */}
-          <div className="flex flex-col justify-between">
-            <h3 className="mb-4 font-bold tracking-tight text-base font-prata lg:text-lg">About</h3>
-            <p className="mb-4 text-sm leading-relaxed text-graykiSecondary">
+          <div className="flex flex-col justify-start text-left">
+            <h3 className="mb-4 text-base font-bold tracking-tight text-left font-prata lg:text-lg">Acerca de</h3>
+            <p className="mb-4 text-sm leading-relaxed text-left text-graykiSecondary">
             Somos una empresa líder dedicada a brindar servicios excepcionales y soluciones innovadoras a nuestros clientes en todo el mundo.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex justify-start space-x-4">
               <Facebook className="w-5 h-5 transition-colors cursor-pointer text-graykiSecondary hover:text-white" />
               <Twitter className="w-5 h-5 transition-colors cursor-pointer text-graykiSecondary hover:text-white" />
               <Instagram className="w-5 h-5 transition-colors cursor-pointer text-graykiSecondary hover:text-white" />
@@ -23,23 +23,23 @@ export const Footer = ({ latestBlogs = [] }) => {
           </div>
 
           {/* Latest Blog Posts */}
-          <div>
-            <h3 className="mb-4 font-bold tracking-tight text-base font-prata lg:text-lg">Últimos Artículos</h3>
+          <div className="text-left">
+            <h3 className="mb-4 text-base font-bold tracking-tight text-left font-prata lg:text-lg">Últimos Artículos</h3>
             {latestBlogs.length > 0 ? (
-              <ul className="space-y-2 md:space-y-3">
+              <ul className="space-y-2 text-left md:space-y-3">
                 {latestBlogs.map((blog) => (
-                  <li key={blog.id}>
-                    <Link 
-                      href={`/blog/${blog.slug}`} 
-                      className="group block"
+                  <li key={blog.id} className="text-left">
+                    <Link
+                      href={`/blog/${blog.slug}`}
+                      className="block text-left group"
                     >
-                      <div className="flex items-start space-x-2 lg:space-x-3">
+                      <div className="flex items-start justify-start space-x-2 lg:space-x-3">
                         <ArrowRight className="w-3 h-3 mt-0.5 text-graykiSecondary group-hover:text-golden transition-colors flex-shrink-0 lg:w-4 lg:h-4" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs transition-colors text-graykiSecondary group-hover:text-white line-clamp-2 lg:text-sm">
+                        <div className="flex-1 min-w-0 text-left">
+                          <p className="text-xs text-left transition-colors text-graykiSecondary group-hover:text-white line-clamp-2 lg:text-sm">
                             {blog.title}
                           </p>
-                          <div className="flex items-center mt-1 text-xs text-gray-400">
+                          <div className="flex items-center justify-start mt-1 text-xs text-gray-400">
                             <Calendar className="w-3 h-3 mr-1" />
                             {new Date(blog.published_at).toLocaleDateString('es-CO', {
                               month: 'short',
@@ -53,23 +53,23 @@ export const Footer = ({ latestBlogs = [] }) => {
                 ))}
               </ul>
             ) : (
-              <div className="text-xs text-graykiSecondary lg:text-sm">
-                <p>No hay artículos disponibles.</p>
-                <Link 
-                  href="/blog" 
-                  className="inline-flex items-center mt-2 text-xs transition-colors text-golden hover:text-white lg:text-sm"
+              <div className="text-xs text-left text-graykiSecondary lg:text-sm">
+                <p className="text-left">No hay artículos disponibles.</p>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center mt-2 text-xs text-left transition-colors text-golden hover:text-white lg:text-sm"
                 >
                   <ArrowRight className="w-3 h-3 mr-1 lg:w-4 lg:h-4" />
                   Ver blog
                 </Link>
               </div>
             )}
-            
+
             {latestBlogs.length > 0 && (
-              <div className="mt-4">
-                <Link 
-                  href="/blog" 
-                  className="inline-flex items-center text-xs transition-colors text-golden hover:text-white lg:text-sm"
+              <div className="mt-4 text-left">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center text-xs text-left transition-colors text-golden hover:text-white lg:text-sm"
                 >
                   <ArrowRight className="w-3 h-3 mr-1 lg:w-4 lg:h-4" />
                   Ver todos los artículos
@@ -79,59 +79,59 @@ export const Footer = ({ latestBlogs = [] }) => {
           </div>
 
           {/* Contact Info Column */}
-          <div>
-            <h3 className="mb-4 font-bold tracking-tight text-base font-prata lg:text-lg">Contact Info</h3>
-            <article className="flex flex-col space-y-2 md:space-y-3">
-              <div className="flex items-start space-x-2 lg:space-x-3">
+          <div className="text-left">
+            <h3 className="mb-4 text-base font-bold tracking-tight text-left font-prata lg:text-lg">Información de Contacto</h3>
+            <article className="flex flex-col space-y-2 text-left md:space-y-3">
+              <div className="flex items-start justify-start space-x-2 lg:space-x-3">
                 <MapPin className="w-4 h-4 text-graykiSecondary mt-0.5 flex-shrink-0" />
-                <span className="text-xs text-graykiSecondary lg:text-sm">
+                <span className="text-xs text-left text-graykiSecondary lg:text-sm">
                   Cl. 12 #8 05,
                   <br />
                   Soacha Cundinamarca
                 </span>
               </div>
-              <div className="flex items-center space-x-2 lg:space-x-3">
-                <Phone className="w-4 h-4 text-graykiSecondary flex-shrink-0" />
-                <span className="text-xs text-graykiSecondary lg:text-sm">+1 (555) 123-4567</span>
+              <div className="flex items-center justify-start space-x-2 lg:space-x-3">
+                <Phone className="flex-shrink-0 w-4 h-4 text-graykiSecondary" />
+                <span className="text-xs text-left text-graykiSecondary lg:text-sm">+1 (555) 123-4567</span>
               </div>
-              <div className="flex items-center space-x-2 lg:space-x-3">
-                <Mail className="w-4 h-4 text-graykiSecondary flex-shrink-0" />
-                <span className="text-xs text-graykiSecondary lg:text-sm">contact@company.com</span>
+              <div className="flex items-center justify-start space-x-2 lg:space-x-3">
+                <Mail className="flex-shrink-0 w-4 h-4 text-graykiSecondary" />
+                <span className="text-xs text-left text-graykiSecondary lg:text-sm">contact@company.com</span>
               </div>
             </article>
           </div>
 
           {/* Quick Links Column */}
-          <div>
-            <h3 className="mb-4 font-bold tracking-tight text-base font-prata lg:text-lg">Enlaces Rápidos</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-xs transition-colors text-graykiSecondary hover:text-white lg:text-sm">
+          <div className="text-left">
+            <h3 className="mb-4 text-base font-bold tracking-tight text-left font-prata lg:text-lg">Enlaces Rápidos</h3>
+            <ul className="space-y-2 text-left">
+              <li className="text-left">
+                <Link href="/" className="text-xs text-left transition-colors text-graykiSecondary hover:text-white lg:text-sm">
                   Inicio
                 </Link>
               </li>
-              <li>
-                <Link href="/acerca" className="text-xs transition-colors text-graykiSecondary hover:text-white lg:text-sm">
+              <li className="text-left">
+                <Link href="/acerca" className="text-xs text-left transition-colors text-graykiSecondary hover:text-white lg:text-sm">
                   Nosotros
                 </Link>
               </li>
-              <li>
-                <Link href="/servicios" className="text-xs transition-colors text-graykiSecondary hover:text-white lg:text-sm">
+              <li className="text-left">
+                <Link href="/servicios" className="text-xs text-left transition-colors text-graykiSecondary hover:text-white lg:text-sm">
                   Servicios
                 </Link>
               </li>
-              <li>
-                <Link href="/inmobiliaria" className="text-xs transition-colors text-graykiSecondary hover:text-white lg:text-sm">
+              <li className="text-left">
+                <Link href="/inmobiliaria" className="text-xs text-left transition-colors text-graykiSecondary hover:text-white lg:text-sm">
                   Propiedades
                 </Link>
               </li>
-              <li>
-                <Link href="/blog" className="text-xs transition-colors text-graykiSecondary hover:text-white lg:text-sm">
+              <li className="text-left">
+                <Link href="/blog" className="text-xs text-left transition-colors text-graykiSecondary hover:text-white lg:text-sm">
                   Blog
                 </Link>
               </li>
-              <li>
-                <Link href="/contacto" className="text-xs transition-colors text-graykiSecondary hover:text-white lg:text-sm">
+              <li className="text-left">
+                <Link href="/contacto" className="text-xs text-left transition-colors text-graykiSecondary hover:text-white lg:text-sm">
                   Contacto
                 </Link>
               </li>
@@ -141,13 +141,13 @@ export const Footer = ({ latestBlogs = [] }) => {
 
         {/* Copyright */}
         <div className="pt-8 mt-8 border-t border-gray-700">
-          <div className="flex flex-col items-center justify-between gap-4 text-center md:flex-row">
-            <p className="text-xs text-graykiSecondary lg:text-sm">
+          <div className="flex flex-col items-start justify-between gap-4 text-left md:flex-row">
+            <p className="text-xs text-left text-graykiSecondary lg:text-sm">
               © 2024 Inmobiliaria Vergara y Abogados. Todos los derechos reservados.
             </p>
-            <div className="flex space-x-4 text-xs text-graykiSecondary lg:text-sm">
-              <Link href="/privacy" className="hover:text-white">Política de Privacidad</Link>
-              <Link href="/terms" className="hover:text-white">Términos de Servicio</Link>
+            <div className="flex space-x-4 text-xs text-left text-graykiSecondary lg:text-sm">
+              <Link href="/privacy" className="text-left hover:text-white">Política de Privacidad</Link>
+              <Link href="/terms" className="text-left hover:text-white">Términos de Servicio</Link>
             </div>
           </div>
         </div>

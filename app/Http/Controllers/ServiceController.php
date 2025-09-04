@@ -24,4 +24,23 @@ class ServiceController extends Controller
             'seo' => $seoData,
         ]);
     }
+
+    public function show(Service $service)
+    {
+        $seoData = SEOService::generateMetaTags([
+            'title' => $service->name . ' - Servicios Legales Inmobiliarios - Inmobiliaria Vergara',
+            'description' => $service->description ?: 'Servicio legal especializado en ' . $service->category . '. Asesoría profesional y experta en derecho inmobiliario.',
+            'keywords' => strtolower($service->name) . ', ' . strtolower($service->category) . ', servicios legales, derecho inmobiliario, asesoría jurídica',
+            'type' => 'website',
+        ]);
+
+        // Get lawyers who might be related to this service category
+        $relatedLawyers = Lawyer::all();
+
+        return Inertia::render('ServiceDetail', [
+            'service' => $service,
+            'lawyers' => $relatedLawyers,
+            'seo' => $seoData,
+        ]);
+    }
 }

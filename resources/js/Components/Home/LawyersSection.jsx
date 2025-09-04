@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { MainButton } from "@/Components"
+import { MainButton, MotionWrapper } from "@/Components"
 import { LawyerCard } from "./LawyerCard"
 
 export const LawyersSection = ({ lawyers = [] }) => {
@@ -15,7 +15,7 @@ export const LawyersSection = ({ lawyers = [] }) => {
 
     checkScreenSize()
     window.addEventListener('resize', checkScreenSize)
-    
+
     return () => window.removeEventListener('resize', checkScreenSize)
   }, [])
 
@@ -23,7 +23,7 @@ export const LawyersSection = ({ lawyers = [] }) => {
   useEffect(() => {
     if (isMobile && lawyers.length > 1) {
       const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
           prevIndex === lawyers.length - 1 ? 0 : prevIndex + 1
         )
       }, 5000) // Change every 5 seconds
@@ -33,13 +33,13 @@ export const LawyersSection = ({ lawyers = [] }) => {
   }, [isMobile, lawyers.length])
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === lawyers.length - 1 ? 0 : prevIndex + 1
     )
   }
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? lawyers.length - 1 : prevIndex - 1
     )
   }
@@ -56,48 +56,55 @@ export const LawyersSection = ({ lawyers = [] }) => {
     <section className="py-20 bg-whiteki">
       <div className="mx-auto max-w-7xl px-4">
         {/* Section Header */}
-        <div className="flex justify-between items-end mb-16">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-medium text-darki font-prata mb-4">
-              Meet Our Attorneys
-            </h2>
-            <p className="text-lg text-greyki font-dmsans max-w-3xl">
-              Contamos con amplia experiencia en todas las industrias. Brindamos a cada cliente 
-              una combinación de conocimiento profundo de la industria y perspectivas expertas 
-              para ofrecer ideas frescas y soluciones innovadoras.
-            </p>
-          </div>
-          <div className="hidden md:block">
-            <button className="text-golden hover:text-darki transition-colors duration-300 font-dmsans text-lg flex items-center gap-2">
-              View All
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Desktop Layout - Professional Grid */}
-        <div className="hidden lg:grid lg:grid-cols-3 lg:gap-0">
-          {lawyers.slice(0, 3).map((lawyer, index) => (
-            <LawyerCard key={lawyer.id || index} lawyer={lawyer} />
-          ))}
-        </div>
-
-        {/* Mobile Layout - Professional Carousel */}
-        <div className="lg:hidden relative">
-          <div className="overflow-hidden rounded-none">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {lawyers.map((lawyer, index) => (
-                <div key={lawyer.id || index} className="w-full flex-shrink-0">
-                  <LawyerCard lawyer={lawyer} />
-                </div>
-              ))}
+        <MotionWrapper>
+          <div className="flex justify-between items-end mb-16">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-medium text-darki font-prata mb-4">
+                Meet Our Attorneys
+              </h2>
+              <p className="text-lg text-greyki font-dmsans max-w-3xl">
+                Contamos con amplia experiencia en todas las industrias. Brindamos a cada cliente
+                una combinación de conocimiento profundo de la industria y perspectivas expertas
+                para ofrecer ideas frescas y soluciones innovadoras.
+              </p>
+            </div>
+            <div className="hidden md:block">
+              <button className="text-golden hover:text-darki transition-colors duration-300 font-dmsans text-lg flex items-center gap-2">
+                View All
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
             </div>
           </div>
+        </MotionWrapper>
+
+        {/* Desktop Layout - Professional Grid */}
+        <MotionWrapper delay={0.2}>
+          <div className="hidden lg:grid lg:grid-cols-3 lg:gap-0">
+            {lawyers.slice(0, 3).map((lawyer, index) => (
+              <MotionWrapper key={lawyer.id || index} delay={index * 0.1}>
+                <LawyerCard lawyer={lawyer} />
+              </MotionWrapper>
+            ))}
+          </div>
+        </MotionWrapper>
+
+        {/* Mobile Layout - Professional Carousel */}
+        <MotionWrapper delay={0.2}>
+          <div className="lg:hidden relative">
+            <div className="overflow-hidden rounded-none">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              >
+                {lawyers.map((lawyer, index) => (
+                  <div key={lawyer.id || index} className="w-full flex-shrink-0">
+                    <LawyerCard lawyer={lawyer} />
+                  </div>
+                ))}
+              </div>
+            </div>
 
           {/* Carousel Controls */}
           {lawyers.length > 1 && (
@@ -110,7 +117,7 @@ export const LawyersSection = ({ lawyers = [] }) => {
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              
+
               <button
                 onClick={nextSlide}
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-darki text-whiteki p-3 hover:bg-golden transition-all duration-300 z-10 rounded-full shadow-lg"
@@ -136,16 +143,19 @@ export const LawyersSection = ({ lawyers = [] }) => {
               </div>
             </>
           )}
-        </div>
+          </div>
+        </MotionWrapper>
 
         {/* Call to Action */}
-        {lawyers.length > 3 && (
-          <div className="text-center mt-12">
-            <MainButton className="px-8 py-4">
-              Ver Todo el Equipo
-            </MainButton>
-          </div>
-        )}
+        <MotionWrapper delay={0.4}>
+          {lawyers.length > 3 && (
+            <div className="text-center mt-12">
+              <MainButton className="px-8 py-4">
+                Ver Todo el Equipo
+              </MainButton>
+            </div>
+          )}
+        </MotionWrapper>
       </div>
     </section>
   )
