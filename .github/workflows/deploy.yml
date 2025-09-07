@@ -1,0 +1,58 @@
+name: Deploy Laravel + React to Hostinger
+
+on:
+  push:
+    branches:
+      - main   # or master, depending on your default branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Install Node 22 for React build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies and build React
+        run: |
+          npm ci
+          npm run build
+
+      # Install PHP 8.3 for Laravel dependencies
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # Deploy build folder to Hostinger
+      - name: Deploy build folder to Hostinger
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HST_HOST }}
+          username: ${{ secrets.HST_USER }}
+          key: ${{ secrets.HST_KEY }}
+          port: ${{ secrets.HST_PORT }}
+          source: public/build/*
+          target: /home/u704112902/public_html/build
+          overwrite: true
+
+      # (Optional) Clear Laravel cache on Hostinger
+      - name: Clear Laravel cache
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HST_HOST }}
+          username: ${{ secrets.HST_USER }}
+          key: ${{ secrets.HST_KEY }}
+          port: ${{ secrets.HST_PORT }}
+          script: |
+            cd /home/u704112902/laravel_project
+            php artisan optimize:clear

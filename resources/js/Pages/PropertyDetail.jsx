@@ -31,6 +31,14 @@ export default function PropertyDetail({ property, auth, seo }) {
     setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length)
   }
 
+  const handleWhatsAppClick = (message) => {
+    const phoneNumber = "+573115327297"
+    const formattedNumber = phoneNumber.replace(/[\+\s\-\(\)]/g, '')
+    const encodedMessage = encodeURIComponent(message)
+    const whatsappUrl = `https://wa.me/${formattedNumber}?text=${encodedMessage}`
+    window.open(whatsappUrl, '_blank')
+  }
+
   return (
     <>
       <SEOHead seo={seo} />
@@ -174,10 +182,16 @@ export default function PropertyDetail({ property, auth, seo }) {
                 </MainButton>
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <button className="px-4 py-2 font-medium transition-all duration-300 border border-golden text-golden hover:bg-golden hover:text-whiteki font-dmsans text-sm lg:px-6 lg:py-3 lg:text-base">
+                  <button
+                    onClick={() => handleWhatsAppClick(`¡Hola! Me interesa obtener más información sobre la propiedad "${property.name}" (${formatPrice(property.price)}). ¿Podrían ayudarme con más detalles?`)}
+                    className="px-4 py-2 font-medium transition-all duration-300 border border-golden text-golden hover:bg-golden hover:text-whiteki font-dmsans text-sm lg:px-6 lg:py-3 lg:text-base"
+                  >
                     Solicitar Información
                   </button>
-                  <button className="px-4 py-2 font-medium transition-all duration-300 border border-darki text-darki hover:bg-darki hover:text-whiteki font-dmsans text-sm lg:px-6 lg:py-3 lg:text-base">
+                  <button
+                    onClick={() => handleWhatsAppClick(`¡Hola! Me interesa contactar con un asesor para la propiedad "${property.name}" (${formatPrice(property.price)}). ¿Podrían ayudarme?`)}
+                    className="px-4 py-2 font-medium transition-all duration-300 border border-darki text-darki hover:bg-darki hover:text-whiteki font-dmsans text-sm lg:px-6 lg:py-3 lg:text-base"
+                  >
                     Contactar Asesor
                   </button>
                 </div>

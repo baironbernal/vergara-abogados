@@ -18,7 +18,7 @@ const Contact = ({ citations , lawyers, seo}) => {
       <SEOHead seo={seo} />
 
       {/* Contact Section - Two Columns Layout */}
-      <section className="w-full py-8 lg:py-12" style={{
+      <section className="w-full py-16 lg:py-24" style={{
             backgroundImage: "url('/images/shared/service-background.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -32,7 +32,7 @@ const Contact = ({ citations , lawyers, seo}) => {
               <MotionWrapper>
                 <div className="mb-8 text-center">
                   <h1 className="mb-4 text-3xl font-bold text-darki font-prata lg:text-4xl">
-                    Write Your Message
+                    Escribe tu Mensaje
                   </h1>
                   <div className="flex items-center justify-center mb-6">
                     <div className="w-8 h-px bg-golden"></div>
@@ -53,7 +53,7 @@ const Contact = ({ citations , lawyers, seo}) => {
               <MotionWrapper delay={0.2}>
                 <div className="mb-8 text-center">
                   <h2 className="mb-4 text-3xl font-bold text-darki font-prata lg:text-4xl">
-                    Get Touch With Us
+                    Ponte en Contacto con Nosotros
                   </h2>
                   <div className="flex items-center justify-center mb-6">
                     <div className="w-8 h-px bg-golden"></div>
@@ -71,7 +71,7 @@ const Contact = ({ citations , lawyers, seo}) => {
                         <MapPin className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="mb-1 text-lg font-bold text-darki font-prata">Address</h3>
+                        <h3 className="mb-1 text-lg font-bold text-darki font-prata">Dirección</h3>
                         <p className="text-sm text-greyki font-dmsans">
                           Cl. 12 #8 05,<br />
                           Soacha Cundinamarca,<br />
@@ -88,7 +88,7 @@ const Contact = ({ citations , lawyers, seo}) => {
                         <Phone className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="mb-1 text-lg font-bold text-darki font-prata">Phone</h3>
+                        <h3 className="mb-1 text-lg font-bold text-darki font-prata">Teléfono</h3>
                         <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-000</p>
                         <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-001</p>
                         <p className="text-sm text-greyki font-dmsans">admin@abogadosvergara.com</p>
@@ -103,15 +103,15 @@ const Contact = ({ citations , lawyers, seo}) => {
                         <Clock className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="mb-1 text-lg font-bold text-darki font-prata">Office Hours</h3>
+                        <h3 className="mb-1 text-lg font-bold text-darki font-prata">Horario de Atención</h3>
                         <div className="space-y-0.5 text-xs text-greyki font-dmsans">
-                          <p><strong>Monday:</strong> 09:00-17:00</p>
-                          <p><strong>Tuesday:</strong> 09:00-17:00</p>
-                          <p><strong>Wednesday:</strong> 09:00-17:00</p>
-                          <p><strong>Thursday:</strong> 09:00-17:00</p>
-                          <p><strong>Friday:</strong> 09:00-17:00</p>
-                          <p><strong>Saturday:</strong> 10:00-13:00</p>
-                          <p><strong>Sunday:</strong> Close</p>
+                          <p><strong>Lunes:</strong> 09:00-17:00</p>
+                          <p><strong>Martes:</strong> 09:00-17:00</p>
+                          <p><strong>Miércoles:</strong> 09:00-17:00</p>
+                          <p><strong>Jueves:</strong> 09:00-17:00</p>
+                          <p><strong>Viernes:</strong> 09:00-17:00</p>
+                          <p><strong>Sábado:</strong> 10:00-13:00</p>
+                          <p><strong>Domingo:</strong> Cerrado</p>
                         </div>
                       </div>
                     </div>

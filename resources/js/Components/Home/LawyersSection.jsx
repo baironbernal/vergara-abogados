@@ -54,22 +54,22 @@ export const LawyersSection = ({ lawyers = [] }) => {
 
   return (
     <section className="py-20 bg-whiteki">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="px-4 mx-auto max-w-7xl">
         {/* Section Header */}
         <MotionWrapper>
-          <div className="flex justify-between items-end mb-16">
+          <div className="flex items-end justify-between mb-16">
             <div>
-              <h2 className="text-4xl md:text-5xl font-medium text-darki font-prata mb-4">
-                Meet Our Attorneys
+              <h2 className="mb-4 text-4xl font-medium md:text-5xl text-darki font-prata">
+                Nuestro Equipo
               </h2>
-              <p className="text-lg text-greyki font-dmsans max-w-3xl">
+              <p className="max-w-3xl text-lg text-greyki font-dmsans">
                 Contamos con amplia experiencia en todas las industrias. Brindamos a cada cliente
                 una combinación de conocimiento profundo de la industria y perspectivas expertas
                 para ofrecer ideas frescas y soluciones innovadoras.
               </p>
             </div>
             <div className="hidden md:block">
-              <button className="text-golden hover:text-darki transition-colors duration-300 font-dmsans text-lg flex items-center gap-2">
+              <button className="flex items-center gap-2 text-lg transition-colors duration-300 text-golden hover:text-darki font-dmsans">
                 View All
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -92,14 +92,14 @@ export const LawyersSection = ({ lawyers = [] }) => {
 
         {/* Mobile Layout - Professional Carousel */}
         <MotionWrapper delay={0.2}>
-          <div className="lg:hidden relative">
+          <div className="relative lg:hidden">
             <div className="overflow-hidden rounded-none">
               <div
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
               >
                 {lawyers.map((lawyer, index) => (
-                  <div key={lawyer.id || index} className="w-full flex-shrink-0">
+                  <div key={lawyer.id || index} className="flex-shrink-0 w-full">
                     <LawyerCard lawyer={lawyer} />
                   </div>
                 ))}
@@ -112,7 +112,7 @@ export const LawyersSection = ({ lawyers = [] }) => {
               {/* Navigation Arrows */}
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-darki text-whiteki p-3 hover:bg-golden transition-all duration-300 z-10 rounded-full shadow-lg"
+                className="absolute z-10 p-3 transition-all duration-300 transform -translate-y-1/2 rounded-full shadow-lg left-4 top-1/2 bg-darki text-whiteki hover:bg-golden"
                 aria-label="Anterior abogado"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -120,7 +120,7 @@ export const LawyersSection = ({ lawyers = [] }) => {
 
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-darki text-whiteki p-3 hover:bg-golden transition-all duration-300 z-10 rounded-full shadow-lg"
+                className="absolute z-10 p-3 transition-all duration-300 transform -translate-y-1/2 rounded-full shadow-lg right-4 top-1/2 bg-darki text-whiteki hover:bg-golden"
                 aria-label="Siguiente abogado"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -149,7 +149,7 @@ export const LawyersSection = ({ lawyers = [] }) => {
         {/* Call to Action */}
         <MotionWrapper delay={0.4}>
           {lawyers.length > 3 && (
-            <div className="text-center mt-12">
+            <div className="mt-12 text-center">
               <MainButton className="px-8 py-4">
                 Ver Todo el Equipo
               </MainButton>

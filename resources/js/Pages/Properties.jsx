@@ -115,7 +115,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
             {/* Filters Sidebar */}
             <MotionWrapper delay={0.1}>
               <aside className={`lg:flex-shrink-0 lg:w-80 ${isFiltersOpen ? 'block' : 'hidden lg:block'}`}>
-              <div className="lg:sticky lg:top-4 p-6 bg-white border shadow-lg border-softGrey lg:p-8">
+              <div className="p-6 bg-white border shadow-lg lg:sticky lg:top-4 border-softGrey lg:p-8">
                 <h2 className="flex items-center gap-3 mb-6 text-lg font-medium text-darki font-dmsans lg:mb-8 lg:text-xl">
                   <Filter className="w-5 h-5 text-golden lg:w-6 lg:h-6" />
                   Filtros de Búsqueda
@@ -228,7 +228,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
                 <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:gap-8 lg:mb-12 xl:grid-cols-3">
                   {paginatedProperties.map((property, index) => (
                     <MotionWrapper key={property.id} delay={index * 0.1}>
-                      <div className="bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                      <div className="flex flex-col h-full bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
                     <div className="relative">
                       <img
                         src={property.thumbnail_url || "/placeholder.svg"}
@@ -241,7 +241,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>
 
-                    <div className="p-4 lg:p-6">
+                    <div className="flex flex-col flex-grow p-4 lg:p-6">
                       <h3 className="mb-2 text-lg font-medium leading-tight text-darki font-dmsans lg:mb-3 lg:text-xl">{property.name}</h3>
                       <p className="mb-3 text-xl font-bold text-golden font-prata lg:mb-4 lg:text-2xl">{formatPrice(property.price)}</p>
 
@@ -259,13 +259,13 @@ export default function Properties({ states, properties, municipalities, seo }) 
                       )}
 
                       {property.description && (
-                        <p className="mb-4 text-xs leading-relaxed text-greyki line-clamp-3 font-dmsans lg:mb-6 lg:text-sm">
+                        <p className="flex-grow mb-4 text-xs leading-relaxed text-greyki line-clamp-3 font-dmsans lg:mb-6 lg:text-sm">
                           {property.description}
                         </p>
                       )}
                     </div>
 
-                    <div className="px-4 pb-4 lg:px-6 lg:pb-6">
+                    <div className="px-4 pb-4 mt-auto lg:px-6 lg:pb-6">
                       <MainButton as={Link} href={`/inmobiliaria/${property.id}`} className="w-full">
                         Ver Detalles
                       </MainButton>
@@ -294,7 +294,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
                         onClick={() => setCurrentPage(page)}
                         className={`min-w-[40px] px-3 py-2 text-sm font-medium font-dmsans transition-all duration-300 lg:min-w-[44px] lg:px-4 lg:py-3 ${
                           currentPage === page
-                            ? 'bg-golden text-whiteki shadow-lg scale-110'
+                            ? 'bg-darki text-whiteki shadow-lg scale-110'
                             : 'border border-graykiSecondary bg-white hover:bg-darki hover:text-whiteki'
                         }`}
                       >
@@ -317,8 +317,8 @@ export default function Properties({ states, properties, municipalities, seo }) 
                 {/* No Results */}
                 <MotionWrapper delay={0.4}>
                   {filteredProperties.length === 0 && (
-                    <div className="py-12 text-center lg:py-16">
-                      <div className="max-w-md mx-auto">
+                    <div className="w-full py-12 text-center lg:py-16">
+                      <div className="w-full max-w-4xl px-4 mx-auto">
                         <h3 className="mb-4 text-xl font-medium text-darki font-prata lg:text-2xl">No se encontraron propiedades</h3>
                         <p className="mb-6 text-base text-greyki font-dmsans lg:mb-8 lg:text-lg">No hay propiedades que coincidan con tus criterios de búsqueda</p>
                         <MainButton
@@ -332,7 +332,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
                             })
                             setCurrentPage(1)
                           }}
-                          className="px-6 py-3 shadow-lg lg:px-8 lg:py-4"
+                          className="px-6 py-3 mx-auto shadow-lg lg:px-8 lg:py-4"
                         >
                           Limpiar Todos los Filtros
                         </MainButton>

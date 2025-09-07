@@ -23,9 +23,9 @@ const Services = ({ services, lawyers, seo }) => {
             <MotionWrapper>
               <div className="grid grid-cols-1 gap-6 px-4 mx-auto max-w-7xl sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 lg:px-8">
                 {services && services.map((service, index) => (
-                  <MotionWrapper key={service.id} delay={index * 0.1}>
+                  <div key={service.id} className="h-full">
                     <CardService {...service} />
-                  </MotionWrapper>
+                  </div>
                 ))}
               </div>
             </MotionWrapper>
