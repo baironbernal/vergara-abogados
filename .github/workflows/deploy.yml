@@ -30,7 +30,7 @@ jobs:
         with:
           host: ${{ secrets.HST_HOST }}
           username: ${{ secrets.HST_USER }}
-          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY_1 }}
           port: ${{ secrets.HST_PORT }}
           source: public/build/*
           target: /home/u704112902/public_html/build
@@ -42,7 +42,7 @@ jobs:
         with:
           host: ${{ secrets.HST_HOST }}
           username: ${{ secrets.HST_USER }}
-          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY_1 }}
           port: ${{ secrets.HST_PORT }}
           script: |
             cd /home/u704112902/laravel_project
