@@ -3,7 +3,7 @@ name: Deploy Laravel + React to Hostinger
 on:
   push:
     branches:
-      - main   # adjust if your default branch is 'master'
+      - main
 
 jobs:
   deploy:
@@ -24,25 +24,25 @@ jobs:
           npm ci
           npm run build
 
-      # Deploy build folder to Hostinger
+      # Deploy build folder to Hostinger (with password auth)
       - name: Deploy build folder to Hostinger
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HST_HOST }}
           username: ${{ secrets.HST_USER }}
-          key: ${{ secrets.HOSTINGER_SSH_KEY_1 }}
+          password: ${{ secrets.HST_PASS }}
           port: ${{ secrets.HST_PORT }}
           source: public/build/*
           target: /home/u704112902/public_html/build
           overwrite: true
 
-      # (Optional) Clear Laravel cache on Hostinger
+      # (Optional) Clear Laravel cache with password auth
       - name: Clear Laravel cache
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HST_HOST }}
           username: ${{ secrets.HST_USER }}
-          key: ${{ secrets.HOSTINGER_SSH_KEY_1 }}
+          password: ${{ secrets.HST_PASS }}
           port: ${{ secrets.HST_PORT }}
           script: |
             cd /home/u704112902/laravel_project
