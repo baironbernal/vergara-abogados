@@ -3,7 +3,7 @@ name: Deploy Laravel + React to Hostinger
 on:
   push:
     branches:
-      - main   # change if your default branch is 'master'
+      - main   # or master, depending on your default branch
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Install Node.js 22 for React build
+      # Install Node 22 for React build
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -24,26 +24,33 @@ jobs:
           npm ci
           npm run build
 
-      # Upload build folder to Hostinger
+      # Install PHP 8.3 for Laravel dependencies
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # Deploy build folder using rsync over SSH
       - name: Deploy build folder to Hostinger
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HST_HOST }}
           username: ${{ secrets.HST_USER }}
-          password: ${{ secrets.HST_PASS }}
-          port: ${{ secrets.HST_PORT }}   # should be 65002
-          source: public/build/*
-          target: /home/u704112902/public_html/build
-          overwrite: true
-          debug: true   # helpful to see logs, remove later if all works
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HST_PORT }}
+          script: |
+            rsync -avz --delete ./public/build/ /home/u704112902/public_html/build
 
-      # (Optional) Clear Laravel cache on server
+      # (Optional) Clear Laravel cache on Hostinger
       - name: Clear Laravel cache
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HST_HOST }}
           username: ${{ secrets.HST_USER }}
-          password: ${{ secrets.HST_PASS }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HST_PORT }}
           script: |
             cd /home/u704112902/laravel_project
