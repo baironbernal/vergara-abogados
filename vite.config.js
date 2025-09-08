@@ -17,7 +17,7 @@ export default defineConfig({
       },
     build: {
         manifest: true,
-        outDir: 'public/build', // 👈 this is critical
+        outDir: '../public_html/build', // 👈 this is critical
         rollupOptions: {
             input: '/resources/js/app.jsx',
         },
