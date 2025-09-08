@@ -3,7 +3,7 @@ name: Deploy Laravel + React to Hostinger
 on:
   push:
     branches:
-      - main   # or master
+      - main   # or master def
 
 jobs:
   deploy:
