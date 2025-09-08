@@ -19,6 +19,11 @@ class Citation extends Model
         'observations',
     ];
 
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+    ];
+
     public function lawyer()
     {
         return $this->belongsTo(Lawyer::class);
