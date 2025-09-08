@@ -1,9 +1,9 @@
-name: Deploy Laravel + React to Hostinger
+name: Deploy Laravel + React to Hostinger (FTP)
 
 on:
   push:
     branches:
-      - main   # or master
+      - main   # adjust if you use "master"
 
 jobs:
   deploy:
@@ -13,7 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Install Node 22 for React build
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -24,7 +23,6 @@ jobs:
           npm ci
           npm run build
 
-      # Install PHP 8.3 for Laravel dependencies
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -33,30 +31,13 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      # Deploy build folder to Hostinger (SCP)
-      - name: Deploy build folder to Hostinger
-        uses: appleboy/scp-action@v0.1.7
+      - name: 📂 Sync build folder to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.HST_HOST }}
-          username: ${{ secrets.HST_USER }}
-          port: ${{ secrets.HST_PORT }}
-          source: public/build/*
-          target: /home/u704112902/public_html/build
-          overwrite: true
-          # Authentication (tries key first, else password)
-          key: ${{ secrets.HOSTINGER_SSH_KEY }}
-          password: ${{ secrets.HOSTINGER_PASSWORD }}
-
-      # Run Laravel cache clear (SSH)
-      - name: Clear Laravel cache
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.HST_HOST }}
-          username: ${{ secrets.HST_USER }}
-          port: ${{ secrets.HST_PORT }}
-          script: |
-            cd /home/u704112902/laravel_project
-            php artisan optimize:clear
-          # Authentication (tries key first, else password)
-          key: ${{ secrets.HOSTINGER_SSH_KEY }}
-          password: ${{ secrets.HOSTINGER_PASSWORD }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftps
+          local-dir: ./public/build/
+          server-dir: /public_html/build/
