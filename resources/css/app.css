@@ -4,6 +4,17 @@
 @import "@fontsource/dm-sans/500.css";  /* Medium */
 @import "@fontsource/dm-sans/700.css";  /* Bold */
 
+/* Font display optimization */
+@font-face {
+  font-family: 'Prata';
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-display: swap;
+}
+
 
 
 
@@ -30,9 +41,15 @@ body {
     font-size: 16px;
     color: #374151; /* Tailwind gray-700 */
     line-height: 1.5;
+    font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, .gdlr-title-font {
-    font-family: "DM Sans", sans-serif;
+    font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Preload critical fonts */
+link[rel="preload"][as="font"] {
+    font-display: swap;
 }
 

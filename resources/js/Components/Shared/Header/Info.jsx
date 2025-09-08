@@ -35,7 +35,7 @@ export const Info = ({ styles=null }) => {
    <header className={clsx(styles)} style={{ height: "var(--info-top-height)" }}>
       <div className="container flex-col items-center justify-end hidden gap-4 py-4 mx-auto text-xs text-grayki md:flex md:flex-row ">
           <p className="flex gap-2 px-3 text-gray-300 border-r border-greyki">
-            <Mail className="w-4 h-full" />admin@abogadosvergara.com</p>
+            <Mail className="w-4 h-full" />admin@inmobiliariavergarayabogados.com</p>
           
           <p className="flex gap-2 px-3 text-gray-300 border-r border-greyki">
             <Phone className="w-4 h-full" /> +57 323-3344-34</p>

@@ -8,9 +8,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        dmsans: ["DM Sans", "sans-serif"],
-        opensans: ['"Arial, Helvetica"', 'sans-serif'],
-        prata: ['Prata', 'sans-serif'],
+        dmsans: ["DM Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "sans-serif"],
+        opensans: ["Arial", "Helvetica", "system-ui", "sans-serif"],
+        prata: ["Prata", "Times New Roman", "Georgia", "serif"],
       },
       colors: {
         golden: '#C59B40',

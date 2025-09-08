@@ -171,7 +171,7 @@ const ServiceDetail = ({ service, lawyers, seo }) => {
                       <Mail className="w-6 h-6 mr-4 text-golden" />
                       <div>
                         <h4 className="font-semibold text-darki font-prata">Escríbenos</h4>
-                        <p className="text-sm text-greyki font-dmsans">admin@abogadosvergara.com</p>
+                        <p className="text-sm text-greyki font-dmsans">admin@inmobiliariavergarayabogados.com</p>
                       </div>
                     </div>
                   </MotionWrapper>

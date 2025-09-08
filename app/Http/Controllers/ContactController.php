@@ -19,8 +19,14 @@ class ContactController extends Controller
             'type' => 'website',
         ]);
         
-        $citations = Citation::with('lawyer')->get(['id', 'lawyer_id', 'starts_at', 'ends_at']);
-        $lawyers = Lawyer::all(['id', 'name']);
+        $citations = Citation::with('lawyer')
+            ->whereNotNull('starts_at')
+            ->whereNotNull('ends_at')
+            ->get(['id', 'lawyer_id', 'starts_at', 'ends_at']);
+            
+        $lawyers = Lawyer::whereNotNull('user_id')
+            ->with('user')
+            ->get(['id', 'name', 'user_id']);
         
         return Inertia::render('Contact', [
             'citations' => $citations,

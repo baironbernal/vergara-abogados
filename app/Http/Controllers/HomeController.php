@@ -19,7 +19,10 @@ class HomeController extends Controller
         ]);
 
         return Inertia::render('Home', [
-            'lawyers' => Lawyer::take(6)->get(),
+            'lawyers' => Lawyer::whereNotNull('user_id')
+                ->with('user')
+                ->take(6)
+                ->get(),
             'seo' => $seoData,
         ]);
     }

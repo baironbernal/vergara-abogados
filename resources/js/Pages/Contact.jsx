@@ -91,7 +91,7 @@ const Contact = ({ citations , lawyers, seo}) => {
                         <h3 className="mb-1 text-lg font-bold text-darki font-prata">Teléfono</h3>
                         <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-000</p>
                         <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-001</p>
-                        <p className="text-sm text-greyki font-dmsans">admin@abogadosvergara.com</p>
+                        <p className="text-sm text-greyki font-dmsans">admin@inmobiliariavergarayabogados.com</p>
                       </div>
                     </div>
                   </MotionWrapper>

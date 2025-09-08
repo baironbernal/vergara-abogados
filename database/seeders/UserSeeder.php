@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $admin = User::firstOrCreate(
-            ['email' => 'admin@abogadosvergara.com'],
+            ['email' => 'admin@inmobiliariavergarayabogados.com'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('123456'),
@@ -28,15 +28,15 @@ class UserSeeder extends Seeder
         $lawyers = [
             [
                 'name' => 'Dayana Vergara',
-                'email' => 'dayana.vergara@abogadosvergara.com',
+                'email' => 'dayana.vergara@inmobiliariavergarayabogados.com',
             ],
             [
                 'name' => 'Brian Vergara',
-                'email' => 'brayan.vergara@abogadosvergara.com',
+                'email' => 'brayan.vergara@inmobiliariavergarayabogados.com',
             ],
             [
                 'name' => 'Elvis Vergara',
-                'email' => 'elvis.vergara@abogadosvergara.com',
+                'email' => 'elvis.vergara@inmobiliariavergarayabogados.com',
             ],
         ];
 

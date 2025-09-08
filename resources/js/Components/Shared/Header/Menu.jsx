@@ -119,7 +119,8 @@ export const Menu = ({ styles }) => {
           {/* Button to Reserve */}
 
           <MainButton
-            onClick={handleContactClick}
+            as={Link}
+            href="/contacto"
             className={'py-2 hidden lg:block lg:py-3'}
           >
             Reserva tu consulta
@@ -215,10 +216,9 @@ export const Menu = ({ styles }) => {
                   className="pt-8 mt-8 border-t border-golden/20"
                 >
                   <MainButton
-                    onClick={(e) => {
-                      setIsMenuOpen(false);
-                      handleContactClick(e);
-                    }}
+                    as={Link}
+                    href="/contacto"
+                    onClick={() => setIsMenuOpen(false)}
                     className="w-full justify-center"
                   >
                     Reserva tu consulta

@@ -30,6 +30,11 @@
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <link rel="icon" type="image/png" href="/logo.png">
         
+        <!-- Preload Critical Fonts -->
+        <link rel="preload" href="/build/assets/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="/build/assets/dm-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="/build/assets/prata-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+        
         <!-- Structured Data -->
         @if(isset($page['props']['seo']['structured_data']))
             <script type="application/ld+json">

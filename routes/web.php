@@ -20,7 +20,9 @@ Route::get('/acerca', function () {
         'type' => 'website',
     ]);
 
-    $lawyers = \App\Models\Lawyer::all(['id', 'name', 'description', 'image']);
+    $lawyers = \App\Models\Lawyer::whereNotNull('user_id')
+        ->with('user')
+        ->get(['id', 'name', 'description', 'image', 'user_id']);
 
     return inertia('About', [
         'seo' => $seoData,

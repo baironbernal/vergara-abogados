@@ -5,6 +5,19 @@
 
     RewriteEngine On
 
+    # Font files
+    <IfModule mod_headers.c>
+        <FilesMatch "\.(woff|woff2|eot|ttf|otf)$">
+            Header set Access-Control-Allow-Origin "*"
+            Header set Cache-Control "max-age=31536000, public"
+        </FilesMatch>
+        
+        # Enable compression for fonts
+        <FilesMatch "\.(woff|woff2)$">
+            Header append Vary Accept-Encoding
+        </FilesMatch>
+    </IfModule>
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
