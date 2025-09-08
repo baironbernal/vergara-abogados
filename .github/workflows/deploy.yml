@@ -1,0 +1,79 @@
+name: Deploy Laravel + React to Hostinger (SSH)
+
+on:
+  push:
+    branches:
+      - main   # o "master" si tu repo usa master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descargar código
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Configurar Node.js (React)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build React
+        run: |
+          npm ci
+          npm run build
+
+      # 3. Configurar PHP (Laravel)
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # 4. Copiar build de React al public_html/build en Hostinger
+      - name: Upload React build
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HST_HOST }}
+          port: ${{ secrets.HST_PORT }}
+          username: ${{ secrets.HST_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "public/build/*"
+          target: "/home/${{ secrets.HST_USER }}/public_html/build"
+          overwrite: true
+
+      # 5. Copiar archivos de Laravel al folder del proyecto
+      - name: Upload Laravel project
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HST_HOST }}
+          port: ${{ secrets.HST_PORT }}
+          username: ${{ secrets.HST_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "./"
+          target: "/home/${{ secrets.HST_USER }}/laravel_project"
+          overwrite: true
+          strip_components: 0
+          exclude: |
+            **/node_modules/**
+            **/public/build/**
+            **/.git*
+            **/.github/**
+            **/tests/**
+
+      # 6. Ejecutar comandos Laravel en el servidor (migraciones, clear cache, etc.)
+      - name: Run artisan commands
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HST_HOST }}
+          port: ${{ secrets.HST_PORT }}
+          username: ${{ secrets.HST_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/${{ secrets.HST_USER }}/laravel_project
+            php artisan migrate --force
+            php artisan optimize:clear
