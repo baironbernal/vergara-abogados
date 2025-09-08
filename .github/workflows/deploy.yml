@@ -1,38 +1,22 @@
-name: Deploy Laravel + React to Hostinger (FTP)
+name: Deploy Laravel + React
 
 on:
   push:
     branches:
-      - main   # adjust if you use "master"
+      - main
 
 jobs:
-  deploy:
+  react:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Install dependencies and build React
-        run: |
+      - run: |
           npm ci
           npm run build
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-
-      - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: 📂 Sync build folder to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
@@ -41,3 +25,27 @@ jobs:
           protocol: ftps
           local-dir: ./public/build/
           server-dir: /public_html/build/
+
+  laravel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - run: composer install --no-dev --optimize-autoloader
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftps
+          local-dir: ./
+          server-dir: /laravel_project/
+          exclude: |
+            **/node_modules/**
+            **/public/build/**
+            **/.git*
+            **/.github/**
+            **/tests/**
