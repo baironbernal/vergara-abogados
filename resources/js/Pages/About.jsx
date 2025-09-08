@@ -1,7 +1,7 @@
 import {MotionWrapper, BannerInformative, MainButton, SEOHead} from "@/Components"
 import { Link } from "@inertiajs/react"
 
-const About = ({ seo }) => {
+const About = ({ seo, lawyers }) => {
   return (
     <>
       <SEOHead seo={seo} />
@@ -152,23 +152,46 @@ const About = ({ seo }) => {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            <div className="text-center">
-              <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
-              <h3 className="mb-2 text-lg font-bold lg:text-xl">Juan Vergara</h3>
-              <p className="text-sm text-gray-600 lg:text-base">Director General</p>
-            </div>
+            {lawyers && lawyers.length > 0 ? (
+              lawyers.map((lawyer) => (
+                <div key={lawyer.id} className="text-center">
+                  <div className="w-24 h-24 mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6 rounded-full overflow-hidden">
+                    {lawyer.image ? (
+                      <img 
+                        src={lawyer.image} 
+                        alt={lawyer.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-300 rounded-full"></div>
+                    )}
+                  </div>
+                  <h3 className="mb-2 text-lg font-bold lg:text-xl">{lawyer.name}</h3>
+                  <p className="text-sm text-gray-600 lg:text-base">{lawyer.description}</p>
+                </div>
+              ))
+            ) : (
+              // Fallback content if no lawyers data
+              <>
+                <div className="text-center">
+                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+                  <h3 className="mb-2 text-lg font-bold lg:text-xl">Juan Vergara</h3>
+                  <p className="text-sm text-gray-600 lg:text-base">Director General</p>
+                </div>
 
-            <div className="text-center">
-              <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
-              <h3 className="mb-2 text-lg font-bold lg:text-xl">María González</h3>
-              <p className="text-sm text-gray-600 lg:text-base">Asesora Legal</p>
-            </div>
+                <div className="text-center">
+                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+                  <h3 className="mb-2 text-lg font-bold lg:text-xl">María González</h3>
+                  <p className="text-sm text-gray-600 lg:text-base">Asesora Legal</p>
+                </div>
 
-            <div className="text-center md:col-span-2 lg:col-span-1">
-              <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
-              <h3 className="mb-2 text-lg font-bold lg:text-xl">Carlos Rodríguez</h3>
-              <p className="text-sm text-gray-600 lg:text-base">Asesor Inmobiliario</p>
-            </div>
+                <div className="text-center md:col-span-2 lg:col-span-1">
+                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+                  <h3 className="mb-2 text-lg font-bold lg:text-xl">Carlos Rodríguez</h3>
+                  <p className="text-sm text-gray-600 lg:text-base">Asesor Inmobiliario</p>
+                </div>
+              </>
+            )}
           </div>
         </section>
         </MotionWrapper>

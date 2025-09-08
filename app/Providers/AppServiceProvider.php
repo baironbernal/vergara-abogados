@@ -29,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Configure storage URL for Hostinger
+        if (app()->environment('production')) {
+            config(['filesystems.disks.public.url' => env('APP_URL').'/storage']);
+        }
     }
 }

@@ -20,8 +20,11 @@ Route::get('/acerca', function () {
         'type' => 'website',
     ]);
 
+    $lawyers = \App\Models\Lawyer::all(['id', 'name', 'description', 'image']);
+
     return inertia('About', [
         'seo' => $seoData,
+        'lawyers' => $lawyers,
     ]);
 });
 

@@ -12,6 +12,7 @@ class Lawyer extends Model
     protected $fillable = [
         'name',
         'profession',
+        'description',
         'phone',
         'email',
         'image',
@@ -20,5 +21,13 @@ class Lawyer extends Model
     public function citations()
     {
         return $this->hasMany(Citation::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        if ($value) {
+            return asset('storage/' . $value);
+        }
+        return null;
     }
 }

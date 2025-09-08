@@ -42,6 +42,10 @@ class LawyerResource extends Resource
                         ->label('Profession')
                         ->required()
                         ->maxLength(255),
+                    Forms\Components\Textarea::make('description')
+                        ->label('Description')
+                        ->rows(3)
+                        ->columnSpanFull(),
                     TextInput::make('phone')
                         ->label('Phone')
                         ->tel()
@@ -52,9 +56,13 @@ class LawyerResource extends Resource
                         ->maxLength(255),
                     FileUpload::make('image')
                         ->label('Profile Image')
-                        ->image()
+                        ->disk('public')
                         ->directory('lawyers')
+                        ->image()
                         ->imageEditor()
+                        ->visibility('public')
+                        ->preserveFilenames()
+                        ->maxFiles(1)
                         ->columnSpanFull(),
                 ]),
         ]);
