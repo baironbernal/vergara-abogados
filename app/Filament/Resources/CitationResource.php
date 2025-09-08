@@ -18,6 +18,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class CitationResource extends Resource
 {
@@ -28,6 +29,28 @@ class CitationResource extends Resource
     protected static ?string $label = 'Citas';
 
     protected static ?string $navigationGroup = 'Firma';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = Auth::user();
+
+        // If user is admin, show all citations
+        if ($user && $user->hasRole('admin')) {
+            return $query;
+        }
+
+        // If user is a lawyer, show only their citations
+        if ($user && $user->hasRole('lawyer')) {
+            $lawyer = $user->lawyer;
+            if ($lawyer) {
+                return $query->where('lawyer_id', $lawyer->id);
+            }
+        }
+
+        // Default: no citations if user doesn't have proper role
+        return $query->whereRaw('1 = 0');
+    }
 
     public static function form(Form $form): Form
     {
@@ -53,7 +76,18 @@ class CitationResource extends Resource
                         ->relationship('lawyer', 'name')
                         ->searchable()
                         ->preload()
-                        ->required(),
+                        ->required()
+                        ->default(function () {
+                            $user = Auth::user();
+                            if ($user && $user->hasRole('lawyer') && $user->lawyer) {
+                                return $user->lawyer->id;
+                            }
+                            return null;
+                        })
+                        ->disabled(function () {
+                            $user = Auth::user();
+                            return $user && $user->hasRole('lawyer');
+                        }),
                     DateTimePicker::make('starts_at')
                         ->label('Starts At')
                         ->required()

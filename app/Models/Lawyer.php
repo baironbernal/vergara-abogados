@@ -16,11 +16,17 @@ class Lawyer extends Model
         'phone',
         'email',
         'image',
+        'user_id',
     ];
 
     public function citations()
     {
         return $this->hasMany(Citation::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function getImageAttribute($value)

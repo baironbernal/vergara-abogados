@@ -55,19 +55,12 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        // Opción 1: Permitir acceso a todos los usuarios autenticados
-        return true;
-        
-        // Opción 2: Solo usuarios con email específico
-        // return str_ends_with($this->email, '@inmobiliariavergarayabogados.com.co');
-        
-        // Opción 3: Solo usuarios con rol de admin (si usas roles)
-        // return $this->hasRole('admin');
-        
-        // Opción 4: Solo emails específicos
-        // return in_array($this->email, [
-        //     'admin@inmobiliariavergarayabogados.com.co',
-        //     'tu-email@ejemplo.com'
-        // ]);
+        // Admins y abogados pueden acceder al panel
+        return $this->hasRole(['admin', 'lawyer']);
+    }
+
+    public function lawyer()
+    {
+        return $this->hasOne(Lawyer::class);
     }
 }

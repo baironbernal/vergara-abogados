@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Lawyer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -40,14 +41,26 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($lawyers as $lawyerData) {
-            $lawyer = User::firstOrCreate(
+            $lawyerUser = User::firstOrCreate(
                 ['email' => $lawyerData['email']],
                 [
                     'name' => $lawyerData['name'],
                     'password' => Hash::make('123456'),
                 ]
             );
-            $lawyer->assignRole('lawyer');
+            $lawyerUser->assignRole('lawyer');
+
+            // Create or update the corresponding lawyer profile
+            Lawyer::firstOrCreate(
+                ['email' => $lawyerData['email']],
+                [
+                    'name' => $lawyerData['name'],
+                    'profession' => 'Abogado',
+                    'description' => 'Abogado especializado en derecho inmobiliario',
+                    'phone' => '+57 300 000 0000',
+                    'user_id' => $lawyerUser->id,
+                ]
+            );
         }
     }
 }

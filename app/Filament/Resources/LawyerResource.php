@@ -8,6 +8,7 @@ use App\Models\Lawyer;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -46,6 +47,11 @@ class LawyerResource extends Resource
                         ->label('Description')
                         ->rows(3)
                         ->columnSpanFull(),
+                    Select::make('user_id')
+                        ->label('Associated User')
+                        ->relationship('user', 'name')
+                        ->searchable()
+                        ->preload(),
                     TextInput::make('phone')
                         ->label('Phone')
                         ->tel()
@@ -75,6 +81,7 @@ class LawyerResource extends Resource
                 ImageColumn::make('image')->label('Image')->circular(),
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('profession')->sortable()->searchable(),
+                TextColumn::make('user.name')->label('User Account')->sortable()->searchable(),
                 TextColumn::make('phone')->toggleable(),
                 TextColumn::make('email')->sortable()->searchable(),
                 TextColumn::make('created_at')->dateTime('Y-m-d H:i')->sortable()->toggleable(isToggledHiddenByDefault: true),
