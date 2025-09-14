@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Blog extends Model
@@ -79,7 +78,7 @@ class Blog extends Model
 
     public function getFeaturedImageUrlAttribute()
     {
-        return $this->featured_image ? Storage::disk('public')->url($this->featured_image) : '/images/shared/background-title.webp';
+        return $this->featured_image ? asset('storage/' . $this->featured_image) : '/images/shared/background-title.webp';
     }
 
     public function getExcerptAttribute($value)
@@ -101,7 +100,7 @@ class Blog extends Model
         }
 
         return array_map(function($image) {
-            return Storage::disk('public')->url($image);
+            return asset('storage/' . $image);
         }, $this->gallery);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Property extends Model
 {
@@ -51,12 +50,12 @@ class Property extends Model
         }
 
         return array_map(function($image) {
-            return Storage::disk('public')->url($image);
+            return asset('storage/' . $image);
         }, $this->gallery);
     }
 
     public function getThumbnailUrlAttribute()
     {
-        return $this->thumbnail ? Storage::disk('public')->url($this->thumbnail) : '/images/shared/background-title.webp';
+        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : '/images/shared/background-title.webp';
     }
 }
