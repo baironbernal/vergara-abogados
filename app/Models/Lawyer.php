@@ -32,6 +32,10 @@ class Lawyer extends Model
     public function getImageAttribute($value)
     {
         if ($value) {
+            // Check if the value is already a full URL (starts with http or https)
+            if (str_starts_with($value, 'http')) {
+                return $value;
+            }
             return asset('storage/' . $value);
         }
         return null;

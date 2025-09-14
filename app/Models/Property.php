@@ -50,12 +50,25 @@ class Property extends Model
         }
 
         return array_map(function($image) {
+            // Check if the value is already a full URL
+            if (str_starts_with($image, 'http')) {
+                return $image;
+            }
             return asset('storage/' . $image);
         }, $this->gallery);
     }
 
     public function getThumbnailUrlAttribute()
     {
-        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : '/images/shared/background-title.webp';
+        if (!$this->thumbnail) {
+            return '/images/shared/background-title.webp';
+        }
+        
+        // Check if the value is already a full URL
+        if (str_starts_with($this->thumbnail, 'http')) {
+            return $this->thumbnail;
+        }
+        
+        return asset('storage/' . $this->thumbnail);
     }
 }

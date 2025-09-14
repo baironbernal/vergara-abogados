@@ -78,7 +78,16 @@ class Blog extends Model
 
     public function getFeaturedImageUrlAttribute()
     {
-        return $this->featured_image ? asset('storage/' . $this->featured_image) : '/images/shared/background-title.webp';
+        if (!$this->featured_image) {
+            return '/images/shared/background-title.webp';
+        }
+        
+        // Check if the value is already a full URL
+        if (str_starts_with($this->featured_image, 'http')) {
+            return $this->featured_image;
+        }
+        
+        return asset('storage/' . $this->featured_image);
     }
 
     public function getExcerptAttribute($value)
@@ -100,6 +109,10 @@ class Blog extends Model
         }
 
         return array_map(function($image) {
+            // Check if the value is already a full URL
+            if (str_starts_with($image, 'http')) {
+                return $image;
+            }
             return asset('storage/' . $image);
         }, $this->gallery);
     }
