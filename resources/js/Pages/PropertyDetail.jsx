@@ -19,8 +19,8 @@ export default function PropertyDetail({ property, auth, seo }) {
   }
 
   const images = [
-    property.thumbnail_url || "/placeholder.svg",
-    ...(property.gallery_images || [])
+    property.thumbnail ? `/storage/${property.thumbnail}` : "/placeholder.svg",
+    ...(property.gallery ? property.gallery.map(img => `/storage/${img}`) : [])
   ]
 
   const nextImage = () => {
@@ -184,13 +184,13 @@ export default function PropertyDetail({ property, auth, seo }) {
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <button
                     onClick={() => handleWhatsAppClick(`¡Hola! Me interesa obtener más información sobre la propiedad "${property.name}" (${formatPrice(property.price)}). ¿Podrían ayudarme con más detalles?`)}
-                    className="px-4 py-2 font-medium transition-all duration-300 border border-golden text-golden hover:bg-golden hover:text-whiteki font-dmsans text-sm lg:px-6 lg:py-3 lg:text-base"
+                    className="px-4 py-2 text-sm font-medium transition-all duration-300 border border-golden text-golden hover:bg-golden hover:text-whiteki font-dmsans lg:px-6 lg:py-3 lg:text-base"
                   >
                     Solicitar Información
                   </button>
                   <button
                     onClick={() => handleWhatsAppClick(`¡Hola! Me interesa contactar con un asesor para la propiedad "${property.name}" (${formatPrice(property.price)}). ¿Podrían ayudarme?`)}
-                    className="px-4 py-2 font-medium transition-all duration-300 border border-darki text-darki hover:bg-darki hover:text-whiteki font-dmsans text-sm lg:px-6 lg:py-3 lg:text-base"
+                    className="px-4 py-2 text-sm font-medium transition-all duration-300 border border-darki text-darki hover:bg-darki hover:text-whiteki font-dmsans lg:px-6 lg:py-3 lg:text-base"
                   >
                     Contactar Asesor
                   </button>
@@ -216,7 +216,7 @@ export default function PropertyDetail({ property, auth, seo }) {
               <img
                 src={images[selectedImageIndex]}
                 alt={property.name}
-                className="max-w-full max-h-full object-contain"
+                className="object-contain max-w-full max-h-full"
               />
 
               {/* Navigation Arrows */}
@@ -224,13 +224,13 @@ export default function PropertyDetail({ property, auth, seo }) {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute p-2 transition-colors duration-200 left-4 top-1/2 transform -translate-y-1/2 bg-darki/80 text-whiteki hover:bg-golden lg:left-8 lg:p-3"
+                    className="absolute p-2 transition-colors duration-200 transform -translate-y-1/2 left-4 top-1/2 bg-darki/80 text-whiteki hover:bg-golden lg:left-8 lg:p-3"
                   >
                     <ChevronLeft className="w-6 h-6 lg:w-8 lg:h-8" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute p-2 transition-colors duration-200 right-4 top-1/2 transform -translate-y-1/2 bg-darki/80 text-whiteki hover:bg-golden lg:right-8 lg:p-3"
+                    className="absolute p-2 transition-colors duration-200 transform -translate-y-1/2 right-4 top-1/2 bg-darki/80 text-whiteki hover:bg-golden lg:right-8 lg:p-3"
                   >
                     <ChevronRight className="w-6 h-6 lg:w-8 lg:h-8" />
                   </button>
@@ -238,7 +238,7 @@ export default function PropertyDetail({ property, auth, seo }) {
               )}
 
               {/* Image Counter */}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 text-sm text-white bg-darki/80 rounded-lg lg:bottom-8 lg:text-base">
+              <div className="absolute px-4 py-2 text-sm text-white transform -translate-x-1/2 rounded-lg bottom-4 left-1/2 bg-darki/80 lg:bottom-8 lg:text-base">
                 {selectedImageIndex + 1} / {images.length}
               </div>
             </div>

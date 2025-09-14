@@ -11,9 +11,9 @@ export default function BlogIndex({ blogs, filters, seo }) {
 
   const handleSearch = (e) => {
     e.preventDefault()
-    router.get('/blog', { 
+    router.get('/blog', {
       search: searchTerm || undefined,
-      featured: showFeatured ? 'true' : undefined 
+      featured: showFeatured ? 'true' : undefined
     }, { preserveState: true })
   }
 
@@ -34,7 +34,7 @@ export default function BlogIndex({ blogs, filters, seo }) {
   return (
     <>
       <SEOHead seo={seo} />
-      
+
       {/* Banner */}
       <MotionWrapper>
         <BannerInformative
@@ -46,7 +46,7 @@ export default function BlogIndex({ blogs, filters, seo }) {
 
       <div className="min-h-screen bg-whiteki">
         <div className="px-4 py-8 mx-auto max-w-7xl lg:py-12">
-          
+
           {/* Search and Filters */}
           <section className="mb-8 lg:mb-12">
             <MotionWrapper>
@@ -67,7 +67,7 @@ export default function BlogIndex({ blogs, filters, seo }) {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center">
                     <label className="flex items-center cursor-pointer">
                       <input
@@ -81,13 +81,13 @@ export default function BlogIndex({ blogs, filters, seo }) {
                       </span>
                     </label>
                   </div>
-                  
+
                   <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
                     <MainButton type="submit" className="px-6 py-2 lg:px-8 lg:py-3">
                       <Search className="w-4 h-4 mr-2" />
                       Buscar
                     </MainButton>
-                    
+
                     {(searchTerm || showFeatured) && (
                       <button
                         type="button"
@@ -113,22 +113,22 @@ export default function BlogIndex({ blogs, filters, seo }) {
                       <article className="bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
                         <div className="relative">
                           <img
-                            src={blog.featured_image_url}
+                            src={blog.featured_image ? `/storage/${blog.featured_image}` : "/placeholder.svg"}
                             alt={blog.title}
                             className="object-cover w-full h-40 sm:h-48"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         </div>
-                        
+
                         <div className="p-4 lg:p-6">
                           <h3 className="mb-2 text-lg font-medium line-clamp-2 text-darki font-prata lg:mb-3 lg:text-xl">
                             {blog.title}
                           </h3>
-                          
+
                           <p className="mb-3 text-sm text-greyki line-clamp-3 font-dmsans lg:mb-4 lg:text-base">
                             {blog.excerpt}
                           </p>
-                          
+
                           <div className="flex items-center justify-between mb-3 text-xs text-greyki lg:mb-4 lg:text-sm">
                             <div className="flex items-center">
                               <User className="w-3 h-3 mr-1 text-golden lg:w-4 lg:h-4 lg:mr-2" />
@@ -139,7 +139,7 @@ export default function BlogIndex({ blogs, filters, seo }) {
                               <span className="font-dmsans">{blog.reading_time} min</span>
                             </div>
                           </div>
-                          
+
                           <div className="flex items-center justify-between">
                             <div className="flex items-center text-xs text-greyki lg:text-sm">
                               <Calendar className="w-3 h-3 mr-1 text-golden lg:w-4 lg:h-4 lg:mr-2" />
@@ -149,7 +149,7 @@ export default function BlogIndex({ blogs, filters, seo }) {
                             </div>
                             <Link
                               href={`/blog/${blog.slug}`}
-                              className="inline-flex items-center px-3 py-1 transition-colors duration-200 bg-golden text-whiteki hover:bg-darki font-dmsans text-xs lg:px-4 lg:py-2 lg:text-sm"
+                              className="inline-flex items-center px-3 py-1 text-xs transition-colors duration-200 bg-golden text-whiteki hover:bg-darki font-dmsans lg:px-4 lg:py-2 lg:text-sm"
                             >
                               Leer más
                               <ArrowRight className="w-3 h-3 ml-1 lg:w-4 lg:h-4 lg:ml-2" />

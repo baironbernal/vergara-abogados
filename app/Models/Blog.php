@@ -76,20 +76,6 @@ class Blog extends Model
         return 'slug';
     }
 
-    public function getFeaturedImageUrlAttribute()
-    {
-        if (!$this->featured_image) {
-            return '/images/shared/background-title.webp';
-        }
-        
-        // Check if the value is already a full URL
-        if (str_starts_with($this->featured_image, 'http')) {
-            return $this->featured_image;
-        }
-        
-        return asset('storage/' . $this->featured_image);
-    }
-
     public function getExcerptAttribute($value)
     {
         return $value ?: Str::limit(strip_tags($this->content), 200);
@@ -102,18 +88,5 @@ class Blog extends Model
         return $minutes;
     }
 
-    public function getGalleryImagesAttribute()
-    {
-        if (!$this->gallery || !is_array($this->gallery)) {
-            return [];
-        }
 
-        return array_map(function($image) {
-            // Check if the value is already a full URL
-            if (str_starts_with($image, 'http')) {
-                return $image;
-            }
-            return asset('storage/' . $image);
-        }, $this->gallery);
-    }
 }

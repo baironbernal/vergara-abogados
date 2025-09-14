@@ -226,12 +226,15 @@ export default function Properties({ states, properties, municipalities, seo }) 
               <main className="flex-1">
                 {/* Property Grid */}
                 <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:gap-8 lg:mb-12 xl:grid-cols-3">
+
                   {paginatedProperties.map((property, index) => (
+
                     <MotionWrapper key={property.id} delay={index * 0.1}>
                       <div className="flex flex-col h-full bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
                     <div className="relative">
+
                       <img
-                        src={property.thumbnail_url || "/placeholder.svg"}
+                        src={property.thumbnail ? `/storage/${property.thumbnail}` : "/placeholder.svg"}
                         alt={property.name}
                         className="object-cover w-full h-48 sm:h-56"
                       />

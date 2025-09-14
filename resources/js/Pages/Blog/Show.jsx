@@ -109,11 +109,11 @@ export default function BlogShow({ blog, relatedBlogs, seo }) {
           </MotionWrapper>
 
           {/* Featured Image */}
-          {blog.featured_image_url && (
+          {blog.featured_image && (
             <MotionWrapper>
               <div className="mb-8 lg:mb-12">
                 <img
-                  src={blog.featured_image_url}
+                  src={`/storage/${blog.featured_image}`}
                   alt={blog.title}
                   className="w-full h-48 object-cover rounded-lg sm:h-64 lg:h-80"
                 />
@@ -144,7 +144,7 @@ export default function BlogShow({ blog, relatedBlogs, seo }) {
                     <article key={relatedBlog.id} className="bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
                       <div className="relative">
                         <img
-                          src={relatedBlog.featured_image_url}
+                          src={relatedBlog.featured_image ? `/storage/${relatedBlog.featured_image}` : "/placeholder.svg"}
                           alt={relatedBlog.title}
                           className="object-cover w-full h-40 sm:h-48"
                         />

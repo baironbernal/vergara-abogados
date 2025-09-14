@@ -155,12 +155,12 @@ const About = ({ seo, lawyers }) => {
             {lawyers && lawyers.length > 0 ? (
               lawyers.map((lawyer) => (
                 <div key={lawyer.id} className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6 rounded-full overflow-hidden">
+                  <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full lg:w-32 lg:h-32 lg:mb-6">
                     {lawyer.image ? (
-                      <img 
-                        src={lawyer.image} 
+                      <img
+                        src={`/storage/${lawyer.image}`}
                         alt={lawyer.name}
-                        className="w-full h-full object-cover"
+                        className="object-cover w-full h-full"
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-300 rounded-full"></div>
@@ -174,19 +174,19 @@ const About = ({ seo, lawyers }) => {
               // Fallback content if no lawyers data
               <>
                 <div className="text-center">
-                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+                  <div className="w-24 h-24 mx-auto mb-4 bg-gray-300 rounded-full lg:w-32 lg:h-32 lg:mb-6"></div>
                   <h3 className="mb-2 text-lg font-bold lg:text-xl">Juan Vergara</h3>
                   <p className="text-sm text-gray-600 lg:text-base">Director General</p>
                 </div>
 
                 <div className="text-center">
-                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+                  <div className="w-24 h-24 mx-auto mb-4 bg-gray-300 rounded-full lg:w-32 lg:h-32 lg:mb-6"></div>
                   <h3 className="mb-2 text-lg font-bold lg:text-xl">María González</h3>
                   <p className="text-sm text-gray-600 lg:text-base">Asesora Legal</p>
                 </div>
 
                 <div className="text-center md:col-span-2 lg:col-span-1">
-                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 lg:w-32 lg:h-32 lg:mb-6"></div>
+                  <div className="w-24 h-24 mx-auto mb-4 bg-gray-300 rounded-full lg:w-32 lg:h-32 lg:mb-6"></div>
                   <h3 className="mb-2 text-lg font-bold lg:text-xl">Carlos Rodríguez</h3>
                   <p className="text-sm text-gray-600 lg:text-base">Asesor Inmobiliario</p>
                 </div>

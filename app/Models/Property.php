@@ -19,7 +19,7 @@ class Property extends Model
     ];
 
     protected $casts = [
-        'gallery' => 'json', 
+        'gallery' => 'json',
     ];
 
 
@@ -38,37 +38,6 @@ class Property extends Model
         return number_format($this->price, 0, ',', '.');
     }
 
-    public function getPropertyTypeAttribute()
-    {
-        return $this->type ?? 'Propiedad';
-    }
 
-    public function getGalleryImagesAttribute()
-    {
-        if (!$this->gallery || !is_array($this->gallery)) {
-            return [];
-        }
 
-        return array_map(function($image) {
-            // Check if the value is already a full URL
-            if (str_starts_with($image, 'http')) {
-                return $image;
-            }
-            return asset('storage/' . $image);
-        }, $this->gallery);
-    }
-
-    public function getThumbnailUrlAttribute()
-    {
-        if (!$this->thumbnail) {
-            return '/images/shared/background-title.webp';
-        }
-        
-        // Check if the value is already a full URL
-        if (str_starts_with($this->thumbnail, 'http')) {
-            return $this->thumbnail;
-        }
-        
-        return asset('storage/' . $this->thumbnail);
-    }
 }
