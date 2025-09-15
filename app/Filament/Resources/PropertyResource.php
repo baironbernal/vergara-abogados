@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PropertyResource\Pages;
 use App\Models\Property;
+use App\Models\State;
+use App\Models\Municipality;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
@@ -30,69 +32,107 @@ class PropertyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nombre de la propiedad')
-                    ->required(),
+                Section::make('Información General')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nombre de la propiedad')
+                            ->required(),
 
-                Forms\Components\Select::make('type')
-                    ->label('Tipo de propiedad')
-                    ->options([
-                        'apartment' => 'Apartamento',
-                        'house' => 'Casa',
-                        'plot' => 'Lote',
-                        'finca' => 'Finca',
-                        'other' => 'Other',
+                        Forms\Components\Select::make('type')
+                            ->label('Tipo de propiedad')
+                            ->options([
+                                'apartment' => 'Apartamento',
+                                'house' => 'Casa',
+                                'plot' => 'Lote',
+                                'finca' => 'Finca',
+                                'other' => 'Otro',
+                            ])
+                            ->required(),
+
+                        Forms\Components\TextInput::make('price')
+                            ->label('Precio')
+                            ->numeric()
+                            ->prefix('$'),
+
+                        Forms\Components\TextInput::make('size')
+                            ->label('Tamaño')
+                            ->numeric()
+                            ->suffix('m²'),
+
+                        Forms\Components\TextInput::make('certification')
+                            ->label('Certificación')
+                            ->placeholder('Certificación de la propiedad'),
                     ])
-                    ->required(),
+                    ->columns(2),
 
-                Forms\Components\FileUpload::make('thumbnail')
-                    ->label('Foto Principal')
-                    ->image()
-                    ->disk('public')
-                    ->directory('properties/thumbnails')
-                    ->visibility('public')
-                    ->maxSize(5120) // 5MB
-                    ->imageEditor()
-                    ->imageEditorAspectRatios([
-                        '16:9',
-                        '4:3',
-                        '1:1',
+                Section::make('Imágenes')
+                    ->schema([
+                        Forms\Components\FileUpload::make('thumbnail')
+                            ->label('Foto Principal')
+                            ->image()
+                            ->disk('public')
+                            ->directory('properties/thumbnails')
+                            ->visibility('public')
+                            ->maxSize(5120) // 5MB
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                '16:9',
+                                '4:3',
+                                '1:1',
+                            ]),
+
+                        Forms\Components\FileUpload::make('gallery')
+                            ->label('Galería de Fotos')
+                            ->image()
+                            ->multiple()
+                            ->disk('public')
+                            ->directory('properties/gallery')
+                            ->visibility('public')
+                            ->maxFiles(10)
+                            ->maxSize(5120) // 5MB
+                            ->imageEditor()
+                            ->reorderable()
+                            ->panelLayout('grid')
+                            ->uploadingMessage('Subiendo fotos...')
+                            ->helperText('Máximo 10 imágenes, 5MB cada una'),
                     ]),
 
-                Forms\Components\FileUpload::make('gallery')
-                    ->label('Galería de Fotos')
-                    ->image()
-                    ->multiple()
-                    ->disk('public')
-                    ->directory('properties/gallery')
-                    ->visibility('public')
-                    ->maxFiles(10)
-                    ->maxSize(5120) // 5MB
-                    ->imageEditor()
-                    ->reorderable()
-                    ->panelLayout('grid')
-                    ->uploadingMessage('Subiendo fotos...')
-                    ->helperText('Máximo 10 imágenes, 5MB cada una'),
+                Section::make('Ubicación')
+                    ->schema([
+                        Forms\Components\Select::make('state_id')
+                            ->label('Departamento')
+                            ->options(State::all()->pluck('name', 'id')->toArray())
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(fn (callable $set) => $set('municipality_id', null))
+                            ->required(),
 
-                Forms\Components\TextInput::make('price')
-                    ->label('Precio')
-                    ->numeric()
-                    ->prefix('$'),
-
-                Forms\Components\TextInput::make('size')
-                    ->label('Tamaño')
-                    ->numeric()
-                    ->suffix('m²'),
-
-                Forms\Components\Textarea::make('description')
-                    ->label('Descripción')
-                    ->rows(3)
+                        Forms\Components\Select::make('municipality_id')
+                            ->label('Municipio')
+                            ->options(function (callable $get) {
+                                $stateId = $get('state_id');
+                                if (!$stateId) {
+                                    return [];
+                                }
+                                return Municipality::where('state_id', $stateId)
+                                    ->pluck('name', 'id')
+                                    ->toArray();
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled(fn (callable $get) => !$get('state_id')),
+                    ])
+                    ->columns(2)
                     ->columnSpanFull(),
 
-                Forms\Components\TextInput::make('certification')
-                    ->label('Certificación')
-                    ->placeholder('Certificación de la propiedad')
-                    ->columnSpanFull(),
+                Section::make('Descripción')
+                    ->schema([
+                        Forms\Components\Textarea::make('description')
+                            ->label('Descripción')
+                            ->rows(3),
+                    ]),
             ]);
     }
 
@@ -101,17 +141,43 @@ class PropertyResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->label('Nombre')
-                ->searchable()
-                ->sortable(),
+                    ->label('Nombre')
+                    ->searchable()
+                    ->sortable(),
 
                 ImageColumn::make('thumbnail')
                     ->label('Foto')
                     ->square(), 
 
+                TextColumn::make('type')
+                    ->label('Tipo')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'apartment' => 'warning',
+                        'house' => 'success',
+                        'plot' => 'info',
+                        'finca' => 'danger',
+                        default => 'gray',
+                    }),
+
                 TextColumn::make('price')
                     ->label('Precio')
                     ->money('COP', true) 
+                    ->sortable(),
+
+                TextColumn::make('municipality.name')
+                    ->label('Municipio')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('state.name')
+                    ->label('Departamento')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('size')
+                    ->label('Tamaño')
+                    ->suffix(' m²')
                     ->sortable(),
             ])
             ->filters([
@@ -128,12 +194,26 @@ class PropertyResource extends Resource
 
                 // Type filter (select)
                 Tables\Filters\SelectFilter::make('type')
+                    ->label('Tipo de Propiedad')
                     ->options([
-                        'house' => 'House',
-                        'apartment' => 'Apartment',
-                        'land' => 'Land',
-                        'office' => 'Office',
+                        'apartment' => 'Apartamento',
+                        'house' => 'Casa',
+                        'plot' => 'Lote',
+                        'finca' => 'Finca',
+                        'other' => 'Otro',
                     ]),
+
+                Tables\Filters\SelectFilter::make('state_id')
+                    ->label('Departamento')
+                    ->relationship('state', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('municipality_id')
+                    ->label('Municipio')
+                    ->relationship('municipality', 'name')
+                    ->searchable()
+                    ->preload(),
 
                 // Price range filter
                 Tables\Filters\Filter::make('price_range')
