@@ -5,12 +5,17 @@ import { ArrowRight, Scale } from "lucide-react"
 import { MainButton } from "@/Components";
 import { Link } from "@inertiajs/react"
 
-const carouselImages = [
+const defaultCarouselImages = [
   "/images/banner/classical-courthouse.png",
   "/images/banner/supreme-court-pillars.png",
 ]
 
-export const MainBanner = () => {
+export const MainBanner = ({ homeBanner = null }) => {
+  // Use homeBanner gallery if available, otherwise use default images
+  const carouselImages = homeBanner?.gallery && homeBanner.gallery.length > 0
+    ? homeBanner.gallery.map(img => `/storage/${img}`)
+    : defaultCarouselImages;
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
@@ -19,7 +24,7 @@ export const MainBanner = () => {
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [carouselImages.length])
 
   return (
     <div className="relative min-h-screen overflow-hidden">

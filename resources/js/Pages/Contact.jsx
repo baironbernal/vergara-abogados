@@ -2,7 +2,11 @@ import { useEffect } from "react"
 import {MotionWrapper, MultiStep, SEOHead} from "@/Components"
 import { Phone, MapPin, Mail, Clock } from "lucide-react"
 
-const Contact = ({ citations , lawyers, seo}) => {
+const Contact = ({ citations, lawyers, seo, corporativeInfo = null }) => {
+  // Extract corporative info with fallbacks
+  const address = corporativeInfo?.office_address || 'Cl. 12 #8 05,\nSoacha Cundinamarca,\nColombia';
+  const phone = corporativeInfo?.corporative_whatsapp || '+1-258-987-000';
+  const email = corporativeInfo?.corporative_email || 'admin@inmobiliariavergarayabogados.com';
 
   // Hide info bar when entering contact page
   useEffect(() => {
@@ -72,10 +76,8 @@ const Contact = ({ citations , lawyers, seo}) => {
                       </div>
                       <div>
                         <h3 className="mb-1 text-lg font-bold text-darki font-prata">Dirección</h3>
-                        <p className="text-sm text-greyki font-dmsans">
-                          Cl. 12 #8 05,<br />
-                          Soacha Cundinamarca,<br />
-                          Colombia
+                        <p className="text-sm text-greyki font-dmsans whitespace-pre-line">
+                          {address}
                         </p>
                       </div>
                     </div>
@@ -89,9 +91,8 @@ const Contact = ({ citations , lawyers, seo}) => {
                       </div>
                       <div>
                         <h3 className="mb-1 text-lg font-bold text-darki font-prata">Teléfono</h3>
-                        <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-000</p>
-                        <p className="mb-1 text-sm text-greyki font-dmsans">+1-258-987-001</p>
-                        <p className="text-sm text-greyki font-dmsans">admin@inmobiliariavergarayabogados.com</p>
+                        <p className="mb-1 text-sm text-greyki font-dmsans">{phone}</p>
+                        <p className="text-sm text-greyki font-dmsans">{email}</p>
                       </div>
                     </div>
                   </MotionWrapper>

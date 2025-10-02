@@ -32,36 +32,36 @@ class LawyerResource extends Resource
     {
         return $form
         ->schema([
-            Forms\Components\Section::make('Lawyer Info')
+            Forms\Components\Section::make('Información del Abogado')
                 ->columns(2)
                 ->schema([
                     TextInput::make('name')
-                        ->label('Name')
+                        ->label('Nombre')
                         ->required()
                         ->maxLength(255),
                     TextInput::make('profession')
-                        ->label('Profession')
+                        ->label('Profesión')
                         ->required()
                         ->maxLength(255),
                     Forms\Components\Textarea::make('description')
-                        ->label('Description')
+                        ->label('Descripción')
                         ->rows(3)
                         ->columnSpanFull(),
                     Select::make('user_id')
-                        ->label('Associated User')
+                        ->label('Usuario Asociado')
                         ->relationship('user', 'name')
                         ->searchable()
                         ->preload(),
                     TextInput::make('phone')
-                        ->label('Phone')
+                        ->label('Teléfono')
                         ->tel()
                         ->maxLength(50),
                     TextInput::make('email')
-                        ->label('Email')
+                        ->label('Correo')
                         ->email()
                         ->maxLength(255),
                     FileUpload::make('image')
-                        ->label('Profile Image')
+                        ->label('Imagen de Perfil')
                         ->disk('public')
                         ->directory('lawyers')
                         ->image()
@@ -78,13 +78,13 @@ class LawyerResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->label('Image')->circular(),
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('profession')->sortable()->searchable(),
-                TextColumn::make('user.name')->label('User Account')->sortable()->searchable(),
-                TextColumn::make('phone')->toggleable(),
-                TextColumn::make('email')->sortable()->searchable(),
-                TextColumn::make('created_at')->dateTime('Y-m-d H:i')->sortable()->toggleable(isToggledHiddenByDefault: true),
+                ImageColumn::make('image')->label('Imagen')->circular(),
+                TextColumn::make('name')->label('Nombre')->sortable()->searchable(),
+                TextColumn::make('profession')->label('Profesión')->sortable()->searchable(),
+                TextColumn::make('user.name')->label('Cuenta de Usuario')->sortable()->searchable(),
+                TextColumn::make('phone')->label('Teléfono')->toggleable(),
+                TextColumn::make('email')->label('Correo')->sortable()->searchable(),
+                TextColumn::make('created_at')->label('Creado')->dateTime('Y-m-d H:i')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

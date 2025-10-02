@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class PropertyResource extends Resource
 {
@@ -26,7 +27,15 @@ class PropertyResource extends Resource
     protected static ?string $label = 'Propiedades';
 
     protected static ?string $navigationGroup = 'Inmobiliaria';
-    
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = Auth::user();
+        if ($user && $user->hasRole('lawyer')) {
+            return false;
+        }
+        return true;
+    }
 
     public static function form(Form $form): Form
     {
@@ -88,7 +97,7 @@ class PropertyResource extends Resource
                             ->disk('public')
                             ->directory('properties/gallery')
                             ->visibility('public')
-                            ->maxFiles(10)
+                            ->maxFiles(20)
                             ->maxSize(5120) // 5MB
                             ->imageEditor()
                             ->reorderable()
@@ -184,7 +193,7 @@ class PropertyResource extends Resource
                 Tables\Filters\Filter::make('name')
                     ->form([
                         \Filament\Forms\Components\TextInput::make('name')
-                            ->label('Property Name'),
+                            ->label('Nombre de la Propiedad'),
                     ])
                     ->query(fn ($query, array $data) =>
                         $query->when($data['name'], fn ($q, $name) =>
@@ -217,9 +226,14 @@ class PropertyResource extends Resource
 
                 // Price range filter
                 Tables\Filters\Filter::make('price_range')
+                    ->label('Rango de Precio')
                     ->form([
-                        \Filament\Forms\Components\TextInput::make('min_price')->numeric(),
-                        \Filament\Forms\Components\TextInput::make('max_price')->numeric(),
+                        \Filament\Forms\Components\TextInput::make('min_price')
+                            ->label('Precio Mínimo')
+                            ->numeric(),
+                        \Filament\Forms\Components\TextInput::make('max_price')
+                            ->label('Precio Máximo')
+                            ->numeric(),
                     ])
                     ->query(function ($query, array $data) {
                         return $query
@@ -229,9 +243,14 @@ class PropertyResource extends Resource
 
                 // Size range filter
                 Tables\Filters\Filter::make('size_range')
+                    ->label('Rango de Tamaño')
                     ->form([
-                        \Filament\Forms\Components\TextInput::make('min_size')->numeric(),
-                        \Filament\Forms\Components\TextInput::make('max_size')->numeric(),
+                        \Filament\Forms\Components\TextInput::make('min_size')
+                            ->label('Tamaño Mínimo')
+                            ->numeric(),
+                        \Filament\Forms\Components\TextInput::make('max_size')
+                            ->label('Tamaño Máximo')
+                            ->numeric(),
                     ])
                     ->query(function ($query, array $data) {
                         return $query
@@ -241,10 +260,11 @@ class PropertyResource extends Resource
 
                 // Certification filter
                 Tables\Filters\SelectFilter::make('certification')
+                    ->label('Certificación')
                     ->options([
                         'leed' => 'LEED',
                         'breeam' => 'BREEAM',
-                        'none' => 'None',
+                        'none' => 'Ninguna',
                     ]),
             ])
             ->actions([

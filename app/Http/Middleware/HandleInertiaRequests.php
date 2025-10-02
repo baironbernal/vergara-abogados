@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Information;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -37,7 +38,7 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'corporativeInfo' => Information::latest()->first(),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HomeBanner;
 use App\Models\Lawyer;
 use App\Services\SEOService;
 use Inertia\Inertia;
@@ -18,11 +19,15 @@ class HomeController extends Controller
             'structured_data' => SEOService::getOrganizationStructuredData(),
         ]);
 
+        // Get the latest home banner
+        $homeBanner = HomeBanner::latest()->first();
+
         return Inertia::render('Home', [
             'lawyers' => Lawyer::whereNotNull('user_id')
                 ->with('user')
                 ->take(6)
                 ->get(),
+            'homeBanner' => $homeBanner,
             'seo' => $seoData,
         ]);
     }

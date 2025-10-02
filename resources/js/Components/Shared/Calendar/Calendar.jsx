@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import './Calendar.css';
 
-export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess=null }) => {
+export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess=null, selectedLawyerId=null }) => {
 
       const [events, setEvents] = useState([]);
       const [selectedSlot, setSelectedSlot] = useState(null);
@@ -111,29 +111,43 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
       useEffect(() => {
         if (citations) {
           // Filter out citations without dates (partial records)
-          const validCitations = citations.filter(c => c.starts_at && c.ends_at);
-          
-          const mapped = validCitations.map((c) => ({
-            id: c.id,
-            title: `${c.lawyer ? c.lawyer.name : 'Cualquiera'} - Ocupado`,
-            start: c.starts_at.replace(" ", "T"),
-            end: c.ends_at.replace(" ", "T"),
-            backgroundColor: '#000000',
-            borderColor: '#000000',
-            classNames: ['occupied-slot'],
-            textColor: '#ffffff',
-            extendedProps: {
-              lawyerId: c.lawyer ? c.lawyer.id : null,
-              phone: c.lawyer ? c.lawyer.phone : null,
-              email: c.lawyer ? c.lawyer.email : null,
-              image: c.lawyer ? c.lawyer.image : null,
-            },
-          }));
+          let validCitations = citations.filter(c => c.starts_at && c.ends_at);
+
+          // Filter by selected lawyer if one is specified
+          // If "cualquiera" is selected, show all events
+          // If a specific lawyer is selected, only show events for that lawyer
+          if (selectedLawyerId && selectedLawyerId !== 'cualquiera') {
+            validCitations = validCitations.filter(c => c.lawyer_id == selectedLawyerId);
+          }
+
+          const mapped = validCitations.map((c) => {
+            const isBlocked = c.is_blocked === true;
+
+            return {
+              id: c.id,
+              title: isBlocked
+                ? `${c.lawyer ? c.lawyer.name : 'Abogado'} - No disponible`
+                : `${c.lawyer ? c.lawyer.name : 'Cualquiera'} - Ocupado`,
+              start: c.starts_at.replace(" ", "T"),
+              end: c.ends_at.replace(" ", "T"),
+              backgroundColor: isBlocked ? '#dc2626' : '#000000',
+              borderColor: isBlocked ? '#b91c1c' : '#000000',
+              classNames: [isBlocked ? 'blocked-slot' : 'occupied-slot'],
+              textColor: '#ffffff',
+              extendedProps: {
+                isBlocked: isBlocked,
+                lawyerId: c.lawyer ? c.lawyer.id : null,
+                phone: c.lawyer ? c.lawyer.phone : null,
+                email: c.lawyer ? c.lawyer.email : null,
+                image: c.lawyer ? c.lawyer.image : null,
+              },
+            };
+          });
           setEvents(mapped);
         }
-      
+
         return () => false
-      }, [citations])
+      }, [citations, selectedLawyerId])
       
   return (
     <>
@@ -143,8 +157,8 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
           <div className="p-4 mb-6 border bg-golden/10 border-golden">
             <h3 className="mb-2 font-medium text-darki font-dmsans">Instrucciones:</h3>
             <p className="text-sm text-greyki font-dmsans">
-              Haga clic y arrastre en el calendario para seleccionar su horario preferido. 
-              Los espacios en rojo están ocupados.
+              Haga clic y arrastre en el calendario para seleccionar su horario preferido.
+              Los espacios en negro están ocupados y los espacios en rojo no están disponibles.
             </p>
           </div>
 

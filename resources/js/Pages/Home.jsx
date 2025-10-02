@@ -1,11 +1,11 @@
 
 import { MainBanner, LawyersSection, SEOHead } from "../Components"
 
-const Home = ({ lawyers, seo }) => {
+const Home = ({ lawyers, homeBanner, seo }) => {
   return (
     <>
       <SEOHead seo={seo} />
-      <MainBanner />
+      <MainBanner homeBanner={homeBanner} />
       <LawyersSection lawyers={lawyers} />
     </>
   )

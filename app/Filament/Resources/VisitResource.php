@@ -97,6 +97,8 @@ class VisitResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('property.name')
                     ->label('Propiedad')
+                    ->badge()
+                    ->color('info')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('visit_date')
@@ -127,7 +129,7 @@ class VisitResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Estado')
+                    ->label('Estado de Visita')
                     ->options([
                         'pending' => 'Pendiente',
                         'confirmed' => 'Confirmada',
@@ -135,7 +137,23 @@ class VisitResource extends Resource
                     ]),
                 Tables\Filters\SelectFilter::make('property_id')
                     ->label('Propiedad')
-                    ->options(Property::all()->pluck('name', 'id')),
+                    ->relationship('property', 'name')
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('state')
+                    ->label('Departamento')
+                    ->query(function (Builder $query, array $data) {
+                        if (isset($data['value'])) {
+                            $query->whereHas('property.state', function ($q) use ($data) {
+                                $q->where('id', $data['value']);
+                            });
+                        }
+                    })
+                    ->options(function () {
+                        return \App\Models\State::all()->pluck('name', 'id');
+                    })
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

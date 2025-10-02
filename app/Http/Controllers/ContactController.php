@@ -18,16 +18,28 @@ class ContactController extends Controller
             'keywords' => 'contacto, cita legal, asesoría inmobiliaria, consulta abogados, agenda cita, derecho inmobiliario',
             'type' => 'website',
         ]);
-        
+
+        // Get all citations (both customer bookings and blocked slots)
         $citations = Citation::with('lawyer')
             ->whereNotNull('starts_at')
             ->whereNotNull('ends_at')
-            ->get(['id', 'lawyer_id', 'starts_at', 'ends_at']);
-            
+            ->get()
+            ->map(function ($citation) {
+                return [
+                    'id' => $citation->id,
+                    'lawyer_id' => $citation->lawyer_id,
+                    'lawyer' => $citation->lawyer,
+                    'starts_at' => $citation->starts_at,
+                    'ends_at' => $citation->ends_at,
+                    'is_blocked' => $citation->blocked_by_user,
+                ];
+            });
+
         $lawyers = Lawyer::whereNotNull('user_id')
             ->with('user')
             ->get(['id', 'name', 'user_id']);
-        
+
+        // Note: corporativeInfo is already shared globally via HandleInertiaRequests middleware
         return Inertia::render('Contact', [
             'citations' => $citations,
             'lawyers' => $lawyers,

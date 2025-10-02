@@ -56,7 +56,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/visits', {
+      const response = await fetch('/inmobiliaria/visits', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
           onClick={onClose}
         />
         
-        <div className="relative z-10 w-full max-w-md mx-4 bg-white shadow-2xl p-8 text-center">
+        <div className="relative z-10 w-full max-w-md p-8 mx-4 text-center bg-white shadow-2xl">
           <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 bg-green-100 rounded-full">
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
@@ -121,7 +121,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
             Nos contactaremos contigo pronto para confirmar los detalles.
           </p>
           
-          <div className="p-4 text-left border bg-softGrey/20 border-softGrey rounded">
+          <div className="p-4 text-left border rounded bg-softGrey/20 border-softGrey">
             <h3 className="mb-3 font-medium text-darki font-dmsans">Detalles de tu visita:</h3>
             <div className="space-y-2 text-sm text-greyki font-dmsans">
               <p><strong>Propiedad:</strong> {property.name}</p>
@@ -153,7 +153,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 transition-colors duration-200 text-greyki hover:text-darki hover:bg-softGrey rounded"
+            className="p-2 transition-colors duration-200 rounded text-greyki hover:text-darki hover:bg-softGrey"
           >
             <X className="w-6 h-6" />
           </button>
@@ -163,21 +163,21 @@ export default function VisitForm({ property, isOpen, onClose }) {
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
           <form onSubmit={handleSubmit} className="space-y-6">
             {errors.general && (
-              <div className="p-4 text-red-600 bg-red-50 border border-red-200 rounded">
+              <div className="p-4 text-red-600 border border-red-200 rounded bg-red-50">
                 {errors.general}
               </div>
             )}
 
             {/* Personal Information */}
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-darki font-dmsans flex items-center gap-2">
+              <h3 className="flex items-center gap-2 text-lg font-medium text-darki font-dmsans">
                 <User className="w-5 h-5 text-golden" />
                 Información Personal
               </h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-darki font-dmsans mb-2">
+                  <label className="block mb-2 text-sm font-medium text-darki font-dmsans">
                     Nombre completo *
                   </label>
                   <input
@@ -194,7 +194,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-darki font-dmsans mb-2">
+                  <label className="block mb-2 text-sm font-medium text-darki font-dmsans">
                     Teléfono *
                   </label>
                   <input
@@ -212,7 +212,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-darki font-dmsans mb-2">
+                <label className="block mb-2 text-sm font-medium text-darki font-dmsans">
                   Correo electrónico *
                 </label>
                 <input
@@ -231,14 +231,14 @@ export default function VisitForm({ property, isOpen, onClose }) {
 
             {/* Visit Information */}
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-darki font-dmsans flex items-center gap-2">
+              <h3 className="flex items-center gap-2 text-lg font-medium text-darki font-dmsans">
                 <Calendar className="w-5 h-5 text-golden" />
                 Información de la Visita
               </h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-darki font-dmsans mb-2">
+                  <label className="block mb-2 text-sm font-medium text-darki font-dmsans">
                     Fecha preferida *
                   </label>
                   <input
@@ -255,7 +255,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-darki font-dmsans mb-2">
+                  <label className="block mb-2 text-sm font-medium text-darki font-dmsans">
                     Hora preferida *
                   </label>
                   <input
@@ -272,7 +272,7 @@ export default function VisitForm({ property, isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-darki font-dmsans mb-2">
+                <label className="block mb-2 text-sm font-medium text-darki font-dmsans">
                   Observaciones adicionales
                 </label>
                 <textarea
@@ -280,18 +280,18 @@ export default function VisitForm({ property, isOpen, onClose }) {
                   value={formData.observations}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-graykiSecondary transition-all duration-200 font-dmsans focus:outline-none focus:ring-2 focus:ring-golden focus:border-golden resize-none"
+                  className="w-full px-4 py-3 transition-all duration-200 border resize-none border-graykiSecondary font-dmsans focus:outline-none focus:ring-2 focus:ring-golden focus:border-golden"
                   placeholder="¿Hay algo específico que te gustaría saber sobre la propiedad?"
                 />
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-softGrey">
+            <div className="flex flex-col gap-4 pt-6 border-t sm:flex-row border-softGrey">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-6 py-3 border border-graykiSecondary text-greyki hover:bg-softGrey transition-colors duration-300 font-medium font-dmsans"
+                className="flex-1 px-6 py-3 font-medium transition-colors duration-300 border border-graykiSecondary text-greyki hover:bg-softGrey font-dmsans"
               >
                 Cancelar
               </button>

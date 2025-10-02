@@ -33,41 +33,46 @@ class BlogResource extends Resource
                         Forms\Components\Tabs\Tab::make('General')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
+                                    ->label('Título')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                 Forms\Components\TextInput::make('slug')
+                                    ->label('Slug')
                                     ->required()
                                     ->maxLength(255)
                                     ->unique(Blog::class, 'slug', ignoreRecord: true)
                                     ->rules(['alpha_dash']),
 
                                 Forms\Components\Textarea::make('excerpt')
+                                    ->label('Extracto')
                                     ->rows(3)
                                     ->maxLength(500)
                                     ->columnSpanFull(),
 
                                 Forms\Components\RichEditor::make('content')
+                                    ->label('Contenido')
                                     ->required()
                                     ->columnSpanFull(),
 
                                 Forms\Components\Select::make('status')
+                                    ->label('Estado')
                                     ->options([
-                                        'draft' => 'Draft',
-                                        'published' => 'Published', 
-                                        'archived' => 'Archived',
+                                        'draft' => 'Borrador',
+                                        'published' => 'Publicado',
+                                        'archived' => 'Archivado',
                                     ])
                                     ->required()
                                     ->default('draft'),
 
                                 Forms\Components\DateTimePicker::make('published_at')
-                                    ->label('Publish Date')
+                                    ->label('Fecha de Publicación')
                                     ->default(now()),
 
                                 Forms\Components\Toggle::make('featured')
-                                    ->label('Featured Article'),
+                                    ->label('Artículo Destacado'),
 
                                 Forms\Components\Hidden::make('user_id')
                                     ->default(auth()->id()),
@@ -109,17 +114,20 @@ class BlogResource extends Resource
                         Forms\Components\Tabs\Tab::make('SEO')
                             ->schema([
                                 Forms\Components\TextInput::make('meta_title')
+                                    ->label('Título Meta')
                                     ->maxLength(255)
-                                    ->helperText('Leave empty to use the title'),
+                                    ->helperText('Dejar vacío para usar el título'),
 
                                 Forms\Components\Textarea::make('meta_description')
+                                    ->label('Descripción Meta')
                                     ->rows(3)
                                     ->maxLength(160)
-                                    ->helperText('Recommended: 150-160 characters'),
+                                    ->helperText('Recomendado: 150-160 caracteres'),
 
                                 Forms\Components\TextInput::make('meta_keywords')
+                                    ->label('Palabras Clave Meta')
                                     ->maxLength(255)
-                                    ->helperText('Separate keywords with commas'),
+                                    ->helperText('Separar palabras clave con comas'),
                             ]),
                     ])->columnSpanFull(),
             ]);
@@ -130,20 +138,23 @@ class BlogResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('featured_image')
-                    ->label('Image')
+                    ->label('Imagen')
                     ->square()
                     ->defaultImageUrl('/images/shared/background-title.webp'),
 
                 Tables\Columns\TextColumn::make('title')
+                    ->label('Título')
                     ->searchable()
                     ->sortable()
                     ->limit(50),
 
                 Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\BadgeColumn::make('status')
+                    ->label('Estado')
                     ->colors([
                         'warning' => 'draft',
                         'success' => 'published',
@@ -151,31 +162,35 @@ class BlogResource extends Resource
                     ]),
 
                 Tables\Columns\IconColumn::make('featured')
+                    ->label('Destacado')
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Author')
+                    ->label('Autor')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('published_at')
+                    ->label('Publicado')
                     ->dateTime()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Creado')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
+                    ->label('Estado')
                     ->options([
-                        'draft' => 'Draft',
-                        'published' => 'Published',
-                        'archived' => 'Archived',
+                        'draft' => 'Borrador',
+                        'published' => 'Publicado',
+                        'archived' => 'Archivado',
                     ]),
 
                 Tables\Filters\TernaryFilter::make('featured')
-                    ->label('Featured'),
+                    ->label('Destacado'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

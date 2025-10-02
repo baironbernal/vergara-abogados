@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceResource extends Resource
 {
@@ -20,16 +21,34 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationGroup = 'Contenido';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = Auth::user();
+        if ($user && $user->hasRole('lawyer')) {
+            return false;
+        }
+        return true;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('slug')->required(),
-                Forms\Components\TextInput::make('category')->required(),
-                Forms\Components\TextInput::make('subcategory'),
-                Forms\Components\Textarea::make('description'),
-                Forms\Components\TextInput::make('type'),
+                Forms\Components\TextInput::make('name')
+                    ->label('Nombre')
+                    ->required(),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Slug')
+                    ->required(),
+                Forms\Components\TextInput::make('category')
+                    ->label('Categoría')
+                    ->required(),
+                Forms\Components\TextInput::make('subcategory')
+                    ->label('Subcategoría'),
+                Forms\Components\Textarea::make('description')
+                    ->label('Descripción'),
+                Forms\Components\TextInput::make('type')
+                    ->label('Tipo'),
             ]);
     }
 
@@ -37,12 +56,12 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('slug')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('category')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('subcategory')->sortable(),
-                Tables\Columns\TextColumn::make('type')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                Tables\Columns\TextColumn::make('name')->label('Nombre')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('slug')->label('Slug')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('category')->label('Categoría')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('subcategory')->label('Subcategoría')->sortable(),
+                Tables\Columns\TextColumn::make('type')->label('Tipo')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->label('Creado')->dateTime(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category')

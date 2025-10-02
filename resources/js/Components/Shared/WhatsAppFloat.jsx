@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { MessageCircle, X } from "lucide-react"
 
-export const WhatsAppFloat = ({ phoneNumber = "+573115327297" }) => {
+export const WhatsAppFloat = ({ corporativeInfo = null }) => {
+  const phoneNumber = corporativeInfo?.corporative_whatsapp || "+573115327297";
   const [isHovered, setIsHovered] = useState(false)
   const [showTooltip, setShowTooltip] = useState(false)
 

@@ -35,16 +35,24 @@ class CitationResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
+        // Exclude blocked citations
+        $query->where(function ($q) {
+            $q->where('blocked_by_user', false)->orWhereNull('blocked_by_user');
+        });
+
         // If user is admin, show all citations
         if ($user && $user->hasRole('admin')) {
             return $query;
         }
 
-        // If user is a lawyer, show only their citations
+        // If user is a lawyer, show their citations AND citations available for any lawyer (lawyer_id = null)
         if ($user && $user->hasRole('lawyer')) {
             $lawyer = $user->lawyer;
             if ($lawyer) {
-                return $query->where('lawyer_id', $lawyer->id);
+                return $query->where(function ($q) use ($lawyer) {
+                    $q->where('lawyer_id', $lawyer->id)
+                      ->orWhereNull('lawyer_id');
+                });
             }
         }
 
@@ -56,23 +64,23 @@ class CitationResource extends Resource
     {
         return $form
         ->schema([
-            Forms\Components\Section::make('Details')
+            Forms\Components\Section::make('Detalles')
                 ->columns(2)
                 ->schema([
                     TextInput::make('name')
-                        ->label('Name')
+                        ->label('Nombre')
                         ->required()
                         ->maxLength(255),
                     TextInput::make('phone')
-                        ->label('Phone')
+                        ->label('Teléfono')
                         ->tel()
                         ->maxLength(50),
                     TextInput::make('email')
-                        ->label('Email')
+                        ->label('Correo')
                         ->email()
                         ->maxLength(255),
                     Select::make('lawyer_id')
-                        ->label('Lawyer')
+                        ->label('Abogado')
                         ->relationship('lawyer', 'name')
                         ->searchable()
                         ->preload()
@@ -89,15 +97,15 @@ class CitationResource extends Resource
                             return $user && $user->hasRole('lawyer');
                         }),
                     DateTimePicker::make('starts_at')
-                        ->label('Starts At')
+                        ->label('Inicia')
                         ->required()
                         ->seconds(false),
                     DateTimePicker::make('ends_at')
-                        ->label('Ends At')
+                        ->label('Termina')
                         ->seconds(false)
                         ->after('starts_at'),
                     Textarea::make('observations')
-                        ->label('Observations')
+                        ->label('Observaciones')
                         ->columnSpanFull()
                         ->rows(4),
                 ]),
@@ -108,21 +116,35 @@ class CitationResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('phone')->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('email')->searchable()->toggleable(),
-                TextColumn::make('lawyer.name')->label('Lawyer')->sortable()->searchable(),
+                TextColumn::make('name')->label('Nombre')->searchable()->sortable(),
+                TextColumn::make('phone')->label('Teléfono')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('email')->label('Correo')->searchable()->toggleable(),
+                TextColumn::make('lawyer_name')
+                    ->label('Abogado')
+                    ->badge()
+                    ->getStateUsing(fn (Citation $record) =>
+                        $record->lawyer_id
+                            ? $record->lawyer?->name
+                            : 'N/A'
+                    )
+                    ->color(fn (Citation $record) =>
+                        $record->lawyer_id ? 'success' : 'danger'
+                    ),
                 TextColumn::make('starts_at')
+                    ->label('Inicia')
                     ->dateTime('Y-m-d H:i')
                     ->sortable(),
                 TextColumn::make('ends_at')
+                    ->label('Termina')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(),
                 TextColumn::make('observations')
+                    ->label('Observaciones')
                     ->limit(40)
                     ->toggleable(),
                 TextColumn::make('created_at')
+                    ->label('Creado')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -131,14 +153,30 @@ class CitationResource extends Resource
             ->filters([
                 Filter::make('starts_between')
                     ->form([
-                        Forms\Components\DatePicker::make('from')->label('From'),
-                        Forms\Components\DatePicker::make('until')->label('Until'),
+                        Forms\Components\DatePicker::make('from')->label('Desde'),
+                        Forms\Components\DatePicker::make('until')->label('Hasta'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when($data['from'] ?? null, fn (Builder $q, $date) => $q->whereDate('starts_at', '>=', $date))
                             ->when($data['until'] ?? null, fn (Builder $q, $date) => $q->whereDate('starts_at', '<=', $date));
                     }),
+
+                Tables\Filters\SelectFilter::make('lawyer_id')
+                    ->label('Abogado')
+                    ->relationship('lawyer', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\TernaryFilter::make('without_lawyer')
+                    ->label('N/A (Sin Abogado)')
+                    ->placeholder('All citations')
+                    ->trueLabel('Only N/A')
+                    ->falseLabel('With Lawyer')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereNull('lawyer_id'),
+                        false: fn (Builder $query) => $query->whereNotNull('lawyer_id'),
+                    ),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -150,6 +188,12 @@ class CitationResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Disable create button - citations are created from the public contact form
+        return false;
     }
 
     public static function getRelations(): array

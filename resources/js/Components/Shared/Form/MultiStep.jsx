@@ -39,6 +39,7 @@ export const MultiStep = ({ citations, lawyers }) => {
           back={back}
           citationId={citationId}
           onSuccess={handleCalendarSuccess}
+          selectedLawyerId={formData?.lawyer_id}
         />
       )}
 

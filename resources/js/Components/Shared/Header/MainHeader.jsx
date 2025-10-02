@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { Info } from "./Info"
 import { Menu } from "./Menu"
 
-export const MainHeader = ({ styles }) => {
+export const MainHeader = ({ styles, corporativeInfo = null }) => {
   const [hideTopBar, setHideTopBar] = useState(false)
   const [lastScroll, setLastScroll] = useState(0)
   const [isContactPage, setIsContactPage] = useState(false)
@@ -57,7 +57,7 @@ export const MainHeader = ({ styles }) => {
         transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         {/* MainHeader 1 (top bar) */}
-        <Info styles={styles}/>
+        <Info styles={styles} corporativeInfo={corporativeInfo} />
         {/* MainHeader 2 (main menu) */}
         <Menu styles={styles}/>
       </motion.div>
