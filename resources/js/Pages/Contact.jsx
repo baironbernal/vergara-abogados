@@ -1,8 +1,11 @@
 import { useEffect } from "react"
-import {MotionWrapper, MultiStep, SEOHead} from "@/Components"
-import { Phone, MapPin, Mail, Clock } from "lucide-react"
+import {MotionWrapper, MultiStep } from "@/Components"
+import { Phone, MapPin, Clock } from "lucide-react"
+import { useSeoManager } from "@/hooks/useSeoManager"
 
 const Contact = ({ citations, lawyers, seo, corporativeInfo = null }) => {
+    useSeoManager(seo)
+
   // Extract corporative info with fallbacks
   const address = corporativeInfo?.office_address || 'Cl. 12 #8 05,\nSoacha Cundinamarca,\nColombia';
   const phone = corporativeInfo?.corporative_whatsapp || '+1-258-987-000';
@@ -19,7 +22,6 @@ const Contact = ({ citations, lawyers, seo, corporativeInfo = null }) => {
 
   return (
     <>
-      <SEOHead seo={seo} />
 
       {/* Contact Section - Two Columns Layout */}
       <section className="w-full py-16 lg:py-24" style={{
@@ -76,7 +78,7 @@ const Contact = ({ citations, lawyers, seo, corporativeInfo = null }) => {
                       </div>
                       <div>
                         <h3 className="mb-1 text-lg font-bold text-darki font-prata">Dirección</h3>
-                        <p className="text-sm text-greyki font-dmsans whitespace-pre-line">
+                        <p className="text-sm whitespace-pre-line text-greyki font-dmsans">
                           {address}
                         </p>
                       </div>

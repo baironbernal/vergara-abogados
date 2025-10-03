@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\Components\SeoFieldset;
 use App\Filament\Resources\BlogResource\Pages;
 use App\Filament\Resources\BlogResource\RelationManagers;
 use App\Models\Blog;
@@ -113,21 +114,28 @@ class BlogResource extends Resource
 
                         Forms\Components\Tabs\Tab::make('SEO')
                             ->schema([
-                                Forms\Components\TextInput::make('meta_title')
-                                    ->label('Título Meta')
-                                    ->maxLength(255)
-                                    ->helperText('Dejar vacío para usar el título'),
+                                SeoFieldset::make('seo'),
 
-                                Forms\Components\Textarea::make('meta_description')
-                                    ->label('Descripción Meta')
-                                    ->rows(3)
-                                    ->maxLength(160)
-                                    ->helperText('Recomendado: 150-160 caracteres'),
+                                Forms\Components\Section::make('Meta Tags (Legacy - Optional)')
+                                    ->description('Estos campos se mantienen por compatibilidad')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('meta_title')
+                                            ->label('Título Meta')
+                                            ->maxLength(255)
+                                            ->helperText('Dejar vacío para usar el título'),
 
-                                Forms\Components\TextInput::make('meta_keywords')
-                                    ->label('Palabras Clave Meta')
-                                    ->maxLength(255)
-                                    ->helperText('Separar palabras clave con comas'),
+                                        Forms\Components\Textarea::make('meta_description')
+                                            ->label('Descripción Meta')
+                                            ->rows(3)
+                                            ->maxLength(160)
+                                            ->helperText('Recomendado: 150-160 caracteres'),
+
+                                        Forms\Components\TextInput::make('meta_keywords')
+                                            ->label('Palabras Clave Meta')
+                                            ->maxLength(255)
+                                            ->helperText('Separar palabras clave con comas'),
+                                    ])
+                                    ->collapsed(),
                             ]),
                     ])->columnSpanFull(),
             ]);

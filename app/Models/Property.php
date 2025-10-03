@@ -16,10 +16,12 @@ class Property extends Model
         'municipality_id',
         'state_id',
         'description',
+        'seo',
     ];
 
     protected $casts = [
         'gallery' => 'json',
+        'seo' => 'array',
     ];
 
 

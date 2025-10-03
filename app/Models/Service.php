@@ -14,6 +14,11 @@ class Service extends Model
         'subcategory',
         'description',
         'type',
+        'seo',
+    ];
+
+    protected $casts = [
+        'seo' => 'array',
     ];
 
     protected static function boot()

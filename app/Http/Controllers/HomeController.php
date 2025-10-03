@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\HomeBanner;
 use App\Models\Lawyer;
-use App\Services\SEOService;
+use App\Models\Page;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $seoData = SEOService::generateMetaTags([
-            'title' => 'Inmobiliaria Vergara - Expertos en Bienes Raíces y Derecho Inmobiliario',
-            'description' => 'Descubre nuestros servicios integrales de bienes raíces y asesoría legal especializada. Propiedades exclusivas, abogados expertos y soluciones inmobiliarias en Colombia.',
-            'keywords' => 'inmobiliaria, bienes raíces, propiedades, venta, alquiler, derecho inmobiliario, asesoría legal, abogados, Colombia',
-            'type' => 'website',
-            'structured_data' => SEOService::getOrganizationStructuredData(),
-        ]);
-
         // Get the latest home banner
         $homeBanner = HomeBanner::latest()->first();
+
+        // Get SEO from Page model
+        $page = Page::where('route', '/')->first();
+        $seo = $page ? $page->seo : [
+            'title' => 'Inmobiliaria Vergara - Expertos en Asesoría Jurídica Inmobiliaria',
+            'description' => 'Inmobiliaria Vergara ofrece servicios legales especializados en derecho inmobiliario. Compra, venta y asesoría legal de propiedades con profesionales expertos.',
+            'keywords' => 'inmobiliaria, asesoría jurídica, derecho inmobiliario, abogados, propiedades, bienes raíces',
+        ];
 
         return Inertia::render('Home', [
             'lawyers' => Lawyer::whereNotNull('user_id')
@@ -28,7 +28,7 @@ class HomeController extends Controller
                 ->take(6)
                 ->get(),
             'homeBanner' => $homeBanner,
-            'seo' => $seoData,
+            'seo' => $seo
         ]);
     }
 }

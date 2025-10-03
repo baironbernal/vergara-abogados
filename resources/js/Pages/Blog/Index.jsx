@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { Search, Calendar, User, Clock, ArrowRight, Filter } from "lucide-react"
 import { Link, router } from "@inertiajs/react"
-import { BannerInformative, MainButton, SEOHead, MotionWrapper } from "@/Components"
+import { BannerInformative, MainButton, MotionWrapper } from "@/Components"
+import { useSeoManager } from "@/hooks/useSeoManager"
 
 const ITEMS_PER_PAGE = 9
 
 export default function BlogIndex({ blogs, filters, seo }) {
+  useSeoManager(seo)
   const [searchTerm, setSearchTerm] = useState(filters.search || "")
   const [showFeatured, setShowFeatured] = useState(filters.featured === 'true')
 
@@ -33,8 +35,6 @@ export default function BlogIndex({ blogs, filters, seo }) {
 
   return (
     <>
-      <SEOHead seo={seo} />
-
       {/* Banner */}
       <MotionWrapper>
         <BannerInformative

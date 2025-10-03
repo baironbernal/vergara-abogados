@@ -1,10 +1,11 @@
-import {MotionWrapper, BannerInformative, MainButton, SEOHead} from "@/Components"
+import {MotionWrapper, BannerInformative, MainButton} from "@/Components"
+import { useSeoManager } from "@/hooks/useSeoManager"
 import { Link } from "@inertiajs/react"
 
-const About = ({ seo, lawyers }) => {
+const About = ({ lawyers, seo }) => {
+    useSeoManager(seo)
   return (
     <>
-      <SEOHead seo={seo} />
       <MotionWrapper>
         <BannerInformative
           picture="/images/shared/background-title.webp"

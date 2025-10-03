@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
-use App\Services\SEOService;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -13,7 +12,7 @@ class BlogController extends Controller
     {
         $search = $request->get('search');
         $featured = $request->get('featured');
-        
+
         $blogsQuery = Blog::published()
             ->with('user')
             ->latest('published_at');
@@ -32,12 +31,13 @@ class BlogController extends Controller
 
         $blogs = $blogsQuery->paginate(9);
 
-        $seoData = SEOService::generateMetaTags([
-            'title' => 'Blog - Artículos y Noticias Inmobiliarias - Inmobiliaria Vergara',
-            'description' => 'Mantente informado con nuestros artículos sobre bienes raíces, derecho inmobiliario y tendencias del mercado. Consejos expertos y análisis del sector inmobiliario en Colombia.',
-            'keywords' => 'blog inmobiliario, noticias bienes raíces, derecho inmobiliario, mercado inmobiliario Colombia, consejos propiedades, artículos inmobiliaria',
-            'type' => 'website',
-        ]);
+        // Get SEO from Page model
+        $page = \App\Models\Page::where('route', '/blog')->first();
+        $seo = $page ? $page->seo : [
+            'title' => 'Blogs y casos',
+            'description' => 'Blogs y casos ',
+            'keywords' => 'inmobiliaria, asesoría jurídica, derecho inmobiliario, abogados, propiedades, bienes raíces, Soacha, Soacha Cundinamarca',
+        ];
 
         return Inertia::render('Blog/Index', [
             'blogs' => $blogs,
@@ -45,7 +45,7 @@ class BlogController extends Controller
                 'search' => $search,
                 'featured' => $featured,
             ],
-            'seo' => $seoData,
+            'seo' => $seo,
         ]);
     }
 
@@ -64,57 +64,18 @@ class BlogController extends Controller
             ->take(3)
             ->get();
 
-        $seoData = $this->generateBlogSEO($blog);
+        // Get SEO from Blog model or fallback to meta tags or default
+        $seo = $blog->seo ?: [
+            'title' => $blog->meta_title ?: "{$blog->title} - Blog Inmobiliaria Vergara",
+            'description' => $blog->meta_description ?: $blog->excerpt,
+            'keywords' => $blog->meta_keywords ?: "blog, inmobiliaria, bienes raíces, {$blog->title}",
+        ];
 
         return Inertia::render('Blog/Show', [
             'blog' => $blog,
             'relatedBlogs' => $relatedBlogs,
-            'seo' => $seoData,
+            'seo' => $seo
         ]);
     }
 
-    private function generateBlogSEO($blog): array
-    {
-        $title = $blog->meta_title ?: "{$blog->title} - Blog Inmobiliaria Vergara";
-        $description = $blog->meta_description ?: $blog->excerpt;
-        $keywords = $blog->meta_keywords ?: "blog, inmobiliaria, bienes raíces, {$blog->title}";
-
-        $structuredData = [
-            "@context" => "https://schema.org",
-            "@type" => "BlogPosting",
-            "headline" => $blog->title,
-            "description" => $description,
-            "image" => url($blog->featured_image_url),
-            "url" => url("/blog/{$blog->slug}"),
-            "datePublished" => $blog->published_at->toISOString(),
-            "dateModified" => $blog->updated_at->toISOString(),
-            "author" => [
-                "@type" => "Person",
-                "name" => $blog->user->name
-            ],
-            "publisher" => [
-                "@type" => "Organization",
-                "name" => "Inmobiliaria Vergara",
-                "logo" => [
-                    "@type" => "ImageObject",
-                    "url" => url('/logo.webp')
-                ]
-            ],
-            "mainEntityOfPage" => [
-                "@type" => "WebPage",
-                "@id" => url("/blog/{$blog->slug}")
-            ],
-            "wordCount" => str_word_count(strip_tags($blog->content)),
-            "timeRequired" => "PT{$blog->reading_time}M"
-        ];
-
-        return SEOService::generateMetaTags([
-            'title' => $title,
-            'description' => $description,
-            'keywords' => $keywords,
-            'image' => $blog->featured_image_url,
-            'type' => 'article',
-            'structured_data' => $structuredData,
-        ]);
-    }
 }

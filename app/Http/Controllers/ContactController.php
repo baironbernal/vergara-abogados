@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Citation;
 use App\Models\Lawyer;
-use App\Services\SEOService;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,12 +12,13 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $seoData = SEOService::generateMetaTags([
+        // Get SEO from Page model
+        $page = Page::where('route', '/contacto')->first();
+        $seo = $page ? $page->seo : [
             'title' => 'Contacto - Agenda tu Cita Legal - Inmobiliaria Vergara',
             'description' => 'Agenda tu cita con nuestros expertos en derecho inmobiliario. Consulta legal profesional, asesoría personalizada y soluciones a tus necesidades inmobiliarias.',
             'keywords' => 'contacto, cita legal, asesoría inmobiliaria, consulta abogados, agenda cita, derecho inmobiliario',
-            'type' => 'website',
-        ]);
+        ];
 
         // Get all citations (both customer bookings and blocked slots)
         $citations = Citation::with('lawyer')
@@ -43,7 +44,7 @@ class ContactController extends Controller
         return Inertia::render('Contact', [
             'citations' => $citations,
             'lawyers' => $lawyers,
-            'seo' => $seoData,
+            'seo' => $seo,
         ]);
     }
 

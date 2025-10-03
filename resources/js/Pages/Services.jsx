@@ -1,9 +1,11 @@
-import {MotionWrapper, BannerInformative, CardService, SEOHead, LawyerCard} from "@/Components"
+import {MotionWrapper, BannerInformative, CardService, LawyerCard} from "@/Components"
+import { useSeoManager } from "@/hooks/useSeoManager"
 
 const Services = ({ services, lawyers, seo }) => {
+    useSeoManager(seo)
+
   return (
     <>
-    <SEOHead seo={seo} />
     {/* Banner for Service*/}
       <MotionWrapper>
         <BannerInformative

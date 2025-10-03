@@ -22,12 +22,14 @@ class Blog extends Model
         'featured',
         'published_at',
         'user_id',
+        'seo',
     ];
 
     protected $casts = [
         'gallery' => 'json',
         'featured' => 'boolean',
         'published_at' => 'datetime',
+        'seo' => 'array',
     ];
 
     protected static function boot()

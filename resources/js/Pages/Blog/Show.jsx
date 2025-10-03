@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { ArrowLeft, Calendar, User, Clock, Share2, Facebook, Twitter, Linkedin, ArrowRight } from "lucide-react"
 import { Link } from "@inertiajs/react"
-import { SEOHead, MainButton, MotionWrapper } from "@/Components"
+import { MainButton, MotionWrapper } from "@/Components"
+import { useSeoManager } from "@/hooks/useSeoManager"
 
 export default function BlogShow({ blog, relatedBlogs, seo }) {
+  useSeoManager(seo)
   const [activeImageIndex, setActiveImageIndex] = useState(0)
 
   const formatDate = (dateString) => {
@@ -41,8 +43,6 @@ export default function BlogShow({ blog, relatedBlogs, seo }) {
 
   return (
     <>
-      <SEOHead seo={seo} />
-
       <div className="min-h-screen bg-whiteki">
         {/* Back Navigation */}
         <div className="bg-white border-b border-softGrey">

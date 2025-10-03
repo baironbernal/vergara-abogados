@@ -1,10 +1,13 @@
 
-import { MainBanner, LawyersSection, SEOHead } from "../Components"
+import { useSeoManager } from "@/hooks/useSeoManager"
+import { MainBanner, LawyersSection } from "../Components"
 
 const Home = ({ lawyers, homeBanner, seo }) => {
+    useSeoManager(seo)
+
+
   return (
     <>
-      <SEOHead seo={seo} />
       <MainBanner homeBanner={homeBanner} />
       <LawyersSection lawyers={lawyers} />
     </>

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\Components\SeoFieldset;
 use App\Filament\Resources\PropertyResource\Pages;
 use App\Models\Property;
 use App\Models\State;
@@ -142,6 +143,8 @@ class PropertyResource extends Resource
                             ->label('Descripción')
                             ->rows(3),
                     ]),
+
+                SeoFieldset::make('seo'),
             ]);
     }
 

@@ -13,4 +13,3 @@ export * from './Home/LawyerCard';
 export * from './Shared/Form/ContactForm';
 export * from './Shared/Form/MultiStep';
 export * from './Shared/Calendar/Calendar';
-export { default as SEOHead } from './Shared/SEO/SEOHead';

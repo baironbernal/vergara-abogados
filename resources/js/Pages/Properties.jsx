@@ -1,12 +1,14 @@
 import { useState, useMemo } from "react"
 import { MapPin, Search, Filter, Eye, ChevronDown, ChevronUp } from "lucide-react"
-import { BannerInformative, MainButton, SEOHead, MotionWrapper } from "@/Components"
+import { BannerInformative, MainButton, MotionWrapper } from "@/Components"
 import PropertyModal from "@/Components/Properties/PropertyModal"
 import { Link } from '@inertiajs/react'
+import { useSeoManager } from "@/hooks/useSeoManager"
 
 const ITEMS_PER_PAGE = 6
 
 export default function Properties({ states, properties, municipalities, seo }) {
+  useSeoManager(seo)
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedProperty, setSelectedProperty] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -90,7 +92,6 @@ export default function Properties({ states, properties, municipalities, seo }) 
 
   return (
     <>
-      <SEOHead seo={seo} />
       <div className="min-h-screen bg-whiteki">
 
 

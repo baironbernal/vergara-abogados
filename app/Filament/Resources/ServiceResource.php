@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\Components\SeoFieldset;
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
 use Filament\Forms;
@@ -34,21 +35,28 @@ class ServiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nombre')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
-                Forms\Components\TextInput::make('category')
-                    ->label('Categoría')
-                    ->required(),
-                Forms\Components\TextInput::make('subcategory')
-                    ->label('Subcategoría'),
-                Forms\Components\Textarea::make('description')
-                    ->label('Descripción'),
-                Forms\Components\TextInput::make('type')
-                    ->label('Tipo'),
+                Forms\Components\Section::make('Información General')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nombre')
+                            ->required(),
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug')
+                            ->required(),
+                        Forms\Components\TextInput::make('category')
+                            ->label('Categoría')
+                            ->required(),
+                        Forms\Components\TextInput::make('subcategory')
+                            ->label('Subcategoría'),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Descripción')
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('type')
+                            ->label('Tipo'),
+                    ])
+                    ->columns(2),
+
+                SeoFieldset::make('seo'),
             ]);
     }
 

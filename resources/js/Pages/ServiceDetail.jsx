@@ -24,7 +24,8 @@ import {
   Target,
   Zap
 } from 'lucide-react';
-import { MotionWrapper, SEOHead, LawyerCard, MainButton, BannerInformative } from "@/Components";
+import { MotionWrapper, LawyerCard, MainButton, BannerInformative } from "@/Components";
+import { useSeoManager } from "@/hooks/useSeoManager";
 
 // Array of icons to match the service cards
 const serviceIcons = [
@@ -41,6 +42,7 @@ const getServiceIcon = (serviceId) => {
 };
 
 const ServiceDetail = ({ service, lawyers, seo }) => {
+  useSeoManager(seo)
   const IconComponent = getServiceIcon(service.id);
 
   // Hide info bar when entering service detail page
@@ -61,8 +63,6 @@ const ServiceDetail = ({ service, lawyers, seo }) => {
 
   return (
     <>
-      <SEOHead seo={seo} />
-
       {/* Banner Section */}
       <MotionWrapper>
         <BannerInformative

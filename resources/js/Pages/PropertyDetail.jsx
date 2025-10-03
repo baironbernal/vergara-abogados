@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { MapPin, ArrowLeft, X, ChevronLeft, ChevronRight, Home, Maximize, Calendar } from "lucide-react"
-import { MainButton, SEOHead } from "@/Components"
+import { MainButton } from "@/Components"
 import VisitForm from "@/Components/Properties/VisitForm"
 import { Link } from '@inertiajs/react'
+import { useSeoManager } from "@/hooks/useSeoManager"
 
 export default function PropertyDetail({ property, auth, seo }) {
+  useSeoManager(seo)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [isGalleryOpen, setIsGalleryOpen] = useState(false)
   const [isVisitFormOpen, setIsVisitFormOpen] = useState(false)
@@ -41,7 +43,6 @@ export default function PropertyDetail({ property, auth, seo }) {
 
   return (
     <>
-      <SEOHead seo={seo} />
       <div className="min-h-screen bg-whiteki">
         {/* Back Navigation */}
         <div className="px-4 py-4 mx-auto max-w-7xl">
