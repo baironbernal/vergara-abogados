@@ -24,6 +24,7 @@ class Property extends Model
         'seo' => 'array',
     ];
 
+    protected $appends = ['type_spanish'];
 
     public function municipality()
     {
@@ -38,6 +39,18 @@ class Property extends Model
     public function getFormattedPriceAttribute()
     {
         return number_format($this->price, 0, ',', '.');
+    }
+
+    public function getTypeSpanishAttribute()
+    {
+        return match ($this->type) {
+            'apartment' => 'Apartamento',
+            'house' => 'Casa',
+            'plot' => 'Lote',
+            'finca' => 'Finca',
+            'other' => 'Otro',
+            default => $this->type,
+        };
     }
 
 

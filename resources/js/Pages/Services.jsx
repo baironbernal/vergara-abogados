@@ -1,4 +1,5 @@
-import {MotionWrapper, BannerInformative, CardService, LawyerCard} from "@/Components"
+import {MotionWrapper, BannerInformative, CardService} from "@/Components"
+import { ServiceLawyersSection } from "@/Components/Services/ServiceLawyersSection"
 import { useSeoManager } from "@/hooks/useSeoManager"
 
 const Services = ({ services, lawyers, seo }) => {
@@ -34,31 +35,7 @@ const Services = ({ services, lawyers, seo }) => {
       </section>
 
       {/* Team Section */}
-      {lawyers && lawyers.length > 0 && (
-        <section className="py-12 bg-whiteki lg:py-20">
-          <div className="px-4 mx-auto max-w-7xl lg:px-8">
-            <MotionWrapper>
-              <div className="mb-12 text-center lg:mb-16">
-                <h2 className="mb-4 text-3xl font-bold text-darki font-prata lg:text-4xl">
-                  Nuestro Equipo
-                </h2>
-                <p className="max-w-2xl mx-auto text-lg text-greyki font-dmsans lg:text-xl">
-                  Conoce a nuestros abogados especialistas en derecho inmobiliario
-                </p>
-                <div className="w-16 h-1 mx-auto mt-6 bg-golden lg:w-24"></div>
-              </div>
-            </MotionWrapper>
-
-            <div className="grid grid-cols-1 gap-8 mx-auto max-w-6xl md:grid-cols-2 lg:grid-cols-3">
-              {lawyers.map((lawyer) => (
-                <MotionWrapper key={lawyer.id}>
-                  <LawyerCard lawyer={lawyer} />
-                </MotionWrapper>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <ServiceLawyersSection lawyers={lawyers} />
     </>
   )
 }

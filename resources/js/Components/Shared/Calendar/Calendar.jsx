@@ -79,12 +79,23 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
         if (!selectedSlot || !citationId) return;
 
         setIsConfirming(true);
-        
+
         try {
+          // Format dates as local datetime string (YYYY-MM-DD HH:mm:ss)
+          const formatDateTime = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+          };
+
           const response = await axios.post('/contacto/complete-reservation', {
             citation_id: citationId,
-            starts_at: selectedSlot.start.toISOString(),
-            ends_at: selectedSlot.end.toISOString(),
+            starts_at: formatDateTime(selectedSlot.start),
+            ends_at: formatDateTime(selectedSlot.end),
           });
 
           if (response.data.success) {

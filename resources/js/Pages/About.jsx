@@ -155,7 +155,7 @@ const About = ({ lawyers, seo }) => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {lawyers && lawyers.length > 0 ? (
               lawyers.map((lawyer) => (
-                <div key={lawyer.id} className="text-center">
+                <Link key={lawyer.id} href={`/abogados/${lawyer.slug}`} className="text-center transition-all hover:scale-105">
                   <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full lg:w-32 lg:h-32 lg:mb-6">
                     {lawyer.image ? (
                       <img
@@ -169,7 +169,7 @@ const About = ({ lawyers, seo }) => {
                   </div>
                   <h3 className="mb-2 text-lg font-bold lg:text-xl">{lawyer.name}</h3>
                   <p className="text-sm text-gray-600 lg:text-base">{lawyer.description}</p>
-                </div>
+                </Link>
               ))
             ) : (
               // Fallback content if no lawyers data

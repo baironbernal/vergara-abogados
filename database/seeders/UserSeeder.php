@@ -24,43 +24,6 @@ class UserSeeder extends Seeder
         );
         $admin->assignRole('admin');
 
-        
-        $lawyers = [
-            [
-                'name' => 'Dayana Vergara',
-                'email' => 'dayana.vergara@inmobiliariavergarayabogados.com',
-            ],
-            [
-                'name' => 'Brian Vergara',
-                'email' => 'brayan.vergara@inmobiliariavergarayabogados.com',
-            ],
-            [
-                'name' => 'Elvis Vergara',
-                'email' => 'elvis.vergara@inmobiliariavergarayabogados.com',
-            ],
-        ];
 
-        foreach ($lawyers as $lawyerData) {
-            $lawyerUser = User::firstOrCreate(
-                ['email' => $lawyerData['email']],
-                [
-                    'name' => $lawyerData['name'],
-                    'password' => Hash::make('123456'),
-                ]
-            );
-            $lawyerUser->assignRole('lawyer');
-
-            // Create or update the corresponding lawyer profile
-            Lawyer::firstOrCreate(
-                ['email' => $lawyerData['email']],
-                [
-                    'name' => $lawyerData['name'],
-                    'profession' => 'Abogado',
-                    'description' => 'Abogado especializado en derecho inmobiliario',
-                    'phone' => '+57 300 000 0000',
-                    'user_id' => $lawyerUser->id,
-                ]
-            );
-        }
     }
 }

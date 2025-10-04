@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\CitationResource;
 use App\Models\Citation;
 use App\Models\Lawyer;
 use Filament\Forms\Components\Select;
@@ -16,12 +17,18 @@ use Saade\FilamentFullCalendar\Actions\CreateAction;
 use Saade\FilamentFullCalendar\Actions\EditAction;
 use Saade\FilamentFullCalendar\Actions\DeleteAction;
 use Saade\FilamentFullCalendar\Actions\ViewAction;
-use Saade\FilamentFullCalendar\Data\EventData;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 
 class CalendarWidget extends FullCalendarWidget
 {
     public Model | string | null $model = Citation::class;
+
+    public static function canView(): bool
+    {
+         $user = Auth::user();
+         return $user && ($user->hasRole('admin') || $user->hasRole('lawyer'));
+    }
+
     public function config(): array
     {
         return [
@@ -57,28 +64,34 @@ class CalendarWidget extends FullCalendarWidget
         ];
     }
 
+    public function resolveEventRecord(array $data): ?Citation
+    {
+        return Citation::find($data['id']);
+    }
+
     public function getFormSchema(): array
     {
+        $user = Auth::user();
+        $isLawyer = $user?->hasRole('lawyer');
+
         return [
             Toggle::make('is_blocked_hours')
                 ->label('¿Es bloqueo de horario?')
                 ->default(false)
-                ->live()
-                ->afterStateUpdated(fn () => $this->dispatch('refreshEvents')),
+                ->live(),
 
             Select::make('lawyer_id')
                 ->label('Abogado')
                 ->options(Lawyer::all()->pluck('name', 'id'))
                 ->searchable()
                 ->required()
-                ->default(function () {
-                    $user = Auth::user();
-                    if ($user?->hasRole('lawyer') && $user->lawyer) {
+                ->default(function () use ($user, $isLawyer) {
+                    if ($isLawyer && $user->lawyer) {
                         return $user->lawyer->id;
                     }
                     return null;
                 })
-                ->disabled(fn () => Auth::user()?->hasRole('lawyer')),
+                ->visible(fn () => !$isLawyer),
 
             TextInput::make('name')
                 ->label('Nombre del Cliente')
@@ -100,20 +113,6 @@ class CalendarWidget extends FullCalendarWidget
                 ->visible(fn (Forms\Get $get) => !$get('is_blocked_hours'))
                 ->maxLength(255),
 
-            DateTimePicker::make('starts_at')
-                ->label('Fecha y Hora de Inicio')
-                ->required()
-                ->native(false)
-                ->displayFormat('d/m/Y H:i')
-                ->seconds(false),
-
-            DateTimePicker::make('ends_at')
-                ->label('Fecha y Hora de Fin')
-                ->required()
-                ->native(false)
-                ->displayFormat('d/m/Y H:i')
-                ->seconds(false),
-
             Textarea::make('observations')
                 ->label('Observaciones')
                 ->rows(3)
@@ -127,34 +126,35 @@ class CalendarWidget extends FullCalendarWidget
 
     public function fetchEvents(array $fetchInfo): array
     {
-        // Simple query to test - get all events in range
-        $events = Citation::query()
-            ->whereNotNull('starts_at')
-            ->whereNotNull('ends_at')
-            ->where('starts_at', '<=', $fetchInfo['end'])
-            ->where('ends_at', '>=', $fetchInfo['start'])
-            ->with('lawyer')
-            ->get()
-            ->map(function (Citation $citation) {
-                $isBlocked = $citation->blocked_by_user;
+        $user = Auth::user();
 
-                // Create meaningful title based on citation type
-                $title = $isBlocked
-                    ? '🔒 ' . ($citation->observations ?: 'Horario Bloqueado')
-                    : '👤 ' . $citation->name . ' - ' . $citation->lawyer->name;
+        $query = Citation::query();
 
-                return EventData::make()
-                    ->id($citation->id)
-                    ->title($title)
-                    ->start($citation->starts_at)
-                    ->end($citation->ends_at)
-                    ->backgroundColor($isBlocked ? '#ef4444' : '#3b82f6')
-                    ->borderColor($isBlocked ? '#dc2626' : '#2563eb')
-                    ->textColor('#ffffff');
+        // If user is lawyer, only show their citations
+        if ($user->hasRole('lawyer') && $user->lawyer) {
+            $query->where('lawyer_id', $user->lawyer->id);
+        }
+
+        return $query->get()
+            ->map(function (Citation $event) {
+                $isBlocked = $event->blocked_by_user;
+
+                return [
+                    'id' => $event->id,
+                    'title' => $isBlocked
+                        ? '🔒 Bloqueado: ' . $event->lawyer->name
+                        : "#{$event->id} - {$event->name}",
+                    'start' => $event->starts_at,
+                    'end' => $event->ends_at,
+                    'backgroundColor' => $isBlocked ? '#555555' : '#C59B40',
+                    'textColor' => '#ffffff',
+                    'extendedProps' => [
+                        'isBlocked' => $isBlocked,
+                    ],
+                ];
             })
-            ->all();
+            ->toArray();
 
-        return $events;
     }
 
     protected function headerActions(): array
@@ -162,111 +162,51 @@ class CalendarWidget extends FullCalendarWidget
         return [
             CreateAction::make()
                 ->label('Nueva Cita')
-                ->modalHeading('Crear Nueva Cita')
+                ->modalHeading('Crear Nueva Cita/Bloqueo')
                 ->mountUsing(function (Forms\Form $form, array $arguments) {
                     $form->fill([
-                        'starts_at' => $arguments['start'] ?? null,
-                        'ends_at' => $arguments['end'] ?? null,
                         'is_blocked_hours' => false,
                     ]);
                 })
-                ->action(function (array $data): void {
+                ->using(function (array $data, array $arguments): Citation {
                     $user = Auth::user();
 
+                    // Get dates from calendar selection (clicked slot)
+                    $startsAt = $arguments['start'] ?? null;
+                    $endsAt = $arguments['end'] ?? null;
+
+                    // Auto-set lawyer_id if user is lawyer
+                    $lawyerId = $data['lawyer_id'] ?? null;
+                    if ($user->hasRole('lawyer') && $user->lawyer) {
+                        $lawyerId = $user->lawyer->id;
+                    }
+
                     if ($data['is_blocked_hours']) {
-                        // Create blocked hours entry
-                        Citation::create([
+                        return Citation::create([
                             'name' => 'Horario Bloqueado',
                             'phone' => '-',
                             'email' => $user->email,
-                            'lawyer_id' => $data['lawyer_id'],
-                            'starts_at' => $data['starts_at'],
-                            'ends_at' => $data['ends_at'],
+                            'lawyer_id' => $lawyerId,
+                            'starts_at' => $startsAt,
+                            'ends_at' => $endsAt,
                             'observations' => $data['observations'] ?? null,
                             'blocked_by_user' => true,
                             'blocked_by_user_id' => $user->id,
                         ]);
                     } else {
-                        // Create regular citation
-                        Citation::create([
+                        return Citation::create([
                             'name' => $data['name'],
                             'phone' => $data['phone'],
                             'email' => $data['email'],
-                            'lawyer_id' => $data['lawyer_id'],
-                            'starts_at' => $data['starts_at'],
-                            'ends_at' => $data['ends_at'],
+                            'lawyer_id' => $lawyerId,
+                            'starts_at' => $startsAt,
+                            'ends_at' => $endsAt,
                             'observations' => $data['observations'] ?? null,
                             'blocked_by_user' => false,
                         ]);
                     }
                 })
-                ->successNotificationTitle('Cita creada exitosamente')
-                ->after(fn () => $this->dispatch('refreshEvents')),
-
-            CreateAction::make('block_hours')
-                ->label('Bloquear Horario')
-                ->modalHeading('Bloquear Horario')
-                ->icon('heroicon-o-lock-closed')
-                ->color('danger')
-                ->mountUsing(function (Forms\Form $form, array $arguments) {
-                    $form->fill([
-                        'starts_at' => $arguments['start'] ?? null,
-                        'ends_at' => $arguments['end'] ?? null,
-                        'is_blocked_hours' => true,
-                    ]);
-                })
-                ->form([
-                    Select::make('lawyer_id')
-                        ->label('Abogado')
-                        ->options(Lawyer::all()->pluck('name', 'id'))
-                        ->searchable()
-                        ->required()
-                        ->default(function () {
-                            $user = Auth::user();
-                            if ($user?->hasRole('lawyer') && $user->lawyer) {
-                                return $user->lawyer->id;
-                            }
-                            return null;
-                        })
-                        ->disabled(fn () => Auth::user()?->hasRole('lawyer')),
-
-                    DateTimePicker::make('starts_at')
-                        ->label('Fecha y Hora de Inicio')
-                        ->required()
-                        ->native(false)
-                        ->displayFormat('d/m/Y H:i')
-                        ->seconds(false),
-
-                    DateTimePicker::make('ends_at')
-                        ->label('Fecha y Hora de Fin')
-                        ->required()
-                        ->native(false)
-                        ->displayFormat('d/m/Y H:i')
-                        ->seconds(false),
-
-                    Textarea::make('observations')
-                        ->label('Razón del Bloqueo')
-                        ->rows(3)
-                        ->placeholder('Ej: Reunión externa, Vacaciones, etc.')
-                        ->required(),
-                ])
-                ->action(function (array $data): void {
-                    $user = Auth::user();
-
-                    Citation::create([
-                        'name' => 'Horario Bloqueado',
-                        'phone' => '-',
-                        'email' => $user->email,
-                        'lawyer_id' => $data['lawyer_id'],
-                        'starts_at' => $data['starts_at'],
-                        'ends_at' => $data['ends_at'],
-                        'observations' => $data['observations'],
-                        'blocked_by_user' => true,
-                        'blocked_by_user_id' => $user->id,
-                    ]);
-                })
-                ->successNotificationTitle('Horario bloqueado exitosamente')
-                ->after(fn () => $this->dispatch('refreshEvents')),
+                ->successNotificationTitle('Cita creada exitosamente'),
         ];
     }
 
@@ -274,29 +214,48 @@ class CalendarWidget extends FullCalendarWidget
     {
         return [
             ViewAction::make()
-                ->label('Ver Detalles'),
+                ->modalHeading(fn (?Citation $record) => $record && $record->blocked_by_user
+                    ? 'Ver Bloqueo de Horario'
+                    : 'Ver Cita'),
 
             EditAction::make()
-                ->label('Editar')
+                ->modalHeading(fn (?Citation $record) => $record && $record->blocked_by_user
+                    ? 'Editar Bloqueo'
+                    : 'Editar Cita')
                 ->mountUsing(function (Citation $record, Forms\Form $form, array $arguments) {
-                    $form->fill([
+                    $user = Auth::user();
+                    $isLawyer = $user?->hasRole('lawyer');
+
+                    $fillData = [
                         'name' => $record->name,
                         'phone' => $record->phone,
                         'email' => $record->email,
-                        'lawyer_id' => $record->lawyer_id,
-                        'starts_at' => $arguments['event']['start'] ?? $record->starts_at,
-                        'ends_at' => $arguments['event']['end'] ?? $record->ends_at,
+                        'is_blocked_hours' => $record->blocked_by_user,
                         'observations' => $record->observations,
-                    ]);
-                })
-                ->successNotificationTitle('Cita actualizada exitosamente')
-                ->after(fn () => $this->dispatch('refreshEvents')),
+                    ];
+
+                    // Only add lawyer_id if user is not a lawyer
+                    if (!$isLawyer) {
+                        $fillData['lawyer_id'] = $record->lawyer_id;
+                    }
+
+                    $form->fill($fillData);
+                }),
 
             DeleteAction::make()
-                ->label('Eliminar')
-                ->requiresConfirmation()
-                ->successNotificationTitle('Cita eliminada exitosamente')
-                ->after(fn () => $this->dispatch('refreshEvents')),
+                ->label(fn (?Citation $record) => $record && $record->blocked_by_user ? 'Desbloquear' : 'Eliminar')
+                ->modalHeading(fn (?Citation $record) => $record && $record->blocked_by_user
+                    ? '¿Desbloquear este horario?'
+                    : '¿Eliminar esta cita?')
+                ->modalDescription(fn (?Citation $record) => $record && $record->blocked_by_user
+                    ? 'Este horario volverá a estar disponible para nuevas citas.'
+                    : 'Esta acción no se puede deshacer.')
+                ->modalSubmitActionLabel(fn (?Citation $record) => $record && $record->blocked_by_user
+                    ? 'Sí, desbloquear'
+                    : 'Sí, eliminar')
+                ->successNotificationTitle(fn (?Citation $record) => $record && $record->blocked_by_user
+                    ? 'Horario desbloqueado'
+                    : 'Cita eliminada'),
         ];
     }
 }

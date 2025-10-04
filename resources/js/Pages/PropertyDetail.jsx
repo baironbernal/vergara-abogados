@@ -121,7 +121,7 @@ export default function PropertyDetail({ property, auth, seo }) {
               <div>
                 <div className="flex flex-col gap-3 mb-4 sm:flex-row sm:items-center sm:justify-between">
                   <span className="px-3 py-1 text-sm font-medium bg-golden text-whiteki font-dmsans w-fit">
-                    {property.type}
+                    {property.type_spanish}
                   </span>
                   <span className="text-2xl font-bold text-golden font-prata sm:text-3xl">
                     {formatPrice(property.price)}

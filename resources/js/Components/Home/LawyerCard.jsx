@@ -1,6 +1,8 @@
+import { Link } from "@inertiajs/react"
+
 export const LawyerCard = ({ lawyer }) => {
   return (
-    <div className="relative overflow-hidden cursor-pointer group bg-softGrey h-96">
+    <Link href={`/abogados/${lawyer.slug}`} className="relative block overflow-hidden cursor-pointer group bg-softGrey h-96">
       {/* Lawyer Image - Grayscale with hover transition */}
       <div className="relative w-full h-full">
         {lawyer.image ? (
@@ -71,7 +73,7 @@ export const LawyerCard = ({ lawyer }) => {
 
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

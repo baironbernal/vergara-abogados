@@ -84,7 +84,7 @@ export default function PropertyModal({ property, isOpen, onClose, states, munic
               {property.name}
             </h2>
             <span className="px-3 py-1 text-sm font-medium bg-golden text-whiteki font-dmsans">
-              {property.type}
+              {property.type_spanish}
             </span>
           </div>
           

@@ -20,9 +20,9 @@ class HomeBannerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $label = 'Banner de Inicio';
+    protected static ?string $label = 'Fotos Oficina';
 
-    protected static ?string $pluralLabel = 'Banners de Inicio';
+    protected static ?string $pluralLabel = 'Fotos Oficina';
 
     protected static ?string $navigationGroup = 'Contenido';
 

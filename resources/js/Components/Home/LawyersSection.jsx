@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { MainButton, MotionWrapper } from "@/Components"
 import { LawyerCard } from "./LawyerCard"
+import { Link } from "@inertiajs/react"
 
 export const LawyersSection = ({ lawyers = [] }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -69,12 +70,12 @@ export const LawyersSection = ({ lawyers = [] }) => {
               </p>
             </div>
             <div className="hidden md:block">
-              <button className="flex items-center gap-2 text-lg transition-colors duration-300 text-golden hover:text-darki font-dmsans">
-                View All
+              <Link href="/acerca" className="flex items-center gap-2 text-lg transition-colors duration-300 text-golden hover:text-darki font-dmsans">
+                Ver Todos
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </button>
+              </Link>
             </div>
           </div>
         </MotionWrapper>
@@ -150,7 +151,7 @@ export const LawyersSection = ({ lawyers = [] }) => {
         <MotionWrapper delay={0.4}>
           {lawyers.length > 3 && (
             <div className="mt-12 text-center">
-              <MainButton className="px-8 py-4">
+              <MainButton as={Link} href="/acerca" className="px-8 py-4">
                 Ver Todo el Equipo
               </MainButton>
             </div>

@@ -36,9 +36,7 @@ class ContactController extends Controller
                 ];
             });
 
-        $lawyers = Lawyer::whereNotNull('user_id')
-            ->with('user')
-            ->get(['id', 'name', 'user_id']);
+        $lawyers = Lawyer::get(['id', 'name', 'slug']);
 
         // Note: corporativeInfo is already shared globally via HandleInertiaRequests middleware
         return Inertia::render('Contact', [

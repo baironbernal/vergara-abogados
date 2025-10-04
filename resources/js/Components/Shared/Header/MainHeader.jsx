@@ -37,7 +37,7 @@ export const MainHeader = ({ styles, corporativeInfo = null }) => {
         setHideTopBar(true)
       }
       // Only show top bar when at the very top of the page
-      else if (currentScroll <= 30) {
+      else if (currentScroll <= 350) {
         setHideTopBar(false)
       }
       // Keep hidden when scrolling up but not at the top
@@ -54,7 +54,7 @@ export const MainHeader = ({ styles, corporativeInfo = null }) => {
       <motion.div
         initial={{ y: 0 }}
         animate={{ y: hideTopBar ? -56 : 0 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
+        transition={{ duration: 0.1, ease: "easeInOut" }}
       >
         {/* MainHeader 1 (top bar) */}
         <Info styles={styles} corporativeInfo={corporativeInfo} />

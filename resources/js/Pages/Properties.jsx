@@ -92,7 +92,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
 
   return (
     <>
-      <div className="min-h-screen bg-whiteki">
+      <main className="min-h-screen bg-whiteki">
 
 
         <div className="px-4 py-8 mx-auto max-w-7xl lg:py-12">
@@ -224,9 +224,9 @@ export default function Properties({ states, properties, municipalities, seo }) 
 
             {/* Main Content */}
             <MotionWrapper delay={0.2}>
-              <main className="flex-1">
+              <section>
                 {/* Property Grid */}
-                <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:gap-8 lg:mb-12 xl:grid-cols-3">
+                <main className="grid w-full grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:gap-8 lg:mb-12 xl:grid-cols-3">
 
                   {paginatedProperties.map((property, index) => (
 
@@ -240,7 +240,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
                         className="object-cover w-full h-48 sm:h-56"
                       />
                       <span className="absolute px-2 py-1 text-xs font-medium shadow-lg top-3 right-3 bg-golden text-whiteki font-dmsans lg:top-4 lg:right-4 lg:px-3 lg:py-1">
-                        {property.type}
+                        {property.type_spanish}
                       </span>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>
@@ -277,7 +277,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
                       </div>
                     </MotionWrapper>
                   ))}
-              </div>
+              </main>
 
                 {/* Pagination */}
                 <MotionWrapper delay={0.3}>
@@ -319,36 +319,32 @@ export default function Properties({ states, properties, municipalities, seo }) 
                 </MotionWrapper>
 
                 {/* No Results */}
-                <MotionWrapper delay={0.4}>
-                  {filteredProperties.length === 0 && (
-                    <div className="w-full py-12 text-center lg:py-16">
-                      <div className="w-full max-w-4xl px-4 mx-auto">
-                        <h3 className="mb-4 text-xl font-medium text-darki font-prata lg:text-2xl">No se encontraron propiedades</h3>
-                        <p className="mb-6 text-base text-greyki font-dmsans lg:mb-8 lg:text-lg">No hay propiedades que coincidan con tus criterios de búsqueda</p>
-                        <MainButton
-                          onClick={() => {
-                            setFilters({
-                              municipality_id: "",
-                              state_id: "",
-                              minPrice: "",
-                              maxPrice: "",
-                              propertyType: "",
-                            })
-                            setCurrentPage(1)
-                          }}
-                          className="px-6 py-3 mx-auto shadow-lg lg:px-8 lg:py-4"
-                        >
-                          Limpiar Todos los Filtros
-                        </MainButton>
-                      </div>
-                    </div>
-                  )}
-                </MotionWrapper>
-              </main>
+                {filteredProperties.length === 0 && (
+                  <div className="flex flex-col items-center justify-center w-full px-4 text-center">
+                    <h3 className="mb-4 text-xl font-medium text-darki font-prata lg:text-2xl">No se encontraron propiedades</h3>
+                    <p className="mb-6 text-base text-greyki font-dmsans lg:mb-8 lg:text-lg">No hay propiedades que coincidan con tus criterios de búsqueda</p>
+                    <MainButton
+                      onClick={() => {
+                        setFilters({
+                          municipality_id: "",
+                          state_id: "",
+                          minPrice: "",
+                          maxPrice: "",
+                          propertyType: "",
+                        })
+                        setCurrentPage(1)
+                      }}
+                      className="px-6 py-3 m-auto shadow-lg lg:px-8 lg:py-4"
+                    >
+                      Limpiar Todos los Filtros
+                    </MainButton>
+                </div>
+                )}
+              </section>
             </MotionWrapper>
           </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }

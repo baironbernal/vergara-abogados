@@ -212,7 +212,7 @@ export default function BlogIndex({ blogs, filters, seo }) {
                     <p className="mb-6 text-base text-greyki font-dmsans lg:mb-8 lg:text-lg">
                       No hay artículos que coincidan con tus criterios de búsqueda
                     </p>
-                    <MainButton onClick={clearFilters} className="px-6 py-3 shadow-lg lg:px-8 lg:py-4">
+                    <MainButton onClick={clearFilters} className="px-6 py-3 m-auto shadow-lg lg:px-8 lg:py-4">
                       Ver todos los artículos
                     </MainButton>
                   </div>

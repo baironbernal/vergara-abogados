@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Municipality;
 use App\Models\Property;
 use App\Models\State;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PropertySeeder extends Seeder
@@ -20,7 +19,7 @@ class PropertySeeder extends Seeder
         $stateId = State::inRandomOrder()->value('id');
         $municipalityId = Municipality::inRandomOrder()->value('id');
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             Property::create([
                 'name' => 'Property ' . $i,
                 'type' => fake()->randomElement(['House', 'Apartment', 'Farm', 'Lot']),
@@ -34,7 +33,6 @@ class PropertySeeder extends Seeder
                 'description' => fake()->sentence(15),
                 'state_id' => $stateId,
                 'municipality_id' => $municipalityId,
-                'ubication' => fake()->city(),
             ]);
         }
     }

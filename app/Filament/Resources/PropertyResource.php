@@ -46,7 +46,8 @@ class PropertyResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nombre de la propiedad')
-                            ->required(),
+                            ->required()
+                            ->columnSpanFull(),
 
                         Forms\Components\Select::make('type')
                             ->label('Tipo de propiedad')
@@ -69,9 +70,35 @@ class PropertyResource extends Resource
                             ->numeric()
                             ->suffix('m²'),
 
-                        Forms\Components\TextInput::make('certification')
-                            ->label('Certificación')
-                            ->placeholder('Certificación de la propiedad'),
+                        Forms\Components\Select::make('state_id')
+                            ->label('Departamento')
+                            ->options(State::all()->pluck('name', 'id')->toArray())
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(fn (callable $set) => $set('municipality_id', null))
+                            ->required(),
+
+                        Forms\Components\Select::make('municipality_id')
+                            ->label('Municipio')
+                            ->options(function (callable $get) {
+                                $stateId = $get('state_id');
+                                if (!$stateId) {
+                                    return [];
+                                }
+                                return Municipality::where('state_id', $stateId)
+                                    ->pluck('name', 'id')
+                                    ->toArray();
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled(fn (callable $get) => !$get('state_id')),
+
+                        Forms\Components\Textarea::make('description')
+                            ->label('Descripción')
+                            ->rows(3)
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
 
@@ -105,46 +132,14 @@ class PropertyResource extends Resource
                             ->panelLayout('grid')
                             ->uploadingMessage('Subiendo fotos...')
                             ->helperText('Máximo 10 imágenes, 5MB cada una'),
-                    ]),
-
-                Section::make('Ubicación')
-                    ->schema([
-                        Forms\Components\Select::make('state_id')
-                            ->label('Departamento')
-                            ->options(State::all()->pluck('name', 'id')->toArray())
-                            ->searchable()
-                            ->preload()
-                            ->live()
-                            ->afterStateUpdated(fn (callable $set) => $set('municipality_id', null))
-                            ->required(),
-
-                        Forms\Components\Select::make('municipality_id')
-                            ->label('Municipio')
-                            ->options(function (callable $get) {
-                                $stateId = $get('state_id');
-                                if (!$stateId) {
-                                    return [];
-                                }
-                                return Municipality::where('state_id', $stateId)
-                                    ->pluck('name', 'id')
-                                    ->toArray();
-                            })
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->disabled(fn (callable $get) => !$get('state_id')),
                     ])
-                    ->columns(2)
-                    ->columnSpanFull(),
+                    ->collapsed(),
 
-                Section::make('Descripción')
+                Forms\Components\Section::make('SEO')
                     ->schema([
-                        Forms\Components\Textarea::make('description')
-                            ->label('Descripción')
-                            ->rows(3),
-                    ]),
-
-                SeoFieldset::make('seo'),
+                        SeoFieldset::make('seo'),
+                    ])
+                    ->collapsed(),
             ]);
     }
 
@@ -164,6 +159,14 @@ class PropertyResource extends Resource
                 TextColumn::make('type')
                     ->label('Tipo')
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'apartment' => 'Apartamento',
+                        'house' => 'Casa',
+                        'plot' => 'Lote',
+                        'finca' => 'Finca',
+                        'other' => 'Otro',
+                        default => $state,
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'apartment' => 'warning',
                         'house' => 'success',
@@ -260,15 +263,6 @@ class PropertyResource extends Resource
                             ->when($data['min_size'], fn ($q, $min) => $q->where('size', '>=', $min))
                             ->when($data['max_size'], fn ($q, $max) => $q->where('size', '<=', $max));
                     }),
-
-                // Certification filter
-                Tables\Filters\SelectFilter::make('certification')
-                    ->label('Certificación')
-                    ->options([
-                        'leed' => 'LEED',
-                        'breeam' => 'BREEAM',
-                        'none' => 'Ninguna',
-                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

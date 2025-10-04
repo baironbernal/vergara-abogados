@@ -10,6 +10,7 @@ const Home = ({ lawyers, homeBanner, seo }) => {
     <>
       <MainBanner homeBanner={homeBanner} />
       <LawyersSection lawyers={lawyers} />
+
     </>
   )
 }

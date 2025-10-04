@@ -42,12 +42,15 @@ class CitationResource extends Resource
 
         // If user is admin, show all citations
         if ($user && $user->hasRole('admin')) {
+
             return $query;
         }
 
         // If user is a lawyer, show their citations AND citations available for any lawyer (lawyer_id = null)
         if ($user && $user->hasRole('lawyer')) {
+
             $lawyer = $user->lawyer;
+
             if ($lawyer) {
                 return $query->where(function ($q) use ($lawyer) {
                     $q->where('lawyer_id', $lawyer->id)
