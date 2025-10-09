@@ -20,7 +20,7 @@ jobs:
           extensions: mbstring, bcmath, intl, pdo_mysql
           tools: composer, npm
 
-      # 🧹 Clean old build to avoid nested public/build/public/build
+      # 🧹 Clean any previous build to prevent nested public/build/public/build
       - name: Clean old build folder
         run: rm -rf public/build
 
@@ -30,7 +30,7 @@ jobs:
           npm install
           npm run build
 
-      # 🏗️ Ensure target build folder exists in Hostinger
+      # 🏗️ Ensure target build folder exists on Hostinger
       - name: Prepare Hostinger build folder
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -42,7 +42,7 @@ jobs:
             mkdir -p ${{ secrets.HOSTINGER_PATH }}/public/build
             rm -rf ${{ secrets.HOSTINGER_PATH }}/public/build/*
 
-      # ✅ Upload compiled build output directly into /public/build
+      # ✅ Upload only 'assets' folder and 'manifest.json'
       - name: Upload built assets to Hostinger
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -50,7 +50,9 @@ jobs:
           username: ${{ secrets.HOSTINGER_USER }}
           port: ${{ secrets.HOSTINGER_PORT }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
-          source: "public/build/."
+          source: |
+            public/build/assets/**
+            public/build/manifest.json
           target: "${{ secrets.HOSTINGER_PATH }}/public/build"
           overwrite: true
           rm: true
