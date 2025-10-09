@@ -13,10 +13,10 @@ export const useContactForm = (onSuccess) => {
   } = useForm({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      name: "Bairon",
-      email: "baironbernal22@gmail.com",
-      phone: "3133131313",
-      observations: "testtesttesttesttesttesttesttesttest",
+      name: "",
+      email: "",
+      phone: "",
+      observations: "",
       lawyer_id: "2",
       agree: true,
     },

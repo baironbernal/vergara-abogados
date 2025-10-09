@@ -13,7 +13,6 @@ class CitationObserver
      */
     public function created(Citation $citation): void
     {
-        dd($citation->lawyer);
         if ($citation->lawyer && $citation->lawyer->user) {
             Notification::make()
                 ->title('Nueva cita asignada')

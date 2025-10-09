@@ -1,79 +1,42 @@
-name: Deploy Laravel + React to Hostinger (SSH)
+name: Deploy to Hostinger
 
 on:
   push:
     branches:
-      - main   # o "master" si tu repo usa master
+      - main  # or 'master' if you use that
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Descargar código
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configurar Node.js (React)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Build React
-        run: |
-          npm ci
-          npm run build
-
-      # 3. Configurar PHP (Laravel)
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          extensions: mbstring, bcmath, intl, pdo_mysql
+          tools: composer, npm
 
-      - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader
+      - name: Install dependencies and build assets
+        run: |
+          composer install --no-dev --optimize-autoloader
+          npm install
+          npm run build
 
-      # 4. Copiar build de React al public_html/build en Hostinger
-      - name: Upload React build
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy to Hostinger
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.HST_HOST }}
-          port: ${{ secrets.HST_PORT }}
-          username: ${{ secrets.HST_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "public/build/*"
-          target: "/home/${{ secrets.HST_USER }}/public_html/build"
-          overwrite: true
-
-      # 5. Copiar archivos de Laravel al folder del proyecto
-      - name: Upload Laravel project
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.HST_HOST }}
-          port: ${{ secrets.HST_PORT }}
-          username: ${{ secrets.HST_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./"
-          target: "/home/${{ secrets.HST_USER }}/laravel_project"
-          overwrite: true
-          strip_components: 0
-          exclude: |
-            **/node_modules/**
-            **/public/build/**
-            **/.git*
-            **/.github/**
-            **/tests/**
-
-      # 6. Ejecutar comandos Laravel en el servidor (migraciones, clear cache, etc.)
-      - name: Run artisan commands
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.HST_HOST }}
-          port: ${{ secrets.HST_PORT }}
-          username: ${{ secrets.HST_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           script: |
-            cd /home/${{ secrets.HST_USER }}/laravel_project
-            php artisan migrate --force
-            php artisan optimize:clear
+            cd ${{ secrets.HOSTINGER_PATH }}
+            git pull origin main
+            composer install --no-dev --optimize-autoloader
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache

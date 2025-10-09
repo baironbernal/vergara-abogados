@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        Citation::observe(CitationObserver::class);
+        //Citation::observe(CitationObserver::class);
 
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
