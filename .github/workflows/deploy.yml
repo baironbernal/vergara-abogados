@@ -1,4 +1,4 @@
-name: Deploy to Hostinger updated
+name: Deploy to Hostinger (Updated)
 
 on:
   push:
@@ -30,6 +30,10 @@ jobs:
           npm install
           npm run build
 
+      # 🧪 Debug - Check what files were built
+      - name: Check build folder contents
+        run: ls -R public/build || echo "No build folder found"
+
       # 🏗️ Ensure target build folder exists on Hostinger
       - name: Prepare Hostinger build folder
         uses: appleboy/ssh-action@v1.2.0
@@ -50,13 +54,12 @@ jobs:
           username: ${{ secrets.HOSTINGER_USER }}
           port: ${{ secrets.HOSTINGER_PORT }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
-          source: |
-            public/build/assets/**
-            public/build/manifest.json
+          source: "public/build/*"
           target: "${{ secrets.HOSTINGER_PATH }}/public/build"
           overwrite: true
           rm: true
 
+      # 🚀 Final deployment commands
       - name: Deploy to Hostinger
         uses: appleboy/ssh-action@v1.2.0
         with:
