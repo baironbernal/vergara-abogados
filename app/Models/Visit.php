@@ -19,7 +19,6 @@ class Visit extends Model
 
     protected $casts = [
         'visit_date' => 'date',
-        'visit_time' => 'time',
     ];
 
     public function property()

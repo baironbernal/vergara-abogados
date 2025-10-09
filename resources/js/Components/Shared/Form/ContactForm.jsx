@@ -5,6 +5,9 @@ import { MainButton } from "@/Components";
 export const ContactForm = ({ lawyers = null, onSuccess }) => {
   const { register, handleSubmit, errors, isSubmitting, isSubmitSuccessful } = useContactForm(onSuccess)
 
+  // Only show success message if there's no onSuccess callback (standalone form)
+  const showSuccessMessage = isSubmitSuccessful && !onSuccess
+
   return (
     <div className="w-full max-w-4xl mx-auto 2xl:max-w-6xl">
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -142,7 +145,7 @@ export const ContactForm = ({ lawyers = null, onSuccess }) => {
         </div>
 
         {/* Success Message */}
-        {isSubmitSuccessful && (
+        {showSuccessMessage && (
           <div className="p-4 text-center bg-green-50 border border-green-200">
             <p className="text-sm font-semibold text-green-700 font-dmsans">
               ¡Gracias por contactarnos! Te responderemos pronto.
