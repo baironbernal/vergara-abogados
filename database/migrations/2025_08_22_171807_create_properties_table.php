@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); 
-            $table->string('type'); 
-            $table->string('thumbnail')->nullable(); 
-            $table->json('gallery')->nullable(); 
-            $table->string('price'); 
+            $table->string('name');
+            $table->string('type');
+            $table->string('thumbnail')->nullable();
+            $table->json('gallery')->nullable();
+            $table->string('price');
             $table->decimal('size', 8, 2)->nullable();
-            $table->string('ubication')->nullable(); 
-            $table->text('description')->nullable(); 
+            $table->text('description')->nullable();
             $table->foreignId('state_id')->constrained('states');
             $table->foreignId('municipality_id')->constrained('municipalities');
+            $table->json('seo')->nullable();
             $table->timestamps();
         });
     }

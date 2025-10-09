@@ -22,12 +22,13 @@ return new class extends Migration
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();
+            $table->json('seo')->nullable();
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->boolean('featured')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-            
+
             $table->index(['status', 'published_at']);
             $table->index('featured');
             $table->index('slug');

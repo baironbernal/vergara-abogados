@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('citations', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); 
-            $table->string('phone'); 
+            $table->string('name');
+            $table->string('phone');
             $table->string('email')->nullable();
             $table->timestamp('scheduled_at')->nullable();
             $table->dateTime('starts_at')->nullable();
@@ -23,7 +23,9 @@ return new class extends Migration
                   ->nullable()
                   ->constrained()
                   ->nullOnDelete();
-            $table->text('observations')->nullable(); 
+            $table->text('observations')->nullable();
+            $table->boolean('blocked_by_user')->default(false);
+            $table->foreignId('blocked_by_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->boolean('is_new')->default(true);
             $table->timestamps();
         });
