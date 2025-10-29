@@ -16,7 +16,14 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
       const handleDateSelect = (selectInfo) => {
         const start = selectInfo.start;
         const end = selectInfo.end;
-        
+
+        // Check if the selected date is in the past
+        const now = new Date();
+        if (start < now) {
+          alert('No puede seleccionar fechas en el pasado. Por favor seleccione una fecha actual o futura.');
+          return;
+        }
+
         // Check if the selected slot conflicts with existing events
         const hasConflict = events.some(event => {
           const eventStart = new Date(event.start);
@@ -204,6 +211,9 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
               endTime: '18:00',
             }}
             selectConstraint="businessHours"
+            validRange={{
+              start: new Date().toISOString().split('T')[0] // Only allow dates from today onwards
+            }}
             // Style for available slots
             dayCellClassNames={() => "available-slot"}
             // Prevent selection on occupied events

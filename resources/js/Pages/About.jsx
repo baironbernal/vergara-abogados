@@ -1,4 +1,4 @@
-import {MotionWrapper, BannerInformative, MainButton} from "@/Components"
+import {MotionWrapper, BannerInformative, MainButton, LawyersSection} from "@/Components"
 import { useSeoManager } from "@/hooks/useSeoManager"
 import { Link } from "@inertiajs/react"
 
@@ -144,59 +144,6 @@ const About = ({ lawyers, seo }) => {
         </section>
         </MotionWrapper>
 
-        {/* Team Section */}
-        <MotionWrapper>
-        <section className="mb-12 lg:mb-16">
-          <div className="mb-8 text-center lg:mb-12">
-            <h2 className="mb-4 text-2xl font-bold font-prata md:text-3xl lg:text-4xl">Nuestro Equipo</h2>
-            <div className="w-16 h-1 bg-[#C59B40] mx-auto lg:w-24"></div>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {lawyers && lawyers.length > 0 ? (
-              lawyers.map((lawyer) => (
-                <Link key={lawyer.id} href={`/abogados/${lawyer.slug}`} className="text-center transition-all hover:scale-105">
-                  <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full lg:w-32 lg:h-32 lg:mb-6">
-                    {lawyer.image ? (
-                      <img
-                        src={`/storage/${lawyer.image}`}
-                        alt={lawyer.name}
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-300 rounded-full"></div>
-                    )}
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold lg:text-xl">{lawyer.name}</h3>
-                  <p className="text-sm text-gray-600 lg:text-base">{lawyer.description}</p>
-                </Link>
-              ))
-            ) : (
-              // Fallback content if no lawyers data
-              <>
-                <div className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 bg-gray-300 rounded-full lg:w-32 lg:h-32 lg:mb-6"></div>
-                  <h3 className="mb-2 text-lg font-bold lg:text-xl">Juan Vergara</h3>
-                  <p className="text-sm text-gray-600 lg:text-base">Director General</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 bg-gray-300 rounded-full lg:w-32 lg:h-32 lg:mb-6"></div>
-                  <h3 className="mb-2 text-lg font-bold lg:text-xl">María González</h3>
-                  <p className="text-sm text-gray-600 lg:text-base">Asesora Legal</p>
-                </div>
-
-                <div className="text-center md:col-span-2 lg:col-span-1">
-                  <div className="w-24 h-24 mx-auto mb-4 bg-gray-300 rounded-full lg:w-32 lg:h-32 lg:mb-6"></div>
-                  <h3 className="mb-2 text-lg font-bold lg:text-xl">Carlos Rodríguez</h3>
-                  <p className="text-sm text-gray-600 lg:text-base">Asesor Inmobiliario</p>
-                </div>
-              </>
-            )}
-          </div>
-        </section>
-        </MotionWrapper>
-
         {/* CTA Section */}
         <MotionWrapper>
         <section className="text-center">
@@ -215,6 +162,7 @@ const About = ({ lawyers, seo }) => {
         </MotionWrapper>
       </main>
       </div>
+      <LawyersSection lawyers={lawyers} />
     </>
   )
 }
