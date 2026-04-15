@@ -43,8 +43,9 @@ jobs:
           port: ${{ secrets.HOSTINGER_PORT }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           script: |
-            mkdir -p ${{ secrets.HOSTINGER_PATH }}/public/build
-            rm -rf ${{ secrets.HOSTINGER_PATH }}/public/build/*
+            set -e
+            mkdir -p "${{ secrets.HOSTINGER_PATH }}/public/build"
+            rm -rf "${{ secrets.HOSTINGER_PATH }}/public/build"/*
 
       # ✅ Upload only 'assets' folder and 'manifest.json'
       # NOTE: target must be HOSTINGER_PATH (not .../public/build) because scp-action
@@ -71,9 +72,10 @@ jobs:
           port: ${{ secrets.HOSTINGER_PORT }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           script: |
-            cd ${{ secrets.HOSTINGER_PATH }}
+            set -e
+            cd "${{ secrets.HOSTINGER_PATH }}"
             git pull origin main
-            composer install
+            composer install --no-interaction --prefer-dist --optimize-autoloader
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
