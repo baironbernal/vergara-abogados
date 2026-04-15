@@ -38,7 +38,12 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'corporativeInfo' => Information::latest()->first(),
+            'corporativeInfo' => cache()->remember('corporative_info', now()->addHours(6), fn () =>
+                Information::latest()->first()
+            ),
+            // Available in every page component for canonical tags.
+            // Uses url() (no query string) so filters/search params are excluded.
+            'canonicalUrl' => $request->url(),
         ];
     }
 }

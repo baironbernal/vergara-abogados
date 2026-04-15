@@ -56,18 +56,19 @@ class Blog extends Model
     }
 
     // Scopes
-    public function scopePublished(Builder $query)
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published')
             ->where('published_at', '<=', now());
     }
 
-    public function scopeFeatured(Builder $query)
+    public function scopeFeatured(Builder $query): Builder
     {
         return $query->where('featured', true);
     }
 
-    public function scopeLatest(Builder $query)
+    // Renamed from scopeLatest to avoid shadowing Eloquent's built-in latest() method.
+    public function scopeLatestPublished(Builder $query): Builder
     {
         return $query->orderBy('published_at', 'desc');
     }

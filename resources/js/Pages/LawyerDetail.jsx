@@ -1,13 +1,51 @@
+import DOMPurify from "dompurify"
+import { usePage } from "@inertiajs/react"
 import { useSeoManager } from "@/hooks/useSeoManager"
 import { Mail, Phone, MapPin, Clock, Linkedin, Facebook, Twitter, Instagram, GraduationCap, Briefcase, Award, Scale } from "lucide-react"
 import { MainButton, MotionWrapper } from "@/Components"
 import { Link } from "@inertiajs/react"
+import { JsonLd } from "@/Components/Shared/JsonLd"
 
 export default function LawyerDetail({ lawyer, seo }) {
     useSeoManager(seo)
 
+    const { props } = usePage()
+    const canonical = props.canonicalUrl || ""
+
+    const attorneySchema = {
+      "@context": "https://schema.org",
+      "@type": "Attorney",
+      "name": lawyer.name,
+      "description": lawyer.description || `${lawyer.profession} especializado en derecho inmobiliario en Soacha, Cundinamarca.`,
+      "url": canonical,
+      "image": lawyer.image ? `/storage/${lawyer.image}` : undefined,
+      "jobTitle": lawyer.profession,
+      "worksFor": {
+        "@type": "LegalService",
+        "name": "Inmobiliaria Vergara y Abogados",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Soacha",
+          "addressRegion": "Cundinamarca",
+          "addressCountry": "CO",
+        },
+      },
+      "alumniOf": (lawyer.education || []).map((e) => ({
+        "@type": "EducationalOrganization",
+        "name": e.institution || e.title || e,
+      })),
+      "knowsAbout": (lawyer.specializations || []),
+      "sameAs": [
+        lawyer.linkedin,
+        lawyer.facebook,
+        lawyer.twitter,
+        lawyer.instagram,
+      ].filter(Boolean),
+    }
+
     return (
         <div className="min-h-screen bg-whiteki">
+            <JsonLd data={attorneySchema} />
             {/* Header Section */}
             <MotionWrapper>
                 <div className="bg-darki">
@@ -151,7 +189,11 @@ export default function LawyerDetail({ lawyer, seo }) {
                                     </h2>
                                     <div
                                         className="prose prose-lg max-w-none text-greyki font-dmsans"
-                                        dangerouslySetInnerHTML={{ __html: lawyer.bio }}
+                                        dangerouslySetInnerHTML={{
+                                          __html: typeof window !== 'undefined'
+                                            ? DOMPurify.sanitize(lawyer.bio ?? "")
+                                            : (lawyer.bio ?? ""),
+                                        }}
                                     />
                                 </section>
                             </MotionWrapper>

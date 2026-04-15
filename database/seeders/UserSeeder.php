@@ -15,11 +15,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $initialPassword = env('ADMIN_INITIAL_PASSWORD');
+
+        if (empty($initialPassword)) {
+            throw new \RuntimeException(
+                'ADMIN_INITIAL_PASSWORD env variable must be set before running seeders.'
+            );
+        }
+
         $admin = User::firstOrCreate(
             ['email' => 'admin@inmobiliariavergarayabogados.com'],
             [
-                'name' => 'Admin',
-                'password' => Hash::make('123456'),
+                'name'     => 'Admin',
+                'password' => Hash::make($initialPassword),
             ]
         );
         $admin->assignRole('admin');

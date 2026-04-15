@@ -1,21 +1,14 @@
 User-agent: *
-Allow: /
 
-# Sitemaps
-Sitemap: /sitemap.xml
-
-# Disallow admin areas
+# Block non-public areas
 Disallow: /admin/
-Disallow: /storage/
 Disallow: /build/
 
-# Allow important pages
+# Allow everything else (including all public pages)
 Allow: /
-Allow: /acerca
-Allow: /contacto  
-Allow: /servicios
-Allow: /inmobiliaria
-Allow: /inmobiliaria/*
 
-# SEO optimization
-Crawl-delay: 1
+# Sitemap location — submit this URL to Google Search Console as well
+Sitemap: /sitemap.xml
+
+# RSS feed for blog syndication
+Sitemap: /rss

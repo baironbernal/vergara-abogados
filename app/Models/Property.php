@@ -24,7 +24,7 @@ class Property extends Model
         'seo' => 'array',
     ];
 
-    protected $appends = ['type_spanish'];
+    // Not in $appends — append explicitly via ->append('type_spanish') where needed.
 
     public function municipality()
     {

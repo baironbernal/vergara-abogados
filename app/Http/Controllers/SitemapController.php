@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Lawyer;
 use App\Models\Property;
 use App\Models\Service;
 use Illuminate\Http\Response;
@@ -11,10 +12,20 @@ class SitemapController extends Controller
 {
     public function index()
     {
-        $properties = Property::latest()->get();
-        $services = Service::all();
-        $blogs = Blog::published()->latest('published_at')->get();
-        
+        $xml = cache()->remember('sitemap_xml', now()->addHours(12), function () {
+            $properties = Property::latest()->get(['id', 'updated_at']);
+            $services   = Service::all(['slug', 'updated_at']);
+            $blogs      = Blog::published()->latest('published_at')->get(['slug', 'updated_at']);
+            $lawyers    = Lawyer::whereNotNull('user_id')->whereNotNull('slug')->get(['slug', 'updated_at']);
+
+            return $this->buildXml($properties, $services, $blogs, $lawyers);
+        });
+
+        return response($xml)->header('Content-Type', 'application/xml');
+    }
+
+    private function buildXml($properties, $services, $blogs, $lawyers): string
+    {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
         
@@ -81,9 +92,30 @@ class SitemapController extends Controller
             $xml .= '</url>';
         }
         
+        // Individual lawyer profiles
+        foreach ($lawyers as $lawyer) {
+            $xml .= '<url>';
+            $xml .= '<loc>' . url("/abogados/{$lawyer->slug}") . '</loc>';
+            $xml .= '<changefreq>monthly</changefreq>';
+            $xml .= '<priority>0.8</priority>';
+            $xml .= '<lastmod>' . $lawyer->updated_at->format('Y-m-d\TH:i:sP') . '</lastmod>';
+            $xml .= '</url>';
+        }
+
+        // Individual services
+        foreach ($services as $service) {
+            $xml .= '<url>';
+            $xml .= '<loc>' . url("/servicios/{$service->slug}") . '</loc>';
+            $xml .= '<changefreq>monthly</changefreq>';
+            $xml .= '<priority>0.7</priority>';
+            if ($service->updated_at) {
+                $xml .= '<lastmod>' . $service->updated_at->format('Y-m-d\TH:i:sP') . '</lastmod>';
+            }
+            $xml .= '</url>';
+        }
+
         $xml .= '</urlset>';
-        
-        return response($xml)
-            ->header('Content-Type', 'application/xml');
+
+        return $xml;
     }
 }

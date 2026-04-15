@@ -4,19 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Lawyer;
 use App\Models\Page;
+use App\Services\SeoManager;
 use Inertia\Inertia;
 
 class AboutController extends Controller
 {
     public function index()
     {
-        // Get SEO from Page model
-        $page = Page::where('route', '/acerca')->first();
+        $page = cache()->remember('page_seo_/acerca', now()->addDay(), fn () =>
+            Page::where('route', '/acerca')->first()
+        );
         $seo = $page ? $page->seo : [
-            'title' => 'Acerca de Nosotros - Inmobiliaria Vergara',
-            'description' => 'Conoce a nuestro equipo de abogados especializados en derecho inmobiliario. Experiencia, profesionalismo y compromiso en cada caso.',
-            'keywords' => 'acerca de, equipo legal, abogados inmobiliarios, profesionales, inmobiliaria vergara',
+            'title'       => 'Nuestro Equipo de Abogados en Soacha — Inmobiliaria Vergara y Abogados',
+            'description' => 'Conoce a nuestros abogados especializados en derecho inmobiliario ubicados en Soacha, Cundinamarca. Experiencia, profesionalismo y compromiso en cada caso.',
+            'keywords'    => 'abogados Soacha, equipo legal, abogados inmobiliarios Cundinamarca, firma de abogados Soacha',
         ];
+
+        SeoManager::set($seo);
 
         $lawyers = Lawyer::whereNotNull('user_id')
             ->with('user')

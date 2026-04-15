@@ -15,10 +15,12 @@ class Service extends Model
         'description',
         'type',
         'seo',
+        'faq',
     ];
 
     protected $casts = [
         'seo' => 'array',
+        'faq' => 'array',
     ];
 
     protected static function boot()
@@ -26,13 +28,13 @@ class Service extends Model
         parent::boot();
 
         static::creating(function ($service) {
-            if (!$service->slug) {
+            if (! $service->slug) {
                 $service->slug = Str::slug($service->name);
             }
         });
 
         static::updating(function ($service) {
-            if ($service->isDirty('name') && !$service->isDirty('slug')) {
+            if ($service->isDirty('name') && ! $service->isDirty('slug')) {
                 $service->slug = Str::slug($service->name);
             }
         });

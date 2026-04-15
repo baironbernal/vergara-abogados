@@ -26,6 +26,8 @@ import {
 } from 'lucide-react';
 import { MotionWrapper, LawyerCard, MainButton, BannerInformative } from "@/Components";
 import { useSeoManager } from "@/hooks/useSeoManager";
+import { usePage } from "@inertiajs/react";
+import { JsonLd } from "@/Components/Shared/JsonLd";
 
 // Array of icons to match the service cards
 const serviceIcons = [
@@ -41,8 +43,10 @@ const getServiceIcon = (serviceId) => {
   return serviceIcons[iconIndex];
 };
 
-const ServiceDetail = ({ service, lawyers, seo }) => {
+const ServiceDetail = ({ service, lawyers, seo, schema }) => {
   useSeoManager(seo)
+  const { props } = usePage()
+  const pageSchema = props.schema || schema
   const IconComponent = getServiceIcon(service.id);
 
   // Hide info bar when entering service detail page
@@ -63,6 +67,7 @@ const ServiceDetail = ({ service, lawyers, seo }) => {
 
   return (
     <>
+      {pageSchema && <JsonLd data={pageSchema} />}
       {/* Banner Section */}
       <MotionWrapper>
         <BannerInformative

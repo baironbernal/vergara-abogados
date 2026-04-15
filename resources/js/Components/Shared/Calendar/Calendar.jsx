@@ -138,14 +138,15 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
             validCitations = validCitations.filter(c => c.lawyer_id == selectedLawyerId);
           }
 
-          const mapped = validCitations.map((c) => {
+          const mapped = validCitations.map((c, index) => {
             const isBlocked = c.is_blocked === true;
+            const lawyerName = c.lawyer ? c.lawyer.name : null;
 
             return {
-              id: c.id,
+              id: `slot-${index}`,
               title: isBlocked
-                ? `${c.lawyer ? c.lawyer.name : 'Abogado'} - No disponible`
-                : `${c.lawyer ? c.lawyer.name : 'Cualquiera'} - Ocupado`,
+                ? `${lawyerName ?? 'Abogado'} - No disponible`
+                : `${lawyerName ?? 'Cualquiera'} - Ocupado`,
               start: c.starts_at.replace(" ", "T"),
               end: c.ends_at.replace(" ", "T"),
               backgroundColor: isBlocked ? '#dc2626' : '#000000',
@@ -155,9 +156,6 @@ export const Calendar = ({ citations=null, back=null, citationId=null, onSuccess
               extendedProps: {
                 isBlocked: isBlocked,
                 lawyerId: c.lawyer ? c.lawyer.id : null,
-                phone: c.lawyer ? c.lawyer.phone : null,
-                email: c.lawyer ? c.lawyer.email : null,
-                image: c.lawyer ? c.lawyer.image : null,
               },
             };
           });

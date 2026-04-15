@@ -1,11 +1,18 @@
 import { useState } from "react"
+import DOMPurify from "dompurify"
 import { ArrowLeft, Calendar, User, Clock, Share2, Facebook, Twitter, Linkedin, ArrowRight } from "lucide-react"
-import { Link } from "@inertiajs/react"
+import { Link, usePage } from "@inertiajs/react"
 import { MainButton, MotionWrapper } from "@/Components"
 import { useSeoManager } from "@/hooks/useSeoManager"
+import { JsonLd } from "@/Components/Shared/JsonLd"
 
-export default function BlogShow({ blog, relatedBlogs, seo }) {
+export default function BlogShow({ blog, relatedBlogs, seo, schema }) {
   useSeoManager(seo)
+
+  const { props } = usePage()
+  const canonical = props.canonicalUrl || ""
+  const pageSchema = props.schema || schema
+
   const [activeImageIndex, setActiveImageIndex] = useState(0)
 
   const formatDate = (dateString) => {
@@ -16,9 +23,13 @@ export default function BlogShow({ blog, relatedBlogs, seo }) {
     })
   }
 
-  const formatContent = (content) => {
-    return { __html: content }
-  }
+  // On SSR (Node.js) window is undefined — skip sanitization for server-rendered pass.
+  // The browser re-hydrates and DOMPurify runs on the client before any user interaction.
+  const formatContent = (content) => ({
+    __html: typeof window !== 'undefined'
+      ? DOMPurify.sanitize(content ?? "")
+      : (content ?? ""),
+  })
 
   const shareUrl = window.location.href
   const shareTitle = blog.title
@@ -43,6 +54,7 @@ export default function BlogShow({ blog, relatedBlogs, seo }) {
 
   return (
     <>
+      {pageSchema && <JsonLd data={pageSchema} />}
       <div className="min-h-screen bg-whiteki">
         {/* Back Navigation */}
         <div className="bg-white border-b border-softGrey">
