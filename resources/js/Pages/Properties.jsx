@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react"
-import { MapPin, Search, Filter, Eye, ChevronDown, ChevronUp } from "lucide-react"
-import { BannerInformative, MainButton, MotionWrapper } from "@/Components"
-import PropertyModal from "@/Components/Properties/PropertyModal"
+import { MapPin, Filter, ChevronDown, ChevronUp } from "lucide-react"
+import { MainButton } from "@/Components"
 import { Link } from '@inertiajs/react'
 import { useSeoManager } from "@/hooks/useSeoManager"
 
@@ -10,8 +9,6 @@ const ITEMS_PER_PAGE = 6
 export default function Properties({ states, properties, municipalities, seo }) {
   useSeoManager(seo)
   const [currentPage, setCurrentPage] = useState(1)
-  const [selectedProperty, setSelectedProperty] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
   const [filters, setFilters] = useState({
     municipality_id: "",
@@ -80,16 +77,6 @@ export default function Properties({ states, properties, municipalities, seo }) 
     return municipality ? municipality.name : ''
   }
 
-  const handlePropertyClick = (property) => {
-    setSelectedProperty(property)
-    setIsModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false)
-    setSelectedProperty(null)
-  }
-
   return (
     <>
       <main className="min-h-screen bg-whiteki">
@@ -97,25 +84,22 @@ export default function Properties({ states, properties, municipalities, seo }) 
 
         <div className="px-4 py-8 mx-auto max-w-7xl lg:py-12">
           {/* Mobile Filters Toggle */}
-          <MotionWrapper>
-            <div className="mb-6 lg:hidden">
-              <button
-                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-                className="flex items-center justify-between w-full p-4 text-left bg-white border shadow-lg border-softGrey"
-              >
-                <div className="flex items-center gap-3">
-                  <Filter className="w-5 h-5 text-golden" />
-                  <span className="font-medium text-darki font-dmsans">Filtros de Búsqueda</span>
-                </div>
-                {isFiltersOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-              </button>
-            </div>
-          </MotionWrapper>
+          <div className="mb-6 lg:hidden">
+            <button
+              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+              className="flex items-center justify-between w-full p-4 text-left bg-white border shadow-lg border-softGrey"
+            >
+              <div className="flex items-center gap-3">
+                <Filter className="w-5 h-5 text-golden" />
+                <span className="font-medium text-darki font-dmsans">Filtros de Búsqueda</span>
+              </div>
+              {isFiltersOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            </button>
+          </div>
 
           <div className="flex flex-col gap-8 lg:flex-row">
             {/* Filters Sidebar */}
-            <MotionWrapper delay={0.1}>
-              <aside className={`lg:flex-shrink-0 lg:w-80 ${isFiltersOpen ? 'block' : 'hidden lg:block'}`}>
+            <aside className={`lg:flex-shrink-0 lg:w-80 ${isFiltersOpen ? 'block' : 'hidden lg:block'}`}>
               <div className="p-6 bg-white border shadow-lg lg:sticky lg:top-4 border-softGrey lg:p-8">
                 <h2 className="flex items-center gap-3 mb-6 text-lg font-medium text-darki font-dmsans lg:mb-8 lg:text-xl">
                   <Filter className="w-5 h-5 text-golden lg:w-6 lg:h-6" />
@@ -219,19 +203,15 @@ export default function Properties({ states, properties, municipalities, seo }) 
                   </MainButton>
                 </div>
               </div>
-              </aside>
-            </MotionWrapper>
+            </aside>
 
             {/* Main Content */}
-            <MotionWrapper delay={0.2}>
-              <section>
+            <section className="flex-1 min-w-0">
                 {/* Property Grid */}
                 <main className="grid w-full grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:gap-8 lg:mb-12 xl:grid-cols-3">
 
-                  {paginatedProperties.map((property, index) => (
-
-                    <MotionWrapper key={property.id} delay={index * 0.1}>
-                      <div className="flex flex-col h-full bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                  {paginatedProperties.map((property) => (
+                    <div key={property.id} className="flex flex-col h-full bg-white shadow-lg border border-softGrey overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
                     <div className="relative">
 
                       <img
@@ -275,14 +255,12 @@ export default function Properties({ states, properties, municipalities, seo }) 
                       </MainButton>
                     </div>
                       </div>
-                    </MotionWrapper>
                   ))}
               </main>
 
                 {/* Pagination */}
-                <MotionWrapper delay={0.3}>
-                  {totalPages > 1 && (
-                    <div className="flex flex-col items-center justify-center gap-4 lg:flex-row lg:gap-3">
+                {totalPages > 1 && (
+                  <div className="flex flex-col items-center justify-center gap-4 lg:flex-row lg:gap-3">
                   <MainButton
                     onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
@@ -314,9 +292,8 @@ export default function Properties({ states, properties, municipalities, seo }) 
                   >
                     Siguiente
                   </MainButton>
-                    </div>
-                  )}
-                </MotionWrapper>
+                  </div>
+                )}
 
                 {/* No Results */}
                 {filteredProperties.length === 0 && (
@@ -340,8 +317,7 @@ export default function Properties({ states, properties, municipalities, seo }) 
                     </MainButton>
                 </div>
                 )}
-              </section>
-            </MotionWrapper>
+            </section>
           </div>
         </div>
       </main>
