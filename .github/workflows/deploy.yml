@@ -61,7 +61,6 @@ jobs:
           source: "public/build/*"
           target: "${{ secrets.HOSTINGER_PATH }}"
           overwrite: true
-          rm: true
 
       # 🚀 Final deployment commands
       - name: Deploy to Hostinger
