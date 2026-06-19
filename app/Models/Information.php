@@ -21,6 +21,7 @@ class Information extends Model
     protected $fillable = [
         'corporative_email',
         'corporative_whatsapp',
+        'corporative_float_whatsapp',
         'corporative_linkedin',
         'corporative_instagram',
         'corporative_facebook',

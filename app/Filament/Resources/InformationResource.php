@@ -52,6 +52,11 @@ class InformationResource extends Resource
                             ->tel()
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('corporative_float_whatsapp')
+                            ->label('Boton Whatsapp flotante')
+                            ->tel()
+                            ->maxLength(255)
+                            ->helperText('Número que se usará en el botón flotante de WhatsApp. Si se deja vacío, se usará el WhatsApp Corporativo.'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Redes Sociales')
