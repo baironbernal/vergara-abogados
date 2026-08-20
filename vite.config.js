@@ -1,23 +1,13 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import react from '@vitejs/plugin-react';
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: 'resources/js/app.jsx',
-            ssr: 'resources/js/ssr.jsx',
+            // Blade + Livewire only. Livewire ships its own runtime and Alpine
+            // via @livewireScripts, so app.js carries almost nothing.
+            input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
-        react(),
     ],
-    resolve: {
-        alias: {
-            '@': '/resources/js',
-        },
-    },
-    ssr: {
-        // Inertia's React adapter must be bundled into the SSR output.
-        noExternal: ['@inertiajs/react'],
-    },
 });

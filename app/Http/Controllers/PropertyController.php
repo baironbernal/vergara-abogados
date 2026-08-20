@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Municipality;
 use App\Models\Page;
 use App\Models\Property;
-use App\Models\State;
 use App\Services\SeoManager;
-use Inertia\Inertia;
 
 class PropertyController extends Controller
 {
@@ -23,16 +20,9 @@ class PropertyController extends Controller
 
         SeoManager::set($seo);
 
-        // Select only the columns the listing page needs — excludes gallery, seo (heavy JSON).
-        $properties = Property::with(['municipality:id,name,state_id'])
-            ->get(['id', 'name', 'type', 'thumbnail', 'price', 'size',
-                'description', 'municipality_id', 'state_id'])
-            ->each->append('type_spanish');
-
-        return Inertia::render('Properties', [
-            'states' => State::all(['id', 'name']),
-            'municipalities' => Municipality::all(['id', 'name', 'state_id']),
-            'properties' => $properties,
+        // Listing, filtering and pagination now live in App\Livewire\PropertyCatalog;
+        // this action only resolves the page SEO metadata.
+        return view('pages.properties.index', [
             'seo' => $seo,
         ]);
     }
@@ -65,10 +55,10 @@ class PropertyController extends Controller
         SeoManager::set($seo);
         SeoManager::setSchema($breadcrumbSchema);
 
-        return Inertia::render('PropertyDetail', [
+        // The breadcrumb schema is rendered into <head> by <x-shared.json-ld>.
+        return view('pages.properties.show', [
             'property' => $property,
             'seo' => $seo,
-            'schema' => SeoManager::schema(),
         ]);
     }
 }

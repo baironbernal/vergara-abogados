@@ -7,7 +7,6 @@
         "dev": "vite"
     },
     "devDependencies": {
-        "@vitejs/plugin-react": "^5.0.0",
         "autoprefixer": "^10.4.21",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
@@ -18,22 +17,6 @@
     },
     "dependencies": {
         "@fontsource/dm-sans": "^5.2.6",
-        "@fontsource/prata": "^5.2.6",
-        "@fullcalendar/daygrid": "^6.1.19",
-        "@fullcalendar/interaction": "^6.1.19",
-        "@fullcalendar/react": "^6.1.19",
-        "@fullcalendar/timegrid": "^6.1.19",
-        "@hookform/resolvers": "^5.2.1",
-        "@inertiajs/react": "^2.1.2",
-        "@tailwindcss/line-clamp": "^0.4.4",
-        "clsx": "^2.1.1",
-        "dompurify": "^3.3.3",
-        "lucide-react": "^0.539.0",
-        "motion": "^12.23.12",
-        "react": "^19.1.1",
-        "react-dom": "^19.1.1",
-        "react-hook-form": "^7.62.0",
-        "zod": "^4.0.17",
-        "zustand": "^5.0.8"
+        "@fontsource/prata": "^5.2.6"
     }
 }
