@@ -4,35 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Services\SeoManager;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class BlogController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        // Limit search string to avoid full-table-scan DoS on the content column.
-        $search = $request->string('search')->limit(100)->value() ?: null;
-        $featured = $request->get('featured');
-
-        $blogsQuery = Blog::published()
-            ->with('user:id,name')
-            ->latest('published_at');
-
-        if ($search) {
-            $blogsQuery->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('excerpt', 'like', "%{$search}%")
-                    ->orWhere('content', 'like', "%{$search}%");
-            });
-        }
-
-        if ($featured === 'true') {
-            $blogsQuery->featured();
-        }
-
-        $blogs = $blogsQuery->paginate(9);
-
+        // Listing, search, filtering and pagination now live in App\Livewire\BlogList;
+        // this action only resolves the page SEO metadata.
         $page = cache()->remember('page_seo_/blog', now()->addDay(), fn () => \App\Models\Page::where('route', '/blog')->first()
         );
         $seo = $page ? $page->seo : [
@@ -43,12 +21,7 @@ class BlogController extends Controller
 
         SeoManager::set($seo);
 
-        return Inertia::render('Blog/Index', [
-            'blogs' => $blogs,
-            'filters' => [
-                'search' => $search,
-                'featured' => $featured,
-            ],
+        return view('pages.blog.index', [
             'seo' => $seo,
         ]);
     }
@@ -109,11 +82,11 @@ class BlogController extends Controller
         SeoManager::setSchema($breadcrumbSchema);
         SeoManager::setSchema($articleSchema);
 
-        return Inertia::render('Blog/Show', [
+        // Both schemas registered above are rendered into <head> by <x-shared.json-ld>.
+        return view('pages.blog.show', [
             'blog' => $blog,
             'relatedBlogs' => $relatedBlogs,
             'seo' => $seo,
-            'schema' => SeoManager::schema(),
         ]);
     }
 }

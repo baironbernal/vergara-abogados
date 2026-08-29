@@ -53,3 +53,18 @@ link[rel="preload"][as="font"] {
     font-display: swap;
 }
 
+/* Alpine: hide elements with x-cloak until Alpine initializes */
+[x-cloak] { display: none !important; }
+
+/* Entry reveal — replaces Framer Motion <MotionWrapper> fade/slide-up */
+@keyframes motionReveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: none; }
+}
+.motion-reveal {
+    animation: motionReveal 0.8s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+    .motion-reveal { animation: none; }
+}
+

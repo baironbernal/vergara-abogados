@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    // The home page queries the database (shared corporate info), so the
+    // in-memory sqlite database needs its schema migrated.
+    use RefreshDatabase;
+
     /**
      * A basic test example.
      */

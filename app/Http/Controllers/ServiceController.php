@@ -6,7 +6,6 @@ use App\Models\Lawyer;
 use App\Models\Page;
 use App\Models\Service;
 use App\Services\SeoManager;
-use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
@@ -22,7 +21,7 @@ class ServiceController extends Controller
 
         SeoManager::set($seo);
 
-        return Inertia::render('Services', [
+        return view('pages.services.index', [
             'services' => Service::all(['id', 'name', 'slug', 'category', 'subcategory', 'description', 'type']),
             'lawyers' => Lawyer::whereNotNull('user_id')->get(['id', 'name', 'slug', 'image', 'profession']),
             'seo' => $seo,
@@ -72,11 +71,12 @@ class ServiceController extends Controller
         $relatedLawyers = Lawyer::whereNotNull('user_id')
             ->get(['id', 'name', 'slug', 'image', 'profession']);
 
-        return Inertia::render('ServiceDetail', [
+        // The schemas registered above are rendered into <head> by <x-shared.json-ld>,
+        // so they no longer need to be passed down to the page.
+        return view('pages.services.show', [
             'service' => $service,
             'lawyers' => $relatedLawyers,
             'seo' => $seo,
-            'schema' => SeoManager::schema(),
         ]);
     }
 }
